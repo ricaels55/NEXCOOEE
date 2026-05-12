@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>NexCooee | Sistema de Dados</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{min-height:100vh;background:radial-gradient(circle at 20%30%,#0a0f1e,#03060c);font-family:'Inter','JetBrains Mono',monospace;color:#ccf5ff;overflow-x:hidden;}
+.hacker-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.45;overflow:hidden;}
+.rain{position:absolute;top:-20%;left:0;width:100%;height:120%;font-family:'JetBrains Mono',monospace;font-size:16px;color:#0f8;text-shadow:0 0 5px #0f8;white-space:pre;animation:fall linear infinite;}
+@keyframes fall{0%{transform:translateY(-30vh);opacity:0.2;}100%{transform:translateY(110vh);opacity:0;}}
+.app-container{position:relative;z-index:10;max-width:1400px;margin:0 auto;padding:2rem 1.5rem 3rem;}
+.glass-card{background:rgba(10,20,28,0.65);backdrop-filter:blur(12px);border:1px solid rgba(0,255,170,0.3);border-radius:2rem;padding:1.8rem;}
+.section-title{font-size:1.2rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:10px;border-bottom:1px dashed #2eaa8a;padding-bottom:8px;}
+.input-group{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.input-field{flex:1;background:#0b141ab3;border:1px solid #2c5a4a;border-radius:2rem;padding:0.8rem 1.5rem;font-family:monospace;font-size:0.9rem;color:#d0f0ff;outline:none;}
+.input-field:focus{border-color:#1effbc;box-shadow:0 0 12px #1effbc40;}
+.hack-btn{background:linear-gradient(95deg,#0c2b24,#05100e);border:1px solid #2affb6;border-radius:2.5rem;padding:0.6rem 1.4rem;font-weight:600;color:#ccfff0;cursor:pointer;display:inline-flex;align-items:center;gap:8px;}
+.hack-btn:hover{background:#0f392e;box-shadow:0 0 8px #2effb3;}
+.data-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.5rem;margin-top:1rem;}
+.data-card{background:rgba(8,18,22,0.75);border-radius:1.6rem;border:1px solid rgba(0,255,170,0.25);padding:1.3rem;cursor:pointer;position:relative;}
+.data-card:hover{border-color:#1effbc;transform:translateY(-3px);}
+.card-name{font-size:1.3rem;font-weight:700;background:linear-gradient(120deg,#baf8e6,#74ffce);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.delete-icon{position:absolute;bottom:12px;right:16px;color:#ff6e7f;opacity:0.6;cursor:pointer;}
+.delete-icon:hover{opacity:1;color:#ff3860;}
+.empty-msg{text-align:center;padding:3rem;background:#0712156b;border-radius:2rem;border:1px dashed #1effbc;}
+.badge{background:#102b24;border-radius:28px;padding:2px 10px;font-size:0.7rem;width:fit-content;margin-top:12px;}
+.info-row{display:flex;gap:8px;margin:8px 0;font-size:0.85rem;align-items:center;font-family:monospace;}
+.info-row i{width:24px;color:#2affbc;}
+footer{text-align:center;margin-top:3rem;font-size:0.7rem;opacity:0.6;}
+.backup-bar{display:flex;gap:12px;margin:1rem 0;flex-wrap:wrap;align-items:center;}
+.record-counter{background:#0b191f80;padding:0.5rem 1rem;border-radius:2rem;font-family:monospace;}
+@media (max-width:640px){.input-group{flex-direction:column;}}
+</style>
+</head>
+<body>
+<div class="hacker-bg" id="matrixBg"></div>
+
+<div class="app-container">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+    <div><h1 style="font-size:3rem;font-weight:800;background:linear-gradient(135deg,#a5f0d6,#1effbc);-webkit-background-clip:text;background-clip:text;color:transparent;">>_NexCooee</h1><div style="border-left:3px solid #1effbc;padding-left:1rem;">// cooee club • data nexus</div></div>
+    <div class="record-counter"><i class="fas fa-database"></i> <span id="recordCount">0</span> registros</div>
+  </div>
+
+  <!-- BACKUP BAR -->
+  <div class="backup-bar">
+    <button id="backupBtn" class="hack-btn"><i class="fas fa-download"></i> 💾 Backup</button>
+    <button id="restoreBtn" class="hack-btn"><i class="fas fa-upload"></i> 📂 Restaurar</button>
+  </div>
+
+  <!-- ADD PANEL -->
+  <div class="glass-card">
+    <div class="section-title"><i class="fas fa-user-secret"></i> <span>INJECT NEW TARGET</span></div>
+    <div class="input-group">
+      <input type="text" id="fullName" class="input-field" placeholder="Nome completo">
+      <input type="text" id="personEmail" class="input-field" placeholder="E-mail">
+      <input type="text" id="personPhone" class="input-field" placeholder="Telefone">
+      <input type="text" id="personLocation" class="input-field" placeholder="Cidade/País">
+      <button id="addBtn" class="hack-btn"><i class="fas fa-skull-crosswalk"></i> INJECT</button>
+    </div>
+    <div class="status-message" id="addStatus" style="font-size:0.8rem;color:#8bcb9e;"></div>
+  </div>
+
+  <!-- SEARCH -->
+  <div style="margin: 1.5rem 0; display: flex; gap: 1rem; flex-wrap: wrap;">
+    <input type="text" id="searchInput" class="input-field" placeholder="🔍 Buscar por nome, email ou local..." style="flex:2;">
+    <button id="clearSearchBtn" class="hack-btn"><i class="fas fa-times"></i> Limpar</button>
+  </div>
+
+  <!-- CARDS GRID -->
+  <div id="peopleGrid" class="data-grid">
+    <div class="empty-msg"><i class="fas fa-ghost"></i> Nenhum registro encontrado. Adicione dados acima.</div>
+  </div>
+  <footer><i class="fas fa-terminal"></i> [ NexCooee • Dados persistentes • Backup incluso ]</footer>
+</div>
+
+<script>
+// Sistema completo sem senha
+let peopleDatabase = [];
+let currentSearchTerm = '';
+
+function initHackerRain() {
+    const bg = document.getElementById('matrixBg');
+    if (!bg) return;
+    bg.innerHTML = '';
+    for (let i = 0; i < 40; i++) {
+        const rain = document.createElement('div');
+        rain.className = 'rain';
+        const chars = '01アイウエオカキクケコサシスソタチツテトナニヌネノハヒフヘホマミムメモ';
+        let txt = '';
+        for (let j = 0; j < 25; j++) txt += chars[Math.floor(Math.random() * chars.length)];
+        rain.textContent = txt;
+        rain.style.left = Math.random() * 100 + '%';
+        rain.style.fontSize = (Math.random() * 18 + 12) + 'px';
+        rain.style.animationDuration = (Math.random() * 5 + 3) + 's';
+        rain.style.animationDelay = Math.random() * 10 + 's';
+        rain.style.opacity = Math.random() * 0.5 + 0.2;
+        bg.appendChild(rain);
+    }
+}
+
+function saveData() {
+    localStorage.setItem('nexcooee_people_v2', JSON.stringify(peopleDatabase));
+}
+
+function loadData() {
+    const stored = localStorage.getItem('nexcooee_people_v2');
+    if (stored) {
+        try { peopleDatabase = JSON.parse(stored); } catch(e) { peopleDatabase = []; }
+    }
+    if (!peopleDatabase || !peopleDatabase.length) {
+        peopleDatabase = [
+            { id: '1', name: 'Alice Kessler', email: 'alice@darkweb.com', phone: '+1 555-0987', location: 'Brooklyn, NY', createdAt: Date.now() },
+            { id: '2', name: 'Marcus ZeroDay', email: 'marcus@proton.me', phone: '+55 98765-4321', location: 'São Paulo, SP', createdAt: Date.now() }
+        ];
+        saveData();
+    }
+    renderList();
+}
+
+function updateCount() {
+    const span = document.getElementById('recordCount');
+    if (span) span.innerText = peopleDatabase.length;
+}
+
+function addPerson(name, email, phone, location) {
+    if (!name.trim()) { alert('⚠️ Nome é obrigatório!'); return false; }
+    const newPerson = {
+        id: Date.now().toString() + Math.random().toString(36).substr(2, 4),
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        location: location.trim() || 'Desconhecido',
+        createdAt: Date.now()
+    };
+    peopleDatabase.unshift(newPerson);
+    saveData();
+    renderList();
+    showStatus('✅ ' + newPerson.name + ' adicionado!');
+    return true;
+}
+
+function deletePerson(id) {
+    const person = peopleDatabase.find(p => p.id === id);
+    if (person && confirm('Remover ' + person.name + ' permanentemente?')) {
+        peopleDatabase = peopleDatabase.filter(p => p.id !== id);
+        saveData();
+        renderList();
+        showStatus('🗑️ ' + person.name + ' removido!');
+    }
+}
+
+function getFilteredPeople() {
+    if (!currentSearchTerm.trim()) return [...peopleDatabase];
+    const term = currentSearchTerm.toLowerCase();
+    return peopleDatabase.filter(p => 
+        p.name.toLowerCase().includes(term) ||
+        p.email.toLowerCase().includes(term) ||
+        p.location.toLowerCase().includes(term) ||
+        p.phone.includes(term)
+    );
+}
+
+function highlightText(text) {
+    if (!currentSearchTerm.trim() || !text) return text || '';
+    const term = currentSearchTerm.toLowerCase();
+    const lowerText = text.toLowerCase();
+    if (!lowerText.includes(term)) return text;
+    const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return text.replace(regex, '<span style="background:#1effbc30; padding:0 2px; border-radius:6px;">$1</span>');
+}
+
+function renderList() {
+    const grid = document.getElementById('peopleGrid');
+    if (!grid) return;
+    const filtered = getFilteredPeople();
+    if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty-msg"><i class="fas fa-user-slash"></i> Nenhum registro encontrado.<br>Adicione novos registros ou limpe o filtro.</div>';
+        updateCount();
+        return;
+    }
+    const html = filtered.map(person => `
+        <div class="data-card" data-id="${person.id}">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                <span class="card-name">${highlightText(person.name)}</span>
+                <span class="badge" style="font-size:0.65rem;">${person.id.slice(-6)}</span>
+            </div>
+            <div class="info-row"><i class="fas fa-envelope"></i> ${highlightText(person.email) || '—'}</div>
+            <div class="info-row"><i class="fas fa-phone-alt"></i> ${highlightText(person.phone) || '—'}</div>
+            <div class="info-row"><i class="fas fa-map-marker-alt"></i> ${highlightText(person.location) || '—'}</div>
+            <div class="badge"><i class="fas fa-clock"></i> ${new Date(person.createdAt).toLocaleString()}</div>
+            <div class="delete-icon" data-del="${person.id}"><i class="fas fa-trash-alt"></i></div>
+        </div>
+    `).join('');
+    grid.innerHTML = html;
+    updateCount();
+    document.querySelectorAll('.delete-icon').forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deletePerson(icon.getAttribute('data-del'));
+        });
+    });
+    document.querySelectorAll('.data-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.delete-icon')) return;
+            const person = peopleDatabase.find(p => p.id === card.getAttribute('data-id'));
+            if (person) {
+                alert(`🔎 PERFIL\n\n${person.name}\n📧 ${person.email || '—'}\n📞 ${person.phone || '—'}\n📍 ${person.location || '—'}`);
+            }
+        });
+    });
+}
+
+function showStatus(msg) {
+    const statusDiv = document.getElementById('addStatus');
+    if (statusDiv) {
+        statusDiv.innerText = msg;
+        setTimeout(() => { statusDiv.innerText = ''; }, 3000);
+    }
+}
+
+// Backup e Restore
+function fazerBackup() {
+    const dados = { pessoas: peopleDatabase, dataBackup: new Date().toISOString() };
+    const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `nexcooee_backup_${Date.now()}.json`;
+    a.click();
+    showStatus('✅ Backup salvo!');
+}
+
+function restaurarBackup(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const dados = JSON.parse(e.target.result);
+            if (dados.pessoas && Array.isArray(dados.pessoas)) {
+                peopleDatabase = dados.pessoas;
+                saveData();
+                renderList();
+                showStatus(`✅ Backup restaurado! ${peopleDatabase.length} registros.`);
+            } else { showStatus('❌ Arquivo inválido!'); }
+        } catch(error) { showStatus('❌ Erro ao ler arquivo!'); }
+    };
+    reader.readAsText(file);
+}
+
+// Eventos
+document.getElementById('addBtn')?.addEventListener('click', () => {
+    addPerson(
+        document.getElementById('fullName').value,
+        document.getElementById('personEmail').value,
+        document.getElementById('personPhone').value,
+        document.getElementById('personLocation').value
+    );
+    document.getElementById('fullName').value = '';
+    document.getElementById('personEmail').value = '';
+    document.getElementById('personPhone').value = '';
+    document.getElementById('personLocation').value = '';
+});
+document.getElementById('searchInput')?.addEventListener('input', (e) => {
+    currentSearchTerm = e.target.value;
+    renderList();
+});
+document.getElementById('clearSearchBtn')?.addEventListener('click', () => {
+    document.getElementById('searchInput').value = '';
+    currentSearchTerm = '';
+    renderList();
+});
+document.getElementById('backupBtn')?.addEventListener('click', fazerBackup);
+document.getElementById('restoreBtn')?.addEventListener('click', () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = (e) => { if (e.target.files[0]) restaurarBackup(e.target.files[0]); };
+    input.click();
+});
+
+// Inicialização
+initHackerRain();
+loadData();
+setInterval(() => {
+    const bg = document.getElementById('matrixBg');
+    if (bg && bg.children.length) {
+        for (let i = 0; i < 3; i++) {
+            const r = bg.children[Math.floor(Math.random() * bg.children.length)];
+            if (r) {
+                const chars = '01アイウエオカキクケコサシスソ';
+                let newTxt = '';
+                for (let j = 0; j < r.textContent.length; j++) newTxt += chars[Math.floor(Math.random() * chars.length)];
+                r.textContent = newTxt;
+            }
+        }
+    }
+}, 1500);
+</script>
+</body>
+</html>
