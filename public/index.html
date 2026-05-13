@@ -3,18 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>NexCooee | Sistema de Dados</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>NexCooee | Data Discovery Interface</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
     body {
       min-height: 100vh;
       background: radial-gradient(circle at 20% 30%, #0a0f1e, #03060c);
       font-family: 'Inter', 'JetBrains Mono', monospace;
       color: #ccf5ff;
       overflow-x: hidden;
+      position: relative;
     }
+
     .hacker-bg {
       position: fixed;
       top: 0;
@@ -23,9 +31,10 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.35;
+      opacity: 0.45;
       overflow: hidden;
     }
+
     .rain {
       position: absolute;
       top: -20%;
@@ -34,37 +43,128 @@
       height: 120%;
       font-family: 'JetBrains Mono', monospace;
       font-size: 16px;
+      font-weight: 500;
       color: #0f8;
+      text-shadow: 0 0 5px #0f8, 0 0 8px #0f8a;
       white-space: pre;
       animation: fall linear infinite;
+      will-change: transform;
     }
+
     @keyframes fall {
       0% { transform: translateY(-30vh); opacity: 0.2; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.7; }
       100% { transform: translateY(110vh); opacity: 0; }
     }
+
     .app-container {
       position: relative;
       z-index: 10;
       max-width: 1400px;
       margin: 0 auto;
       padding: 2rem 1.5rem 3rem;
+      backdrop-filter: blur(2px);
     }
-    .glass-card {
-      background: rgba(10, 20, 28, 0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 255, 170, 0.3);
-      border-radius: 2rem;
-      padding: 1.8rem;
-    }
+
     .glitch-title {
-      font-size: 2.5rem;
+      font-size: 3rem;
       font-weight: 800;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #a5f0d6, #1effbc, #0fcf9a);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+      text-shadow: 0 0 8px rgba(0,255,170,0.3);
+      position: relative;
+      display: inline-block;
+    }
+    .glitch-title::before,
+    .glitch-title::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: linear-gradient(135deg, #a5f0d6, #1effbc);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
+    .glitch-title::before {
+      animation: glitch-1 0.4s infinite alternate;
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    }
+    .glitch-title::after {
+      animation: glitch-2 0.3s infinite alternate;
+      clip-path: polygon(0 80%, 100% 20%, 100% 100%, 0 100%);
+    }
+    @keyframes glitch-1 {
+      0% { transform: translate(0); opacity: 0.7; }
+      100% { transform: translate(-2px, 1px); opacity: 1; }
+    }
+    @keyframes glitch-2 {
+      0% { transform: translate(0); opacity: 0.5; }
+      100% { transform: translate(3px, -1px); opacity: 1; }
+    }
+
+    .sub {
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      border-left: 3px solid #1effbc;
+      padding-left: 1rem;
+      margin-top: 0.5rem;
+      color: #b4ffe0;
+    }
+
+    .backup-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .backup-btn {
+      background: linear-gradient(95deg, #0c2b24, #05100e);
+      border: 1px solid #2affb6;
+      border-radius: 2.5rem;
+      padding: 0.6rem 1.4rem;
+      font-weight: 600;
+      font-family: 'Inter', monospace;
+      color: #ccfff0;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .backup-btn:hover {
+      background: #0f392e;
+      border-color: #6affce;
+      box-shadow: 0 0 8px #2effb3;
+      transform: scale(0.97);
+    }
+
+    .card-panel {
+      background: rgba(10, 20, 28, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 255, 170, 0.3);
+      border-radius: 2rem;
+      padding: 1.8rem;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
+      transition: all 0.2s ease;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
     .input-field {
+      flex: 1;
       background: #0b141ab3;
       border: 1px solid #2c5a4a;
       border-radius: 2rem;
@@ -73,30 +173,38 @@
       font-size: 0.9rem;
       color: #d0f0ff;
       outline: none;
-      width: 100%;
+      transition: all 0.2s;
     }
     .input-field:focus {
       border-color: #1effbc;
       box-shadow: 0 0 12px #1effbc40;
+      background: #071013;
     }
-    .btn {
+    .hack-btn {
       background: linear-gradient(95deg, #0c2b24, #05100e);
       border: 1px solid #2affb6;
       border-radius: 2.5rem;
-      padding: 0.8rem 1.8rem;
+      padding: 0 1.8rem;
       font-weight: 600;
       font-family: 'Inter', monospace;
       color: #ccfff0;
       cursor: pointer;
       transition: 0.2s;
-      display: inline-flex;
+      font-size: 0.9rem;
+      display: flex;
       align-items: center;
       gap: 8px;
+      letter-spacing: 0.5px;
     }
-    .btn:hover {
+    .hack-btn i {
+      font-size: 1rem;
+    }
+    .hack-btn:hover {
       background: #0f392e;
+      border-color: #6affce;
       box-shadow: 0 0 8px #2effb3;
       transform: scale(0.97);
+      color: white;
     }
     .section-title {
       font-size: 1.2rem;
@@ -108,6 +216,7 @@
       border-bottom: 1px dashed #2eaa8a;
       padding-bottom: 8px;
     }
+
     .data-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
@@ -115,24 +224,46 @@
       margin-top: 1rem;
     }
     .data-card {
-      background: rgba(8, 18, 22, 0.8);
-      border-radius: 1.5rem;
-      border: 1px solid rgba(0, 255, 170, 0.3);
-      padding: 1.2rem;
-      transition: 0.2s;
+      background: rgba(8, 18, 22, 0.75);
+      backdrop-filter: blur(8px);
+      border-radius: 1.6rem;
+      border: 1px solid rgba(0, 255, 170, 0.25);
+      padding: 1.3rem;
+      transition: 0.2s ease-in-out;
+      cursor: pointer;
       position: relative;
+      overflow: hidden;
     }
     .data-card:hover {
       border-color: #1effbc;
       transform: translateY(-3px);
+      box-shadow: 0 12px 25px -12px #0f0f2e;
+      background: #0b1a1fe6;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px dashed #2c8f72;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
     }
     .card-name {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 700;
+      letter-spacing: -0.3px;
       background: linear-gradient(120deg, #baf8e6, #74ffce);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+    }
+    .card-id {
+      font-size: 0.7rem;
+      font-family: monospace;
+      background: #0e2a2a;
+      padding: 2px 6px;
+      border-radius: 20px;
+      color: #8affcf;
     }
     .info-row {
       display: flex;
@@ -140,9 +271,12 @@
       margin: 8px 0;
       font-size: 0.85rem;
       align-items: center;
-      font-family: monospace;
+      font-family: 'JetBrains Mono', monospace;
     }
-    .info-row i { width: 24px; color: #2affbc; }
+    .info-row i {
+      width: 24px;
+      color: #2affbc;
+    }
     .badge {
       background: #102b24;
       border-radius: 28px;
@@ -158,11 +292,13 @@
       right: 16px;
       color: #ff6e7f;
       opacity: 0.6;
-      cursor: pointer;
+      transition: 0.2s;
       font-size: 1rem;
+      cursor: pointer;
     }
     .delete-icon:hover {
       opacity: 1;
+      transform: scale(1.1);
       color: #ff3860;
     }
     .empty-msg {
@@ -170,6 +306,7 @@
       padding: 3rem;
       background: #0712156b;
       border-radius: 2rem;
+      font-style: italic;
       border: 1px dashed #1effbc;
     }
     footer {
@@ -178,311 +315,343 @@
       font-size: 0.7rem;
       opacity: 0.6;
     }
-    .backup-bar {
-      display: flex;
-      gap: 12px;
-      margin: 1rem 0;
-      flex-wrap: wrap;
-    }
-    .record-counter {
-      background: #0b191f80;
-      padding: 0.5rem 1rem;
-      border-radius: 2rem;
-      font-family: monospace;
-    }
-    .flex-between {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
     @media (max-width: 640px) {
-      .glitch-title { font-size: 1.8rem; }
+      .glitch-title { font-size: 2rem; }
       .app-container { padding: 1rem; }
+      .input-group { flex-direction: column; }
+      .hack-btn { justify-content: center; padding: 0.7rem; }
+    }
+    .search-highlight {
+      background: #0f8f6b30;
+      border-radius: 20px;
+      transition: 0.1s;
+    }
+    .status-message {
+      font-size: 0.8rem;
+      margin-top: 8px;
+      color: #8bcb9e;
     }
   </style>
 </head>
 <body>
+
 <div class="hacker-bg" id="matrixBg"></div>
 
 <div class="app-container">
-  <div class="flex-between">
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 2rem;">
     <div>
-      <div class="glitch-title">>_NEXCOOEE</div>
-      <div style="border-left: 3px solid #1effbc; padding-left: 1rem; font-size: 0.9rem;">// cooee club • data nexus</div>
+      <h1 class="glitch-title" data-text=">_NEXCOOEE">>_NEXCOOEE</h1>
+      <div class="sub">// decrypt personal records • cooee club</div>
     </div>
-    <div class="record-counter"><i class="fas fa-database"></i> <span id="recordCount">0</span> registros</div>
+    <div style="font-family: monospace; background: #0b191f80; padding: 0.3rem 1rem; border-radius: 26px; font-size: 0.75rem;">
+      <i class="fas fa-database"></i> <span id="recordCount">0</span> registros
+    </div>
   </div>
 
-  <!-- BACKUP BAR -->
+  <!-- BARRA DE BACKUP -->
   <div class="backup-bar">
-    <button id="backupBtn" class="btn"><i class="fas fa-download"></i> 💾 Backup</button>
-    <button id="restoreBtn" class="btn"><i class="fas fa-upload"></i> 📂 Restaurar</button>
+    <button id="backupBtn" class="backup-btn"><i class="fas fa-download"></i> 💾 Backup</button>
+    <button id="restoreBtn" class="backup-btn"><i class="fas fa-upload"></i> 📂 Restaurar</button>
   </div>
 
   <!-- ADD PERSON -->
-  <div class="glass-card">
+  <div class="card-panel">
     <div class="section-title">
       <i class="fas fa-user-secret"></i> <span>INJECT NEW TARGET</span>
     </div>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-      <input type="text" id="fullName" class="input-field" style="flex:1;" placeholder="Nome completo" autocomplete="off">
-      <input type="text" id="personEmail" class="input-field" style="flex:1;" placeholder="E-mail" autocomplete="off">
-      <input type="text" id="personPhone" class="input-field" style="flex:1;" placeholder="Telefone" autocomplete="off">
-      <input type="text" id="personLocation" class="input-field" style="flex:1;" placeholder="Cidade/País" autocomplete="off">
-      <button id="addBtn" class="btn"><i class="fas fa-skull-crosswalk"></i> INJECT</button>
+    <div class="input-group">
+      <input type="text" id="fullName" class="input-field" placeholder="Nome completo" autocomplete="off">
+      <input type="text" id="personEmail" class="input-field" placeholder="E-mail" autocomplete="off">
+      <input type="text" id="personPhone" class="input-field" placeholder="Telefone / Celular" autocomplete="off">
+      <input type="text" id="personLocation" class="input-field" placeholder="Cidade / País" autocomplete="off">
+      <button id="addBtn" class="hack-btn"><i class="fas fa-skull-crosswalk"></i> INJECT</button>
     </div>
-    <div class="status-message" id="addStatus" style="font-size: 0.8rem; margin-top: 1rem; color: #8bcb9e;"></div>
+    <div class="status-message" id="addStatus"></div>
+    <div style="font-size: 0.7rem; margin-top: 8px; opacity: 0.6;"><i class="fas fa-shield-alt"></i> dados armazenados localmente (memória privada)</div>
   </div>
 
-  <!-- SEARCH -->
-  <div style="margin: 1.5rem 0; display: flex; gap: 1rem; flex-wrap: wrap;">
-    <input type="text" id="searchInput" class="input-field" style="flex:2;" placeholder="🔍 Buscar por nome, email ou local...">
-    <button id="clearSearchBtn" class="btn"><i class="fas fa-times"></i> Limpar</button>
+  <!-- SEARCH & FILTER -->
+  <div style="margin: 1.8rem 0 1rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+    <div style="flex: 2; min-width: 180px;">
+      <div class="input-group" style="margin-bottom: 0;">
+        <input type="text" id="searchInput" class="input-field" placeholder="🔍 Buscar por nome, email ou local..." style="background:#05100ed9;">
+        <button id="clearSearchBtn" class="hack-btn" style="background:#221c1c80;"><i class="fas fa-times"></i> Limpar</button>
+      </div>
+    </div>
+    <div style="font-family: monospace; font-size: 0.8rem;"><i class="fas fa-fingerprint"></i> clique no card para visualizar detalhes</div>
   </div>
 
   <!-- CARDS GRID -->
   <div id="peopleGrid" class="data-grid">
-    <div class="empty-msg"><i class="fas fa-ghost"></i> Nenhum registro encontrado.<br>Adicione dados acima.</div>
+    <div class="empty-msg"><i class="fas fa-ghost"></i> Nenhum registro encontrado. Adicione dados acima.</div>
   </div>
-  <footer><i class="fas fa-terminal"></i> [ NexCooee • Dados persistentes • Backup incluso ]</footer>
+  <footer>
+    <i class="fas fa-terminal"></i> [ NEXCOOEE SECURE SHELL v2.3 ] • movimento de fundo inspirado em matriz • dados pessoais armazenados localmente
+  </footer>
 </div>
 
 <script>
-// Sistema completo - SEM LOGIN
-let peopleDatabase = [];
-let currentSearchTerm = '';
-
-// FUNDO HACKER RAIN
-function initHackerRain() {
-  const bg = document.getElementById('matrixBg');
-  if (!bg) return;
-  bg.innerHTML = '';
-  const chars = '01アイウエオカキクケコサシスソタチツテト';
-  for (let i = 0; i < 60; i++) {
-    const rain = document.createElement('div');
-    rain.className = 'rain';
-    let txt = '';
-    for (let j = 0; j < 20; j++) txt += chars[Math.floor(Math.random() * chars.length)];
-    rain.textContent = txt;
-    rain.style.left = Math.random() * 100 + '%';
-    rain.style.fontSize = (Math.random() * 18 + 10) + 'px';
-    rain.style.animationDuration = (Math.random() * 4 + 2) + 's';
-    rain.style.animationDelay = Math.random() * 10 + 's';
-    rain.style.opacity = Math.random() * 0.4 + 0.1;
-    bg.appendChild(rain);
-  }
-}
-initHackerRain();
-
-setInterval(() => {
-  const bg = document.getElementById('matrixBg');
-  if (bg && bg.children.length) {
-    for (let i = 0; i < 5; i++) {
-      const r = bg.children[Math.floor(Math.random() * bg.children.length)];
-      if (r) {
-        const chars = '01アイウエオカキクケコサシスソ';
-        let newTxt = '';
-        for (let j = 0; j < r.textContent.length; j++) newTxt += chars[Math.floor(Math.random() * chars.length)];
-        r.textContent = newTxt;
+  // HACKER BACKGROUND
+  function initHackerRain() {
+    const bgContainer = document.getElementById('matrixBg');
+    if (!bgContainer) return;
+    bgContainer.innerHTML = '';
+    const columns = Math.floor(window.innerWidth / 26);
+    const rainCount = Math.min(columns * 2, 80);
+    for (let i = 0; i < rainCount; i++) {
+      const rainDiv = document.createElement('div');
+      rainDiv.className = 'rain';
+      const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&*+@';
+      let randomContent = '';
+      const length = Math.floor(Math.random() * 30) + 12;
+      for (let j = 0; j < length; j++) {
+        randomContent += chars[Math.floor(Math.random() * chars.length)];
       }
+      rainDiv.textContent = randomContent;
+      rainDiv.style.left = Math.random() * 100 + '%';
+      rainDiv.style.fontSize = (Math.random() * 18 + 12) + 'px';
+      rainDiv.style.animationDuration = (Math.random() * 5 + 3) + 's';
+      rainDiv.style.animationDelay = Math.random() * 10 + 's';
+      rainDiv.style.opacity = Math.random() * 0.5 + 0.2;
+      rainDiv.style.color = `rgba(80, 255, 150, ${Math.random() * 0.6 + 0.2})`;
+      bgContainer.appendChild(rainDiv);
     }
+    setInterval(() => {
+      if (bgContainer.children.length < 40) initHackerRain();
+    }, 18000);
   }
-}, 2000);
+  window.addEventListener('resize', () => { initHackerRain(); });
 
-// DADOS
-function persistData() {
-  localStorage.setItem('nexcooee_data', JSON.stringify(peopleDatabase));
-  updateRecordCount();
-}
+  // DATA LAYER - SEM DADOS DE EXEMPLO
+  let peopleDatabase = [];
 
-function loadFromStorage() {
-  const stored = localStorage.getItem('nexcooee_data');
-  if (stored) {
-    try {
-      peopleDatabase = JSON.parse(stored);
-      if (!Array.isArray(peopleDatabase)) peopleDatabase = [];
-    } catch(e) { peopleDatabase = []; }
-  } else {
-    peopleDatabase = [];
+  function persistData() {
+    localStorage.setItem('nexcooee_data', JSON.stringify(peopleDatabase));
+    updateRecordCount();
   }
-  renderPeopleList();
-}
 
-function updateRecordCount() {
-  const span = document.getElementById('recordCount');
-  if (span) span.innerText = peopleDatabase.length;
-}
-
-function generateId() {
-  return 'id_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
-}
-
-function addPerson(name, email, phone, location) {
-  if (!name.trim()) {
-    showStatus('⚠️ Nome é obrigatório!', 'error');
-    return false;
+  function loadFromStorage() {
+    const stored = localStorage.getItem('nexcooee_data');
+    if (stored) {
+      try {
+        peopleDatabase = JSON.parse(stored);
+        if (!Array.isArray(peopleDatabase)) peopleDatabase = [];
+      } catch(e) { peopleDatabase = []; }
+    }
+    if (!peopleDatabase.length) {
+      peopleDatabase = [];
+      persistData();
+    }
+    renderPeopleList();
   }
-  const newPerson = {
-    id: generateId(),
-    name: name.trim(),
-    email: email.trim(),
-    phone: phone.trim(),
-    location: location.trim() || 'Desconhecido',
-    createdAt: Date.now()
-  };
-  peopleDatabase.unshift(newPerson);
-  persistData();
-  renderPeopleList();
-  showStatus(`✔️ ${newPerson.name} adicionado!`, 'success');
-  return true;
-}
 
-function deletePersonById(id) {
-  const person = peopleDatabase.find(p => p.id === id);
-  if (person && confirm(`Remover ${person.name} permanentemente?`)) {
-    peopleDatabase = peopleDatabase.filter(p => p.id !== id);
+  function generateId() {
+    return 'id_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+  }
+
+  function addPerson(name, email, phone, location) {
+    if (!name.trim()) {
+      showStatus('addStatus', '⚠️ Nome é obrigatório!', 'error');
+      return false;
+    }
+    const newPerson = {
+      id: generateId(),
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      location: location.trim() || 'Desconhecido',
+      createdAt: Date.now()
+    };
+    peopleDatabase.unshift(newPerson);
     persistData();
     renderPeopleList();
-    showStatus(`🗑️ Registro de ${person.name} foi eliminado.`, 'info');
+    showStatus('addStatus', `✔️ ${newPerson.name} adicionado ao banco de dados.`, 'success');
+    return true;
   }
-}
 
-function getFilteredPeople() {
-  if (!currentSearchTerm.trim()) return [...peopleDatabase];
-  const term = currentSearchTerm.trim().toLowerCase();
-  return peopleDatabase.filter(p => 
-    p.name.toLowerCase().includes(term) ||
-    p.email.toLowerCase().includes(term) ||
-    p.location.toLowerCase().includes(term) ||
-    p.phone.includes(term)
-  );
-}
-
-function highlightText(text) {
-  if (!currentSearchTerm.trim() || !text) return text || '';
-  const term = currentSearchTerm.toLowerCase();
-  const lowerText = text.toLowerCase();
-  if (!lowerText.includes(term)) return text;
-  const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-  return text.replace(regex, '<span style="background:#1effbc30; padding:0 2px; border-radius:6px;">$1</span>');
-}
-
-function renderPeopleList() {
-  const grid = document.getElementById('peopleGrid');
-  if (!grid) return;
-  const filtered = getFilteredPeople();
-  if (filtered.length === 0) {
-    grid.innerHTML = `<div class="empty-msg"><i class="fas fa-user-slash"></i> Nenhum alvo corresponde à busca.<br>Adicione novos registros ou limpe o filtro.</div>`;
-    updateRecordCount();
-    return;
+  function deletePersonById(id) {
+    const person = peopleDatabase.find(p => p.id === id);
+    if (person && confirm(`Remover ${person.name} permanentemente?`)) {
+      peopleDatabase = peopleDatabase.filter(p => p.id !== id);
+      persistData();
+      renderPeopleList();
+      showStatus('addStatus', `🗑️ Registro de ${person.name} foi eliminado.`, 'info');
+    }
   }
-  const cardsHtml = filtered.map(person => `
-    <div class="data-card" data-id="${person.id}">
-      <div style="display:flex; justify-content:space-between; align-items:baseline;">
-        <span class="card-name">${highlightText(person.name)}</span>
-        <span class="badge" style="font-size:0.65rem;">${person.id.slice(-6)}</span>
+
+  let currentSearchTerm = '';
+
+  function getFilteredPeople() {
+    if (!currentSearchTerm.trim()) return [...peopleDatabase];
+    const term = currentSearchTerm.trim().toLowerCase();
+    return peopleDatabase.filter(p => 
+      p.name.toLowerCase().includes(term) ||
+      p.email.toLowerCase().includes(term) ||
+      p.location.toLowerCase().includes(term) ||
+      p.phone.includes(term)
+    );
+  }
+
+  function updateRecordCount() {
+    const span = document.getElementById('recordCount');
+    if (span) span.innerText = peopleDatabase.length;
+  }
+
+  function renderPeopleList() {
+    const grid = document.getElementById('peopleGrid');
+    if (!grid) return;
+    const filtered = getFilteredPeople();
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="empty-msg"><i class="fas fa-user-slash"></i> Nenhum alvo corresponde à busca. <br> Adicione novos registros ou limpe o filtro.</div>`;
+      updateRecordCount();
+      return;
+    }
+    const searchTermLow = currentSearchTerm.trim().toLowerCase();
+    const highlightText = (text) => {
+      if (!searchTermLow || !text) return text || '';
+      const lowerText = text.toLowerCase();
+      if (!lowerText.includes(searchTermLow)) return text;
+      const parts = text.split(new RegExp(`(${searchTermLow.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
+      return parts.map(part => part.toLowerCase() === searchTermLow ? `<span class="search-highlight" style="background:#1effbc30; padding:0 2px; border-radius:6px;">${part}</span>` : part).join('');
+    };
+    const cardsHtml = filtered.map(person => `
+      <div class="data-card" data-id="${person.id}">
+        <div class="card-header">
+          <span class="card-name">${highlightText(person.name)}</span>
+          <span class="card-id"><i class="fas fa-hashtag"></i> ${person.id.slice(-6)}</span>
+        </div>
+        <div class="info-row"><i class="fas fa-envelope"></i> ${highlightText(person.email) || '—'}</div>
+        <div class="info-row"><i class="fas fa-phone-alt"></i> ${highlightText(person.phone) || '—'}</div>
+        <div class="info-row"><i class="fas fa-map-marker-alt"></i> ${highlightText(person.location) || '—'}</div>
+        <div class="badge"><i class="fas fa-clock"></i> registrado: ${new Date(person.createdAt).toLocaleString()}</div>
+        <div class="delete-icon" data-delete="${person.id}"><i class="fas fa-trash-alt"></i></div>
       </div>
-      <div class="info-row"><i class="fas fa-envelope"></i> ${highlightText(person.email) || '—'}</div>
-      <div class="info-row"><i class="fas fa-phone-alt"></i> ${highlightText(person.phone) || '—'}</div>
-      <div class="info-row"><i class="fas fa-map-marker-alt"></i> ${highlightText(person.location) || '—'}</div>
-      <div class="badge"><i class="fas fa-clock"></i> ${new Date(person.createdAt).toLocaleString()}</div>
-      <div class="delete-icon" data-delete="${person.id}"><i class="fas fa-trash-alt"></i></div>
-    </div>
-  `).join('');
-  grid.innerHTML = cardsHtml;
-  updateRecordCount();
-  document.querySelectorAll('.delete-icon').forEach(icon => {
-    icon.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = icon.getAttribute('data-delete');
-      if (id) deletePersonById(id);
+    `).join('');
+    grid.innerHTML = cardsHtml;
+    updateRecordCount();
+    document.querySelectorAll('.delete-icon').forEach(icon => {
+      icon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = icon.getAttribute('data-delete');
+        if (id) deletePersonById(id);
+      });
     });
-  });
-  document.querySelectorAll('.data-card').forEach(card => {
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.delete-icon')) return;
-      const id = card.getAttribute('data-id');
-      const person = peopleDatabase.find(p => p.id === id);
-      if (person) {
-        alert(`🔎 DETALHES DO PERFIL\n\n🆔 ${person.name}\n📧 E-mail: ${person.email || 'não informado'}\n📞 Telefone: ${person.phone || 'não informado'}\n📍 Localização: ${person.location}\n🕒 Criado em: ${new Date(person.createdAt).toLocaleString()}`);
+    document.querySelectorAll('.data-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.delete-icon')) return;
+        const id = card.getAttribute('data-id');
+        const person = peopleDatabase.find(p => p.id === id);
+        if (person) {
+          alert(`🔎 DETALHES DO PERFIL\n\n🆔 ${person.name}\n📧 E-mail: ${person.email || 'não informado'}\n📞 Telefone: ${person.phone || 'não informado'}\n📍 Localização: ${person.location}\n🕒 Criado em: ${new Date(person.createdAt).toLocaleString()}\n🔑 Hash ID: ${person.id}`);
+        }
+      });
+    });
+  }
+
+  function showStatus(elementId, message, type = 'info') {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    el.innerText = message;
+    el.style.color = type === 'error' ? '#ffa098' : type === 'success' ? '#a3ffcf' : '#c7f0e0';
+    setTimeout(() => {
+      if (el.innerText === message) el.innerText = '';
+    }, 2800);
+  }
+
+  // BACKUP SYSTEM
+  function fazerBackup() {
+    const dados = { pessoas: peopleDatabase, dataBackup: new Date().toISOString() };
+    const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `nexcooee_backup_${Date.now()}.json`;
+    a.click();
+    showStatus('addStatus', '✅ Backup salvo com sucesso!', 'success');
+  }
+
+  function restaurarBackup(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const dados = JSON.parse(e.target.result);
+        if (dados.pessoas && Array.isArray(dados.pessoas)) {
+          peopleDatabase = dados.pessoas;
+          persistData();
+          renderPeopleList();
+          showStatus('addStatus', `✅ Backup restaurado! ${peopleDatabase.length} registros carregados.`, 'success');
+        } else {
+          showStatus('addStatus', '❌ Arquivo de backup inválido!', 'error');
+        }
+      } catch (error) {
+        showStatus('addStatus', '❌ Erro ao ler arquivo de backup!', 'error');
       }
+    };
+    reader.readAsText(file);
+  }
+
+  // EVENTOS
+  function setupEventListeners() {
+    const addButton = document.getElementById('addBtn');
+    const nameInp = document.getElementById('fullName');
+    const emailInp = document.getElementById('personEmail');
+    const phoneInp = document.getElementById('personPhone');
+    const locInp = document.getElementById('personLocation');
+    const searchField = document.getElementById('searchInput');
+    const clearSearch = document.getElementById('clearSearchBtn');
+    const backupBtn = document.getElementById('backupBtn');
+    const restoreBtn = document.getElementById('restoreBtn');
+    const restoreFileInput = document.createElement('input');
+    restoreFileInput.type = 'file';
+    restoreFileInput.accept = '.json';
+    restoreFileInput.style.display = 'none';
+    document.body.appendChild(restoreFileInput);
+
+    addButton.addEventListener('click', () => {
+      addPerson(nameInp.value, emailInp.value, phoneInp.value, locInp.value);
+      nameInp.value = '';
+      emailInp.value = '';
+      phoneInp.value = '';
+      locInp.value = '';
+      nameInp.focus();
     });
+    nameInp.addEventListener('keypress', (e) => { if(e.key === 'Enter') addButton.click(); });
+    searchField.addEventListener('input', (e) => {
+      currentSearchTerm = e.target.value;
+      renderPeopleList();
+    });
+    clearSearch.addEventListener('click', () => {
+      searchField.value = '';
+      currentSearchTerm = '';
+      renderPeopleList();
+    });
+    backupBtn.addEventListener('click', fazerBackup);
+    restoreBtn.addEventListener('click', () => restoreFileInput.click());
+    restoreFileInput.addEventListener('change', (e) => {
+      if (e.target.files[0]) restaurarBackup(e.target.files[0]);
+      restoreFileInput.value = '';
+    });
+  }
+
+  window.addEventListener('load', () => {
+    initHackerRain();
+    loadFromStorage();
+    setupEventListeners();
+    setInterval(() => {
+      const bg = document.getElementById('matrixBg');
+      if (bg && bg.children.length) {
+        for(let i = 0; i < 3; i++) {
+          const randomDrop = bg.children[Math.floor(Math.random() * bg.children.length)];
+          if(randomDrop) {
+            const chars = '01アイウエオカキクケコサシスソタチツトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&*+@';
+            let newContent = '';
+            const len = randomDrop.textContent.length;
+            for(let x=0; x < len; x++) newContent += chars[Math.floor(Math.random() * chars.length)];
+            randomDrop.textContent = newContent;
+          }
+        }
+      }
+    }, 1200);
   });
-}
-
-function showStatus(message, type = 'info') {
-  const el = document.getElementById('addStatus');
-  if (!el) return;
-  el.innerText = message;
-  el.style.color = type === 'error' ? '#ffa098' : type === 'success' ? '#a3ffcf' : '#c7f0e0';
-  setTimeout(() => {
-    if (el.innerText === message) el.innerText = '';
-  }, 3000);
-}
-
-// BACKUP
-function fazerBackup() {
-  const dados = { pessoas: peopleDatabase, dataBackup: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `nexcooee_backup_${Date.now()}.json`;
-  a.click();
-  showStatus('✅ Backup salvo com sucesso!', 'success');
-}
-
-function restaurarBackup(file) {
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const dados = JSON.parse(e.target.result);
-      if (dados.pessoas && Array.isArray(dados.pessoas)) {
-        peopleDatabase = dados.pessoas;
-        persistData();
-        renderPeopleList();
-        showStatus(`✅ Backup restaurado! ${peopleDatabase.length} registros carregados.`, 'success');
-      } else { showStatus('❌ Arquivo de backup inválido!', 'error'); }
-    } catch(error) { showStatus('❌ Erro ao ler arquivo de backup!', 'error'); }
-  };
-  reader.readAsText(file);
-}
-
-// EVENTOS
-document.getElementById('addBtn').addEventListener('click', () => {
-  addPerson(
-    document.getElementById('fullName').value,
-    document.getElementById('personEmail').value,
-    document.getElementById('personPhone').value,
-    document.getElementById('personLocation').value
-  );
-  document.getElementById('fullName').value = '';
-  document.getElementById('personEmail').value = '';
-  document.getElementById('personPhone').value = '';
-  document.getElementById('personLocation').value = '';
-});
-document.getElementById('searchInput').addEventListener('input', (e) => {
-  currentSearchTerm = e.target.value;
-  renderPeopleList();
-});
-document.getElementById('clearSearchBtn').addEventListener('click', () => {
-  document.getElementById('searchInput').value = '';
-  currentSearchTerm = '';
-  renderPeopleList();
-});
-document.getElementById('backupBtn').addEventListener('click', fazerBackup);
-document.getElementById('restoreBtn').addEventListener('click', () => {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.json';
-  input.onchange = (e) => { if (e.target.files[0]) restaurarBackup(e.target.files[0]); };
-  input.click();
-});
-
-// INICIALIZAÇÃO
-loadFromStorage();
 </script>
 </body>
 </html>
