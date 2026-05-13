@@ -310,8 +310,7 @@
       margin-top: 8px;
       color: #8bcb9e;
     }
-
-    /* MODAL DE PERFIL */
+    /* MODAL */
     .modal {
       display: none;
       position: fixed;
@@ -319,7 +318,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(8px);
       z-index: 1000;
       justify-content: center;
@@ -345,10 +344,7 @@
       color: #ff6e7f;
     }
     .modal-close:hover { color: #ff3860; }
-    .profile-photo {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
+    .profile-photo { text-align: center; margin-bottom: 1.5rem; }
     .profile-photo img {
       width: 120px;
       height: 120px;
@@ -370,20 +366,8 @@
       font-size: 3rem;
       color: #1effbc;
     }
-    .photo-input {
-      margin-top: 0.5rem;
-      font-size: 0.7rem;
-    }
-    .modal-field {
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-    .modal-field label {
-      display: block;
-      margin-bottom: 0.3rem;
-      font-size: 0.8rem;
-      color: #8affcf;
-    }
+    .modal-field { margin-bottom: 1rem; }
+    .modal-field label { display: block; margin-bottom: 0.3rem; font-size: 0.8rem; color: #8affcf; }
     .modal-field input, .modal-field textarea {
       width: 100%;
       background: #0b141ab3;
@@ -394,14 +378,10 @@
       color: #d0f0ff;
       outline: none;
     }
-    .modal-field input:focus {
-      border-color: #1effbc;
-    }
-    .save-profile-btn {
-      width: 100%;
-      margin-top: 1rem;
-      justify-content: center;
-    }
+    .modal-field input:focus { border-color: #1effbc; }
+    .save-profile-btn { width: 100%; margin-top: 1rem; justify-content: center; }
+    .photo-input { margin-top: 0.5rem; text-align: center; }
+    .photo-input label { display: inline-block; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -455,16 +435,14 @@
   <footer><i class="fas fa-terminal"></i> [ NEXCOOEE SECURE SHELL v2.3 ] • movimento de fundo inspirado em matriz • dados pessoais armazenados localmente</footer>
 </div>
 
-<!-- MODAL DE PERFIL -->
+<!-- MODAL PERFIL -->
 <div id="profileModal" class="modal">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal()">&times;</span>
     <h3 style="margin-bottom: 1rem;"><i class="fas fa-id-card"></i> Perfil Completo</h3>
     <div class="profile-photo">
       <div id="profilePhotoContainer">
-        <div class="photo-placeholder" id="photoPlaceholder">
-          <i class="fas fa-user-ninja"></i>
-        </div>
+        <div class="photo-placeholder" id="photoPlaceholder"><i class="fas fa-user-ninja"></i></div>
         <img id="profileImg" style="display: none; width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #1effbc;">
       </div>
       <div class="photo-input">
@@ -472,379 +450,163 @@
         <input type="file" id="photoUpload" accept="image/*" style="display: none;">
       </div>
     </div>
-    <div class="modal-field">
-      <label>Nome completo</label>
-      <input type="text" id="modalName" placeholder="Nome">
-    </div>
-    <div class="modal-field">
-      <label>E-mail</label>
-      <input type="email" id="modalEmail" placeholder="E-mail">
-    </div>
-    <div class="modal-field">
-      <label>Telefone</label>
-      <input type="text" id="modalPhone" placeholder="Telefone">
-    </div>
-    <div class="modal-field">
-      <label>Localização</label>
-      <input type="text" id="modalLocation" placeholder="Cidade/País">
-    </div>
-    <div class="modal-field">
-      <label>Data de registro</label>
-      <input type="text" id="modalCreatedAt" readonly style="opacity: 0.7;">
-    </div>
-    <div class="modal-field">
-      <label>ID do registro</label>
-      <input type="text" id="modalId" readonly style="opacity: 0.7; font-size: 0.7rem;">
-    </div>
+    <div class="modal-field"><label>Nome completo</label><input type="text" id="modalName" placeholder="Nome"></div>
+    <div class="modal-field"><label>E-mail</label><input type="email" id="modalEmail" placeholder="E-mail"></div>
+    <div class="modal-field"><label>Telefone</label><input type="text" id="modalPhone" placeholder="Telefone"></div>
+    <div class="modal-field"><label>Localização</label><input type="text" id="modalLocation" placeholder="Cidade/País"></div>
+    <div class="modal-field"><label>Data de registro</label><input type="text" id="modalCreatedAt" readonly style="opacity: 0.7;"></div>
+    <div class="modal-field"><label>ID do registro</label><input type="text" id="modalId" readonly style="opacity: 0.7; font-size: 0.7rem;"></div>
     <button id="saveProfileBtn" class="hack-btn save-profile-btn"><i class="fas fa-save"></i> Salvar alterações</button>
   </div>
 </div>
 
 <script>
-  // HACKER BACKGROUND
   function initHackerRain() {
-    const bgContainer = document.getElementById('matrixBg');
-    if (!bgContainer) return;
-    bgContainer.innerHTML = '';
-    const columns = Math.floor(window.innerWidth / 26);
-    const rainCount = Math.min(columns * 2, 80);
-    for (let i = 0; i < rainCount; i++) {
-      const rainDiv = document.createElement('div');
-      rainDiv.className = 'rain';
-      const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&*+@';
-      let randomContent = '';
-      const length = Math.floor(Math.random() * 30) + 12;
-      for (let j = 0; j < length; j++) {
-        randomContent += chars[Math.floor(Math.random() * chars.length)];
-      }
-      rainDiv.textContent = randomContent;
-      rainDiv.style.left = Math.random() * 100 + '%';
-      rainDiv.style.fontSize = (Math.random() * 18 + 12) + 'px';
-      rainDiv.style.animationDuration = (Math.random() * 5 + 3) + 's';
-      rainDiv.style.animationDelay = Math.random() * 10 + 's';
-      rainDiv.style.opacity = Math.random() * 0.5 + 0.2;
-      rainDiv.style.color = `rgba(80, 255, 150, ${Math.random() * 0.6 + 0.2})`;
-      bgContainer.appendChild(rainDiv);
+    const bg = document.getElementById('matrixBg');
+    if (!bg) return;
+    bg.innerHTML = '';
+    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&*+@';
+    for (let i = 0; i < 60; i++) {
+      const rain = document.createElement('div');
+      rain.className = 'rain';
+      let txt = '';
+      for (let j = 0; j < 25; j++) txt += chars[Math.floor(Math.random() * chars.length)];
+      rain.textContent = txt;
+      rain.style.left = Math.random() * 100 + '%';
+      rain.style.fontSize = (Math.random() * 18 + 10) + 'px';
+      rain.style.animationDuration = (Math.random() * 5 + 2) + 's';
+      rain.style.animationDelay = Math.random() * 10 + 's';
+      bg.appendChild(rain);
     }
-    setInterval(() => {
-      if (bgContainer.children.length < 40) initHackerRain();
-    }, 18000);
   }
-  window.addEventListener('resize', () => { initHackerRain(); });
+  window.addEventListener('resize', () => initHackerRain());
 
-  // DATA LAYER
   let peopleDatabase = [];
   let currentPersonId = null;
 
-  function persistData() {
-    localStorage.setItem('nexcooee_data_v2', JSON.stringify(peopleDatabase));
-    updateRecordCount();
+  function persistData() { localStorage.setItem('nexcooee_data', JSON.stringify(peopleDatabase)); updateCount(); }
+  function loadData() {
+    const stored = localStorage.getItem('nexcooee_data');
+    if (stored) { try { peopleDatabase = JSON.parse(stored); } catch(e) { peopleDatabase = []; } }
+    if (!peopleDatabase.length) peopleDatabase = [];
+    renderCards();
   }
+  function updateCount() { document.getElementById('recordCount').innerText = peopleDatabase.length; }
+  function generateId() { return 'id_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8); }
 
-  function loadFromStorage() {
-    const stored = localStorage.getItem('nexcooee_data_v2');
-    if (stored) {
-      try {
-        peopleDatabase = JSON.parse(stored);
-        if (!Array.isArray(peopleDatabase)) peopleDatabase = [];
-      } catch(e) { peopleDatabase = []; }
-    }
-    if (!peopleDatabase.length) {
-      peopleDatabase = [];
-      persistData();
-    }
-    renderPeopleList();
-  }
-
-  function generateId() {
-    return 'id_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
-  }
-
-  function addPerson(name, email, phone, location) {
-    if (!name.trim()) {
-      showStatus('addStatus', '⚠️ Nome é obrigatório!', 'error');
-      return false;
-    }
-    const newPerson = {
-      id: generateId(),
-      name: name.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
-      location: location.trim() || 'Desconhecido',
-      createdAt: Date.now(),
-      photo: null,
-      bio: '',
-      tags: []
-    };
-    peopleDatabase.unshift(newPerson);
+  function addPerson(n, e, p, l) {
+    if (!n.trim()) { showStatus('⚠️ Nome obrigatório!'); return; }
+    peopleDatabase.unshift({ id: generateId(), name: n.trim(), email: e.trim(), phone: p.trim(), location: l.trim() || 'Desconhecido', createdAt: Date.now(), photo: null });
     persistData();
-    renderPeopleList();
-    showStatus('addStatus', `✔️ ${newPerson.name} adicionado ao banco de dados.`, 'success');
-    return true;
+    renderCards();
+    showStatus(`✔️ ${n.trim()} adicionado!`);
   }
 
-  function deletePersonById(id) {
-    const person = peopleDatabase.find(p => p.id === id);
-    if (person && confirm(`Remover ${person.name} permanentemente?`)) {
-      peopleDatabase = peopleDatabase.filter(p => p.id !== id);
+  function deletePerson(id) {
+    const p = peopleDatabase.find(x => x.id === id);
+    if (p && confirm(`Remover ${p.name} permanentemente?`)) {
+      peopleDatabase = peopleDatabase.filter(x => x.id !== id);
       persistData();
-      renderPeopleList();
-      showStatus('addStatus', `🗑️ Registro de ${person.name} foi eliminado.`, 'info');
+      renderCards();
+      showStatus(`🗑️ ${p.name} removido.`);
     }
   }
 
   function updatePerson(id, updates) {
-    const index = peopleDatabase.findIndex(p => p.id === id);
-    if (index !== -1) {
-      peopleDatabase[index] = { ...peopleDatabase[index], ...updates };
-      persistData();
-      renderPeopleList();
-    }
+    const idx = peopleDatabase.findIndex(p => p.id === id);
+    if (idx !== -1) { peopleDatabase[idx] = { ...peopleDatabase[idx], ...updates }; persistData(); renderCards(); }
   }
 
-  let currentSearchTerm = '';
-
-  function getFilteredPeople() {
-    if (!currentSearchTerm.trim()) return [...peopleDatabase];
-    const term = currentSearchTerm.trim().toLowerCase();
-    return peopleDatabase.filter(p => 
-      p.name.toLowerCase().includes(term) ||
-      p.email.toLowerCase().includes(term) ||
-      p.location.toLowerCase().includes(term) ||
-      p.phone.includes(term)
-    );
+  let searchTerm = '';
+  function getFiltered() {
+    if (!searchTerm.trim()) return [...peopleDatabase];
+    const term = searchTerm.toLowerCase();
+    return peopleDatabase.filter(p => p.name.toLowerCase().includes(term) || p.email.toLowerCase().includes(term) || p.location.toLowerCase().includes(term) || p.phone.includes(term));
   }
 
-  function updateRecordCount() {
-    const span = document.getElementById('recordCount');
-    if (span) span.innerText = peopleDatabase.length;
+  function highlight(text) {
+    if (!searchTerm.trim() || !text) return text || '';
+    const term = searchTerm.toLowerCase();
+    const lower = text.toLowerCase();
+    if (!lower.includes(term)) return text;
+    const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return text.replace(regex, '<span style="background:#1effbc30; padding:0 2px; border-radius:6px;">$1</span>');
   }
 
-  function renderPeopleList() {
+  function renderCards() {
     const grid = document.getElementById('peopleGrid');
     if (!grid) return;
-    const filtered = getFilteredPeople();
-    if (filtered.length === 0) {
-      grid.innerHTML = `<div class="empty-msg"><i class="fas fa-user-slash"></i> Nenhum alvo corresponde à busca. <br> Adicione novos registros ou limpe o filtro.</div>`;
-      updateRecordCount();
-      return;
-    }
-    const searchTermLow = currentSearchTerm.trim().toLowerCase();
-    const highlightText = (text) => {
-      if (!searchTermLow || !text) return text || '';
-      const lowerText = text.toLowerCase();
-      if (!lowerText.includes(searchTermLow)) return text;
-      const parts = text.split(new RegExp(`(${searchTermLow.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
-      return parts.map(part => part.toLowerCase() === searchTermLow ? `<span class="search-highlight" style="background:#1effbc30; padding:0 2px; border-radius:6px;">${part}</span>` : part).join('');
-    };
-    const cardsHtml = filtered.map(person => `
-      <div class="data-card" data-id="${person.id}">
-        <div class="card-header">
-          <span class="card-name">${highlightText(person.name)}</span>
-          <span class="card-id"><i class="fas fa-hashtag"></i> ${person.id.slice(-6)}</span>
-        </div>
-        <div class="info-row"><i class="fas fa-envelope"></i> ${highlightText(person.email) || '—'}</div>
-        <div class="info-row"><i class="fas fa-phone-alt"></i> ${highlightText(person.phone) || '—'}</div>
-        <div class="info-row"><i class="fas fa-map-marker-alt"></i> ${highlightText(person.location) || '—'}</div>
-        <div class="badge"><i class="fas fa-clock"></i> registrado: ${new Date(person.createdAt).toLocaleString()}</div>
-        <div class="delete-icon" data-delete="${person.id}"><i class="fas fa-trash-alt"></i></div>
+    const filtered = getFiltered();
+    if (!filtered.length) { grid.innerHTML = '<div class="empty-msg"><i class="fas fa-user-slash"></i> Nenhum alvo corresponde à busca.<br>Adicione novos registros ou limpe o filtro.</div>'; updateCount(); return; }
+    grid.innerHTML = filtered.map(p => `
+      <div class="data-card" data-id="${p.id}">
+        <div class="card-header"><span class="card-name">${highlight(p.name)}</span><span class="card-id">${p.id.slice(-6)}</span></div>
+        <div class="info-row"><i class="fas fa-envelope"></i> ${highlight(p.email) || '—'}</div>
+        <div class="info-row"><i class="fas fa-phone-alt"></i> ${highlight(p.phone) || '—'}</div>
+        <div class="info-row"><i class="fas fa-map-marker-alt"></i> ${highlight(p.location) || '—'}</div>
+        <div class="badge"><i class="fas fa-clock"></i> ${new Date(p.createdAt).toLocaleString()}</div>
+        <div class="delete-icon" data-del="${p.id}"><i class="fas fa-trash-alt"></i></div>
       </div>
     `).join('');
-    grid.innerHTML = cardsHtml;
-    updateRecordCount();
-    document.querySelectorAll('.delete-icon').forEach(icon => {
-      icon.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const id = icon.getAttribute('data-delete');
-        if (id) deletePersonById(id);
-      });
-    });
-    document.querySelectorAll('.data-card').forEach(card => {
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('.delete-icon')) return;
-        const id = card.getAttribute('data-id');
-        openProfileModal(id);
-      });
-    });
+    updateCount();
+    document.querySelectorAll('.delete-icon').forEach(icon => icon.addEventListener('click', (e) => { e.stopPropagation(); deletePerson(icon.getAttribute('data-del')); }));
+    document.querySelectorAll('.data-card').forEach(card => card.addEventListener('click', (e) => { if (!e.target.closest('.delete-icon')) openModal(card.getAttribute('data-id')); }));
   }
 
-  // MODAL FUNCTIONS
-  function openProfileModal(personId) {
-    const person = peopleDatabase.find(p => p.id === personId);
-    if (!person) return;
-    currentPersonId = personId;
-    
-    document.getElementById('modalName').value = person.name || '';
-    document.getElementById('modalEmail').value = person.email || '';
-    document.getElementById('modalPhone').value = person.phone || '';
-    document.getElementById('modalLocation').value = person.location || '';
-    document.getElementById('modalCreatedAt').value = new Date(person.createdAt).toLocaleString();
-    document.getElementById('modalId').value = person.id;
-    
-    const profileImg = document.getElementById('profileImg');
-    const photoPlaceholder = document.getElementById('photoPlaceholder');
-    
-    if (person.photo) {
-      profileImg.src = person.photo;
-      profileImg.style.display = 'block';
-      photoPlaceholder.style.display = 'none';
-    } else {
-      profileImg.style.display = 'none';
-      photoPlaceholder.style.display = 'flex';
-    }
-    
+  function openModal(id) {
+    const p = peopleDatabase.find(x => x.id === id);
+    if (!p) return;
+    currentPersonId = id;
+    document.getElementById('modalName').value = p.name || '';
+    document.getElementById('modalEmail').value = p.email || '';
+    document.getElementById('modalPhone').value = p.phone || '';
+    document.getElementById('modalLocation').value = p.location || '';
+    document.getElementById('modalCreatedAt').value = new Date(p.createdAt).toLocaleString();
+    document.getElementById('modalId').value = p.id;
+    const img = document.getElementById('profileImg'), ph = document.getElementById('photoPlaceholder');
+    if (p.photo) { img.src = p.photo; img.style.display = 'block'; ph.style.display = 'none'; }
+    else { img.style.display = 'none'; ph.style.display = 'flex'; }
     document.getElementById('profileModal').style.display = 'flex';
   }
-  
-  function closeModal() {
-    document.getElementById('profileModal').style.display = 'none';
-    currentPersonId = null;
-  }
-  
-  function saveProfileChanges() {
-    if (!currentPersonId) return;
-    const updates = {
-      name: document.getElementById('modalName').value,
-      email: document.getElementById('modalEmail').value,
-      phone: document.getElementById('modalPhone').value,
-      location: document.getElementById('modalLocation').value
-    };
-    updatePerson(currentPersonId, updates);
-    closeModal();
-    showStatus('addStatus', '✅ Perfil atualizado com sucesso!', 'success');
-  }
-  
-  // Photo upload
-  document.getElementById('photoUpload').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        const imgData = ev.target.result;
-        updatePerson(currentPersonId, { photo: imgData });
-        const profileImg = document.getElementById('profileImg');
-        const photoPlaceholder = document.getElementById('photoPlaceholder');
-        profileImg.src = imgData;
-        profileImg.style.display = 'block';
-        photoPlaceholder.style.display = 'none';
-        showStatus('addStatus', '📸 Foto adicionada!', 'success');
-      };
-      reader.readAsDataURL(file);
+  function closeModal() { document.getElementById('profileModal').style.display = 'none'; currentPersonId = null; }
+  function saveModal() { if (currentPersonId) { updatePerson(currentPersonId, { name: document.getElementById('modalName').value, email: document.getElementById('modalEmail').value, phone: document.getElementById('modalPhone').value, location: document.getElementById('modalLocation').value }); closeModal(); showStatus('✅ Perfil atualizado!'); } }
+
+  document.getElementById('photoUpload').addEventListener('change', (e) => {
+    const f = e.target.files[0];
+    if (f && f.type.startsWith('image/')) {
+      const r = new FileReader();
+      r.onload = ev => { updatePerson(currentPersonId, { photo: ev.target.result }); const img = document.getElementById('profileImg'), ph = document.getElementById('photoPlaceholder'); img.src = ev.target.result; img.style.display = 'block'; ph.style.display = 'none'; showStatus('📸 Foto adicionada!'); };
+      r.readAsDataURL(f);
     }
   });
-  
-  document.getElementById('saveProfileBtn').addEventListener('click', saveProfileChanges);
+
+  function showStatus(msg) { const el = document.getElementById('addStatus'); if (el) { el.innerText = msg; setTimeout(() => el.innerText = '', 3000); } }
+
+  document.getElementById('addBtn').onclick = () => { addPerson(document.getElementById('fullName').value, document.getElementById('personEmail').value, document.getElementById('personPhone').value, document.getElementById('personLocation').value); document.getElementById('fullName').value = ''; document.getElementById('personEmail').value = ''; document.getElementById('personPhone').value = ''; document.getElementById('personLocation').value = ''; };
+  document.getElementById('searchInput').addEventListener('input', (e) => { searchTerm = e.target.value; renderCards(); });
+  document.getElementById('clearSearchBtn').onclick = () => { document.getElementById('searchInput').value = ''; searchTerm = ''; renderCards(); };
+  document.getElementById('backupBtn').onclick = () => { const b = new Blob([JSON.stringify({ pessoas: peopleDatabase })], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `backup_${Date.now()}.json`; a.click(); showStatus('✅ Backup salvo!'); };
+  document.getElementById('restoreBtn').onclick = () => { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.json'; inp.onchange = e => { const r = new FileReader(); r.onload = ev => { try { const d = JSON.parse(ev.target.result); if (d.pessoas) { peopleDatabase = d.pessoas; persistData(); renderCards(); showStatus('✅ Restaurado!'); } } catch(e) { showStatus('❌ Erro!'); } }; r.readAsText(e.target.files[0]); }; inp.click(); };
+  document.getElementById('saveProfileBtn').onclick = saveModal;
   window.closeModal = closeModal;
+  document.addEventListener('click', (e) => { if (e.target === document.getElementById('profileModal')) closeModal(); });
 
-  function showStatus(elementId, message, type = 'info') {
-    const el = document.getElementById(elementId);
-    if (!el) return;
-    el.innerText = message;
-    el.style.color = type === 'error' ? '#ffa098' : type === 'success' ? '#a3ffcf' : '#c7f0e0';
-    setTimeout(() => {
-      if (el.innerText === message) el.innerText = '';
-    }, 2800);
-  }
-
-  // BACKUP SYSTEM
-  function fazerBackup() {
-    const dados = { pessoas: peopleDatabase, dataBackup: new Date().toISOString() };
-    const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `nexcooee_backup_${Date.now()}.json`;
-    a.click();
-    showStatus('addStatus', '✅ Backup salvo com sucesso!', 'success');
-  }
-
-  function restaurarBackup(file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      try {
-        const dados = JSON.parse(e.target.result);
-        if (dados.pessoas && Array.isArray(dados.pessoas)) {
-          peopleDatabase = dados.pessoas;
-          persistData();
-          renderPeopleList();
-          showStatus('addStatus', `✅ Backup restaurado! ${peopleDatabase.length} registros carregados.`, 'success');
-        } else {
-          showStatus('addStatus', '❌ Arquivo de backup inválido!', 'error');
-        }
-      } catch (error) {
-        showStatus('addStatus', '❌ Erro ao ler arquivo de backup!', 'error');
-      }
-    };
-    reader.readAsText(file);
-  }
-
-  // EVENTOS
-  function setupEventListeners() {
-    const addButton = document.getElementById('addBtn');
-    const nameInp = document.getElementById('fullName');
-    const emailInp = document.getElementById('personEmail');
-    const phoneInp = document.getElementById('personPhone');
-    const locInp = document.getElementById('personLocation');
-    const searchField = document.getElementById('searchInput');
-    const clearSearch = document.getElementById('clearSearchBtn');
-    const backupBtn = document.getElementById('backupBtn');
-    const restoreBtn = document.getElementById('restoreBtn');
-    const restoreFileInput = document.createElement('input');
-    restoreFileInput.type = 'file';
-    restoreFileInput.accept = '.json';
-    restoreFileInput.style.display = 'none';
-    document.body.appendChild(restoreFileInput);
-
-    addButton.addEventListener('click', () => {
-      addPerson(nameInp.value, emailInp.value, phoneInp.value, locInp.value);
-      nameInp.value = '';
-      emailInp.value = '';
-      phoneInp.value = '';
-      locInp.value = '';
-      nameInp.focus();
-    });
-    nameInp.addEventListener('keypress', (e) => { if(e.key === 'Enter') addButton.click(); });
-    searchField.addEventListener('input', (e) => {
-      currentSearchTerm = e.target.value;
-      renderPeopleList();
-    });
-    clearSearch.addEventListener('click', () => {
-      searchField.value = '';
-      currentSearchTerm = '';
-      renderPeopleList();
-    });
-    backupBtn.addEventListener('click', fazerBackup);
-    restoreBtn.addEventListener('click', () => restoreFileInput.click());
-    restoreFileInput.addEventListener('change', (e) => {
-      if (e.target.files[0]) restaurarBackup(e.target.files[0]);
-      restoreFileInput.value = '';
-    });
-    
-    document.addEventListener('click', (e) => {
-      const modal = document.getElementById('profileModal');
-      if (e.target === modal) closeModal();
-    });
-  }
-
-  window.addEventListener('load', () => {
-    initHackerRain();
-    loadFromStorage();
-    setupEventListeners();
-    setInterval(() => {
-      const bg = document.getElementById('matrixBg');
-      if (bg && bg.children.length) {
-        for(let i = 0; i < 3; i++) {
-          const randomDrop = bg.children[Math.floor(Math.random() * bg.children.length)];
-          if(randomDrop) {
-            const chars = '01アイウエオカキクケコサシスソタチツトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&*+@';
-            let newContent = '';
-            const len = randomDrop.textContent.length;
-            for(let x=0; x < len; x++) newContent += chars[Math.floor(Math.random() * chars.length)];
-            randomDrop.textContent = newContent;
-          }
+  initHackerRain();
+  loadData();
+  setInterval(() => {
+    const bg = document.getElementById('matrixBg');
+    if (bg && bg.children.length) {
+      for (let i = 0; i < 5; i++) {
+        const r = bg.children[Math.floor(Math.random() * bg.children.length)];
+        if (r) {
+          const chars = '01アイウエオカキクケコサシスソタチツト';
+          let nt = '';
+          for (let j = 0; j < r.textContent.length; j++) nt += chars[Math.floor(Math.random() * chars.length)];
+          r.textContent = nt;
         }
       }
-    }, 1200);
-  });
+    }
+  }, 1500);
 </script>
 </body>
 </html>
