@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>NexCooee | Admin + Molds PDF</title>
+  <title>NexCooee | Sistema com Imagens e Usuários</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -79,55 +79,14 @@
       background-clip: text;
       color: transparent;
     }
-    .glitch-title::before {
-      animation: glitch-1 0.4s infinite alternate;
-      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-    }
-    .glitch-title::after {
-      animation: glitch-2 0.3s infinite alternate;
-      clip-path: polygon(0 80%, 100% 20%, 100% 100%, 0 100%);
-    }
-    @keyframes glitch-1 {
-      0% { transform: translate(0); opacity: 0.7; }
-      100% { transform: translate(-2px, 1px); opacity: 1; }
-    }
-    @keyframes glitch-2 {
-      0% { transform: translate(0); opacity: 0.5; }
-      100% { transform: translate(3px, -1px); opacity: 1; }
-    }
+    .glitch-title::before { animation: glitch-1 0.4s infinite alternate; clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); }
+    .glitch-title::after { animation: glitch-2 0.3s infinite alternate; clip-path: polygon(0 80%, 100% 20%, 100% 100%, 0 100%); }
+    @keyframes glitch-1 { 0% { transform: translate(0); opacity: 0.7; } 100% { transform: translate(-2px, 1px); opacity: 1; } }
+    @keyframes glitch-2 { 0% { transform: translate(0); opacity: 0.5; } 100% { transform: translate(3px, -1px); opacity: 1; } }
     .sub { font-size: 0.9rem; letter-spacing: 2px; border-left: 3px solid #1effbc; padding-left: 1rem; margin-top: 0.5rem; color: #b4ffe0; }
-    .glass-card {
-      background: rgba(10, 20, 28, 0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 255, 170, 0.3);
-      border-radius: 2rem;
-      padding: 1.8rem;
-    }
-    .input-field {
-      background: #0b141ab3;
-      border: 1px solid #2c5a4a;
-      border-radius: 2rem;
-      padding: 0.8rem 1.5rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      color: #d0f0ff;
-      outline: none;
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-    .btn {
-      background: linear-gradient(95deg, #0c2b24, #05100e);
-      border: 1px solid #2affb6;
-      border-radius: 2.5rem;
-      padding: 0.6rem 1.2rem;
-      font-weight: 600;
-      color: #ccfff0;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.85rem;
-    }
+    .glass-card { background: rgba(10, 20, 28, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(0, 255, 170, 0.3); border-radius: 2rem; padding: 1.8rem; }
+    .input-field { background: #0b141ab3; border: 1px solid #2c5a4a; border-radius: 2rem; padding: 0.8rem 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: #d0f0ff; outline: none; width: 100%; margin-bottom: 1rem; }
+    .btn { background: linear-gradient(95deg, #0c2b24, #05100e); border: 1px solid #2affb6; border-radius: 2.5rem; padding: 0.6rem 1.2rem; font-weight: 600; color: #ccfff0; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; }
     .btn:hover { background: #0f392e; transform: scale(0.97); }
     .btn-danger { border-color: #ff6e6e; color: #ffcccc; }
     .hidden { display: none; }
@@ -135,36 +94,16 @@
     .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
     .badge-admin { background: #1effbc20; color: #1effbc; padding: 0.2rem 0.8rem; border-radius: 1rem; font-size: 0.7rem; }
     .badge-user { background: #ffb62a20; color: #ffb62a; padding: 0.2rem 0.8rem; border-radius: 1rem; font-size: 0.7rem; }
-    .tabs {
-      display: flex;
-      gap: 0.5rem;
-      border-bottom: 1px solid #2c5a4a;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .tab-btn {
-      background: transparent;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      font-family: monospace;
-      font-weight: 600;
-      color: #8affcf;
-      cursor: pointer;
-      border-radius: 2rem;
-      transition: 0.2s;
-    }
-    .tab-btn.active {
-      background: #1effbc20;
-      color: #1effbc;
-      border: 1px solid #1effbc;
-    }
+    .tabs { display: flex; gap: 0.5rem; border-bottom: 1px solid #2c5a4a; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tab-btn { background: transparent; border: none; padding: 0.6rem 1.2rem; font-family: monospace; font-weight: 600; color: #8affcf; cursor: pointer; border-radius: 2rem; transition: 0.2s; }
+    .tab-btn.active { background: #1effbc20; color: #1effbc; border: 1px solid #1effbc; }
     .data-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
       gap: 1.5rem;
       margin-top: 1rem;
     }
-    .data-card, .user-card, .mold-card {
+    .data-card, .user-card, .media-card {
       background: rgba(8, 18, 22, 0.8);
       border-radius: 1.5rem;
       border: 1px solid rgba(0, 255, 170, 0.3);
@@ -172,7 +111,7 @@
       position: relative;
       transition: 0.2s;
     }
-    .data-card:hover, .user-card:hover, .mold-card:hover { border-color: #1effbc; transform: translateY(-2px); }
+    .data-card:hover, .user-card:hover, .media-card:hover { border-color: #1effbc; transform: translateY(-2px); }
     .card-name {
       font-size: 1.2rem;
       font-weight: 700;
@@ -183,41 +122,13 @@
     }
     .info-row { display: flex; gap: 8px; margin: 8px 0; font-size: 0.85rem; align-items: center; font-family: monospace; }
     .info-row i { width: 24px; color: #2affbc; }
-    .badge {
-      background: #102b24;
-      border-radius: 28px;
-      padding: 2px 10px;
-      font-size: 0.7rem;
-      width: fit-content;
-      margin-top: 8px;
-      border-left: 2px solid #1effbc;
-    }
-    .delete-icon {
-      position: absolute;
-      bottom: 12px;
-      right: 16px;
-      color: #ff6e7f;
-      opacity: 0.6;
-      cursor: pointer;
-    }
+    .badge { background: #102b24; border-radius: 28px; padding: 2px 10px; font-size: 0.7rem; width: fit-content; margin-top: 8px; border-left: 2px solid #1effbc; }
+    .delete-icon { position: absolute; bottom: 12px; right: 16px; color: #ff6e7f; opacity: 0.6; cursor: pointer; }
     .delete-icon:hover { opacity: 1; color: #ff3860; }
     .empty-msg { text-align: center; padding: 3rem; background: #0712156b; border-radius: 2rem; border: 1px dashed #1effbc; }
     footer { text-align: center; margin-top: 3rem; font-size: 0.7rem; opacity: 0.6; }
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 1px dashed #2eaa8a;
-      padding-bottom: 8px;
-    }
-    @media (max-width: 640px) {
-      .glitch-title { font-size: 2rem; }
-      .app-container { padding: 1rem; }
-      .tabs { justify-content: center; }
-    }
+    .section-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed #2eaa8a; padding-bottom: 8px; }
+    @media (max-width: 640px) { .glitch-title { font-size: 2rem; } .app-container { padding: 1rem; } }
   </style>
 </head>
 <body>
@@ -228,8 +139,8 @@
   <div id="loginScreen" class="glass-card" style="max-width: 450px; margin: 10vh auto; text-align: center;">
     <div class="glitch-title" data-text=">_NEXCOOEE">>_NEXCOOEE</div>
     <div style="margin: 1rem 0;"><i class="fas fa-shield-haltered" style="font-size: 3rem; color: #1effbc;"></i></div>
-    <input type="email" id="loginEmail" class="input-field" placeholder="E-mail" autocomplete="off">
-    <input type="password" id="loginPassword" class="input-field" placeholder="Senha" autocomplete="off">
+    <input type="email" id="loginEmail" class="input-field" placeholder="E-mail">
+    <input type="password" id="loginPassword" class="input-field" placeholder="Senha">
     <div style="display: flex; gap: 1rem; justify-content: center;">
       <button id="loginBtn" class="btn"><i class="fas fa-key"></i> Entrar</button>
       <button id="registerBtn" class="btn"><i class="fas fa-user-plus"></i> Registrar</button>
@@ -237,12 +148,12 @@
     <div id="loginMessage" class="small-text"></div>
   </div>
 
-  <!-- PAINEL PRINCIPAL (após login) -->
+  <!-- PAINEL PRINCIPAL -->
   <div id="mainPanel" class="hidden">
     <div class="flex-between">
       <div>
         <div class="glitch-title" data-text=">_NEXCOOEE">>_NEXCOOEE</div>
-        <div class="sub">// cooee club • controle total</div>
+        <div class="sub">// cooee club • dados locais + imagens</div>
       </div>
       <div>
         <span id="userTypeBadge" class="badge-user"></span>
@@ -250,22 +161,15 @@
       </div>
     </div>
 
-    <!-- Abas (visíveis apenas para admin) -->
-    <div id="adminTabs" class="tabs admin-only">
+    <!-- Abas (admin vê todas; usuário comum só vê Dashboard e Mídia) -->
+    <div id="adminTabs" class="tabs">
       <button class="tab-btn active" data-tab="dashboard">📋 Dashboard</button>
       <button class="tab-btn" data-tab="users">👥 Usuários</button>
-      <button class="tab-btn" data-tab="molds">📄 Molds PDF</button>
+      <button class="tab-btn" data-tab="media">🖼️ Mídia (PDF/IMG)</button>
     </div>
 
     <!-- Aba Dashboard -->
     <div id="tabDashboard" class="tab-content">
-      <!-- Backup (admin) -->
-      <div id="adminBackupBar" class="admin-only" style="margin-bottom: 1.5rem;">
-        <button id="backupBtn" class="btn"><i class="fas fa-download"></i> Backup completo</button>
-        <button id="restoreBtn" class="btn"><i class="fas fa-upload"></i> Restaurar</button>
-      </div>
-
-      <!-- INJECT (admin) -->
       <div id="adminInjectPanel" class="glass-card admin-only" style="margin-bottom: 1.5rem;">
         <div class="section-title"><i class="fas fa-user-secret"></i> <span>INJECT NEW TARGET</span></div>
         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
@@ -278,17 +182,15 @@
         <div id="addStatus" style="font-size:0.8rem; margin-top:1rem;"></div>
       </div>
 
-      <!-- Busca -->
       <div style="margin: 1rem 0; display: flex; gap: 1rem; flex-wrap: wrap;">
         <input type="text" id="searchInput" class="input-field" style="flex:2;" placeholder="🔍 Buscar por nome, email ou local...">
         <button id="clearSearchBtn" class="btn"><i class="fas fa-times"></i> Limpar</button>
       </div>
 
-      <!-- Cards -->
       <div id="peopleGrid" class="data-grid"></div>
     </div>
 
-    <!-- Aba Usuários (admin) -->
+    <!-- Aba Usuários (todos veem, mas só admin pode promover/excluir) -->
     <div id="tabUsers" class="tab-content hidden">
       <div class="glass-card">
         <div class="section-title"><i class="fas fa-users"></i> <span>Contas cadastradas</span></div>
@@ -296,452 +198,370 @@
       </div>
     </div>
 
-    <!-- Aba Molds PDF (admin) -->
-    <div id="tabMolds" class="tab-content hidden">
+    <!-- Aba Mídia (substitui os "molds" - aceita PDF, PNG, JPG, GIF) -->
+    <div id="tabMedia" class="tab-content hidden">
       <div class="glass-card">
-        <div class="section-title"><i class="fas fa-file-pdf"></i> <span>Gerenciar Molds (PDF)</span></div>
+        <div class="section-title"><i class="fas fa-file-alt"></i> <span>Arquivos e Imagens (PDF, PNG, JPG, GIF)</span></div>
         <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
-          <input type="text" id="moldName" class="input-field" style="flex:1;" placeholder="Nome do molde (ex: Fones de ouvido)">
-          <label for="moldFile" class="btn" style="cursor: pointer;"><i class="fas fa-upload"></i> Selecionar PDF</label>
-          <input type="file" id="moldFile" accept="application/pdf" style="display: none;">
-          <button id="addMoldBtn" class="btn"><i class="fas fa-plus"></i> Adicionar Molde</button>
+          <input type="text" id="mediaName" class="input-field" style="flex:1;" placeholder="Nome do arquivo (ex: Fone de ouvido)">
+          <label for="mediaFile" class="btn" style="cursor: pointer;"><i class="fas fa-upload"></i> Selecionar arquivo</label>
+          <input type="file" id="mediaFile" accept="image/png, image/jpeg, image/jpg, image/gif, application/pdf" style="display: none;">
+          <button id="addMediaBtn" class="btn"><i class="fas fa-plus"></i> Adicionar</button>
         </div>
-        <div id="moldsList" class="data-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px,1fr));"></div>
+        <div id="mediaList" class="data-grid"></div>
       </div>
     </div>
 
-    <footer><i class="fas fa-terminal"></i> [ NexCooee • Admin com Molds PDF ]</footer>
+    <footer><i class="fas fa-terminal"></i> [ NexCooee • Dados locais • Backup disponível ]</footer>
   </div>
 </div>
 
 <script>
-// ============================================
-// SISTEMA COMPLETO COM USUÁRIOS E MOLDS PDF (LOCALSTORAGE)
-// ============================================
+  // ========== DADOS GLOBAIS ==========
+  let usuarios = [];        // { id, email, senha, tipo }
+  let dadosPessoas = [];    // { id, nome, email, telefone, local, criadoPor, criadoEm }
+  let midias = [];          // { id, nome, tipo, data, base64 }
+  let usuarioLogado = null;
 
-// Estruturas de dados
-let usuarios = [];        // { id, email, senha, tipo }
-let dadosPessoas = [];    // { id, nome, email, telefone, local, criadoPor, criadoEm }
-let molds = [];           // { id, nome, data, arquivoBase64 }
-let usuarioLogado = null;
-
-// ADMIN padrão (senha: admin123)
-const ADMIN_PADRAO = {
-  id: 'admin_1',
-  email: 'admin@nexcooee.com',
-  senha: 'admin123',
-  tipo: 'admin'
-};
-
-// Inicialização
-function inicializarDados() {
-  const usuariosSalvos = localStorage.getItem('nexcooee_usuarios');
-  if (usuariosSalvos) {
-    usuarios = JSON.parse(usuariosSalvos);
-  } else {
-    usuarios = [ADMIN_PADRAO];
-    localStorage.setItem('nexcooee_usuarios', JSON.stringify(usuarios));
-  }
-  
-  const dadosSalvos = localStorage.getItem('nexcooee_dados');
-  if (dadosSalvos) {
-    dadosPessoas = JSON.parse(dadosSalvos);
-  } else {
-    dadosPessoas = [];
-    localStorage.setItem('nexcooee_dados', JSON.stringify(dadosPessoas));
-  }
-  
-  const moldsSalvos = localStorage.getItem('nexcooee_molds');
-  if (moldsSalvos) {
-    molds = JSON.parse(moldsSalvos);
-  } else {
-    molds = [];
-    localStorage.setItem('nexcooee_molds', JSON.stringify(molds));
-  }
-}
-
-function salvarUsuarios() { localStorage.setItem('nexcooee_usuarios', JSON.stringify(usuarios)); }
-function salvarDados() { localStorage.setItem('nexcooee_dados', JSON.stringify(dadosPessoas)); }
-function salvarMolds() { localStorage.setItem('nexcooee_molds', JSON.stringify(molds)); }
-
-// ========== GERENCIAMENTO DE USUÁRIOS ==========
-function registrarUsuario(email, senha) {
-  if (usuarios.find(u => u.email === email)) return { ok: false, msg: '❌ E-mail já registrado!' };
-  if (!email || !senha) return { ok: false, msg: '❌ Preencha e-mail e senha!' };
-  if (senha.length < 4) return { ok: false, msg: '❌ Senha deve ter no mínimo 4 caracteres!' };
-  const novo = { id: Date.now().toString(), email, senha, tipo: 'user' };
-  usuarios.push(novo);
-  salvarUsuarios();
-  return { ok: true, msg: '✅ Conta criada! Faça login.' };
-}
-
-function loginUsuario(email, senha) {
-  const user = usuarios.find(u => u.email === email && u.senha === senha);
-  if (!user) return { ok: false, msg: '❌ E-mail ou senha incorretos!' };
-  return { ok: true, user };
-}
-
-function promoverAdmin(id) {
-  const user = usuarios.find(u => u.id === id);
-  if (user && user.tipo !== 'admin') {
-    user.tipo = 'admin';
-    salvarUsuarios();
-    return true;
-  }
-  return false;
-}
-
-function rebaixarUser(id) {
-  const user = usuarios.find(u => u.id === id);
-  if (user && user.tipo === 'admin' && user.email !== 'admin@nexcooee.com') {
-    user.tipo = 'user';
-    salvarUsuarios();
-    return true;
-  }
-  return false;
-}
-
-function excluirUsuario(id) {
-  const idx = usuarios.findIndex(u => u.id === id);
-  if (idx !== -1 && usuarios[idx].email !== 'admin@nexcooee.com') {
-    usuarios.splice(idx, 1);
-    salvarUsuarios();
-    return true;
-  }
-  return false;
-}
-
-// ========== DADOS PESSOAIS ==========
-function adicionarPessoa(nome, email, telefone, local) {
-  if (!usuarioLogado || usuarioLogado.tipo !== 'admin') return { ok: false, msg: '❌ Apenas admin pode adicionar.' };
-  if (!nome.trim()) return { ok: false, msg: '⚠️ Nome obrigatório!' };
-  dadosPessoas.unshift({
-    id: Date.now(),
-    nome: nome.trim(),
-    email: email.trim(),
-    telefone: telefone.trim(),
-    local: local.trim() || 'Desconhecido',
-    criadoPor: usuarioLogado.email,
-    criadoEm: new Date().toLocaleString()
-  });
-  salvarDados();
-  return { ok: true, msg: `✅ ${nome.trim()} adicionado!` };
-}
-
-function removerPessoa(id) {
-  if (!usuarioLogado || usuarioLogado.tipo !== 'admin') return false;
-  const idx = dadosPessoas.findIndex(p => p.id == id);
-  if (idx !== -1) { dadosPessoas.splice(idx, 1); salvarDados(); return true; }
-  return false;
-}
-
-// ========== MOLDS PDF ==========
-function adicionarMolde(nome, base64) {
-  if (!usuarioLogado || usuarioLogado.tipo !== 'admin') return false;
-  if (!nome.trim()) nome = `Molde ${molds.length+1}`;
-  molds.push({
-    id: Date.now(),
-    nome: nome.trim(),
-    data: new Date().toLocaleString(),
-    arquivoBase64: base64
-  });
-  salvarMolds();
-  return true;
-}
-
-function excluirMolde(id) {
-  if (!usuarioLogado || usuarioLogado.tipo !== 'admin') return false;
-  const idx = molds.findIndex(m => m.id == id);
-  if (idx !== -1) { molds.splice(idx, 1); salvarMolds(); return true; }
-  return false;
-}
-
-// ========== RENDERIZAÇÕES ==========
-function renderCards() {
-  const grid = document.getElementById('peopleGrid');
-  if (!grid) return;
-  const term = document.getElementById('searchInput')?.value.toLowerCase() || '';
-  let filtrados = [...dadosPessoas];
-  if (term) {
-    filtrados = filtrados.filter(p =>
-      p.nome?.toLowerCase().includes(term) ||
-      p.email?.toLowerCase().includes(term) ||
-      p.local?.toLowerCase().includes(term) ||
-      p.telefone?.includes(term)
-    );
-  }
-  if (!filtrados.length) {
-    grid.innerHTML = '<div class="empty-msg"><i class="fas fa-user-slash"></i> Nenhum registro encontrado.</div>';
-    return;
-  }
-  grid.innerHTML = filtrados.map(p => `
-    <div class="data-card" data-id="${p.id}">
-      <div style="display:flex; justify-content:space-between;">
-        <span class="card-name">${escapeHtml(p.nome)}</span>
-        <span class="badge" style="font-size:0.65rem;">#${p.id}</span>
-      </div>
-      <div class="info-row"><i class="fas fa-envelope"></i> ${escapeHtml(p.email) || '—'}</div>
-      <div class="info-row"><i class="fas fa-phone-alt"></i> ${escapeHtml(p.telefone) || '—'}</div>
-      <div class="info-row"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(p.local) || '—'}</div>
-      <div class="badge"><i class="fas fa-clock"></i> ${p.criadoEm}</div>
-      ${usuarioLogado?.tipo === 'admin' ? `<div class="delete-icon" data-id="${p.id}" data-type="pessoa"><i class="fas fa-trash-alt"></i></div>` : ''}
-    </div>
-  `).join('');
-  attachDeleteEvents();
-  attachCardClickEvents();
-}
-
-function renderUsersList() {
-  const container = document.getElementById('usersList');
-  if (!container) return;
-  if (!usuarios.length) { container.innerHTML = '<div class="empty-msg">Nenhum usuário cadastrado.</div>'; return; }
-  container.innerHTML = usuarios.map(u => `
-    <div class="user-card" data-id="${u.id}">
-      <div><strong>${escapeHtml(u.email)}</strong> <span class="${u.tipo === 'admin' ? 'badge-admin' : 'badge-user'}">${u.tipo === 'admin' ? 'ADMIN' : 'USUÁRIO'}</span></div>
-      <div class="small-text">ID: ${u.id}</div>
-      <div style="margin-top: 0.5rem;">
-        ${u.tipo !== 'admin' ? `<button class="btn" data-action="promote" data-id="${u.id}">⭐ Promover a Admin</button>` : (u.email !== 'admin@nexcooee.com' ? `<button class="btn" data-action="demote" data-id="${u.id}">⬇️ Rebaixar</button>` : '')}
-        ${u.email !== 'admin@nexcooee.com' ? `<button class="btn btn-danger" data-action="deleteUser" data-id="${u.id}">🗑️ Excluir conta</button>` : ''}
-      </div>
-    </div>
-  `).join('');
-  document.querySelectorAll('[data-action="promote"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); promoverAdmin(btn.getAttribute('data-id')); renderUsersList(); mostrarStatus('Usuário promovido a admin!'); }));
-  document.querySelectorAll('[data-action="demote"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); rebaixarUser(btn.getAttribute('data-id')); renderUsersList(); mostrarStatus('Admin rebaixado para usuário comum!'); }));
-  document.querySelectorAll('[data-action="deleteUser"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); if (confirm('Excluir esta conta permanentemente?')) excluirUsuario(btn.getAttribute('data-id')); renderUsersList(); renderCards(); }));
-}
-
-function renderMoldsList() {
-  const container = document.getElementById('moldsList');
-  if (!container) return;
-  if (!molds.length) { container.innerHTML = '<div class="empty-msg">Nenhum molde PDF adicionado ainda.</div>'; return; }
-  container.innerHTML = molds.map(m => `
-    <div class="mold-card" data-id="${m.id}">
-      <div><strong>${escapeHtml(m.nome)}</strong></div>
-      <div class="small-text">Adicionado em: ${m.data}</div>
-      <div style="margin-top: 0.8rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-        <button class="btn" data-action="viewPdf" data-id="${m.id}"><i class="fas fa-eye"></i> Visualizar</button>
-        <button class="btn" data-action="downloadPdf" data-id="${m.id}"><i class="fas fa-download"></i> Baixar</button>
-        <button class="btn btn-danger" data-action="deleteMold" data-id="${m.id}"><i class="fas fa-trash"></i> Excluir</button>
-      </div>
-    </div>
-  `).join('');
-  document.querySelectorAll('[data-action="viewPdf"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const id = btn.getAttribute('data-id'); const mold = molds.find(m => m.id == id); if (mold && mold.arquivoBase64) window.open(mold.arquivoBase64, '_blank'); }));
-  document.querySelectorAll('[data-action="downloadPdf"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const id = btn.getAttribute('data-id'); const mold = molds.find(m => m.id == id); if (mold && mold.arquivoBase64) { const a = document.createElement('a'); a.href = mold.arquivoBase64; a.download = `${mold.nome}.pdf`; a.click(); } }));
-  document.querySelectorAll('[data-action="deleteMold"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); if (confirm('Excluir este molde?')) excluirMolde(btn.getAttribute('data-id')); renderMoldsList(); }));
-}
-
-function attachDeleteEvents() {
-  document.querySelectorAll('.delete-icon[data-type="pessoa"]').forEach(icon => {
-    icon.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = icon.getAttribute('data-id');
-      if (confirm('Remover permanentemente?')) { removerPessoa(id); renderCards(); mostrarStatus('Registro removido.'); }
-    });
-  });
-}
-
-function attachCardClickEvents() {
-  document.querySelectorAll('.data-card').forEach(card => {
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.delete-icon')) return;
-      const id = card.getAttribute('data-id');
-      const p = dadosPessoas.find(d => d.id == id);
-      if (p) alert(`🔎 DETALHES\n\nNome: ${p.nome}\nEmail: ${p.email || '—'}\nTelefone: ${p.telefone || '—'}\nLocal: ${p.local || '—'}\nCriado por: ${p.criadoPor}\nEm: ${p.criadoEm}`);
-    });
-  });
-}
-
-// ========== UTILITÁRIOS ==========
-function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
-function mostrarStatus(msg) {
-  const el = document.getElementById('addStatus');
-  if (el) { el.innerText = msg; setTimeout(() => el.innerText = '', 3000); }
-  const loginMsg = document.getElementById('loginMessage');
-  if (loginMsg && (msg.includes('Conta') || msg.includes('senha'))) { loginMsg.innerText = msg; setTimeout(() => loginMsg.innerText = '', 3000); }
-}
-
-// ========== BACKUP COMPLETO ==========
-function fazerBackupCompleto() {
-  const backup = { usuarios, dadosPessoas, molds, data: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `nexcooee_full_backup_${Date.now()}.json`;
-  a.click();
-  mostrarStatus('✅ Backup completo salvo!');
-}
-
-function restaurarBackupCompleto(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const dados = JSON.parse(e.target.result);
-      if (dados.usuarios) { usuarios = dados.usuarios; salvarUsuarios(); }
-      if (dados.dadosPessoas) { dadosPessoas = dados.dadosPessoas; salvarDados(); }
-      if (dados.molds) { molds = dados.molds; salvarMolds(); }
-      mostrarStatus('✅ Backup restaurado!');
-      renderCards(); renderUsersList(); renderMoldsList();
-    } catch { mostrarStatus('❌ Arquivo inválido!'); }
+  // ADMIN padrão
+  const ADMIN_PADRAO = {
+    id: 'admin_1',
+    email: 'admin@nexcooee.com',
+    senha: 'admin123',
+    tipo: 'admin'
   };
-  reader.readAsText(file);
-}
 
-// ========== EVENTOS GERAIS ==========
-function aplicarAdminUI() {
-  const isAdmin = usuarioLogado?.tipo === 'admin';
-  document.querySelectorAll('.admin-only').forEach(el => {
-    if (isAdmin) el.classList.remove('hidden');
-    else el.classList.add('hidden');
-  });
-  if (isAdmin) {
-    document.getElementById('adminTabs').classList.remove('hidden');
-    // Mostrar aba ativa
-    const activeTab = document.querySelector('.tab-btn.active')?.getAttribute('data-tab') || 'dashboard';
-    mostrarAba(activeTab);
-  } else {
-    document.getElementById('adminTabs')?.classList.add('hidden');
-    mostrarAba('dashboard');
-  }
-}
-
-function mostrarAba(abaId) {
-  document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-  document.getElementById(`tab${abaId.charAt(0).toUpperCase() + abaId.slice(1)}`).classList.remove('hidden');
-  if (abaId === 'users') renderUsersList();
-  if (abaId === 'molds') renderMoldsList();
-}
-
-function initTabs() {
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      mostrarAba(btn.getAttribute('data-tab'));
-    });
-  });
-}
-
-// Eventos de login/registro
-document.getElementById('registerBtn').onclick = () => {
-  const email = document.getElementById('loginEmail').value;
-  const senha = document.getElementById('loginPassword').value;
-  const res = registrarUsuario(email, senha);
-  mostrarStatus(res.msg);
-};
-document.getElementById('loginBtn').onclick = () => {
-  const email = document.getElementById('loginEmail').value;
-  const senha = document.getElementById('loginPassword').value;
-  const res = loginUsuario(email, senha);
-  if (res.ok) {
-    usuarioLogado = res.user;
-    document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('mainPanel').classList.remove('hidden');
-    const badge = document.getElementById('userTypeBadge');
-    if (usuarioLogado.tipo === 'admin') {
-      badge.innerHTML = '<i class="fas fa-crown"></i> ADMINISTRADOR';
-      badge.className = 'badge-admin';
+  function inicializarDados() {
+    const usuariosSalvos = localStorage.getItem('nexcooee_usuarios');
+    if (usuariosSalvos) {
+      usuarios = JSON.parse(usuariosSalvos);
     } else {
-      badge.innerHTML = '<i class="fas fa-user"></i> USUÁRIO COMUM (apenas leitura)';
-      badge.className = 'badge-user';
+      usuarios = [ADMIN_PADRAO];
+      localStorage.setItem('nexcooee_usuarios', JSON.stringify(usuarios));
     }
-    aplicarAdminUI();
-    renderCards();
-  } else {
-    mostrarStatus(res.msg);
+    const dadosSalvos = localStorage.getItem('nexcooee_dados');
+    dadosPessoas = dadosSalvos ? JSON.parse(dadosSalvos) : [];
+    const midiasSalvas = localStorage.getItem('nexcooee_midias');
+    midias = midiasSalvas ? JSON.parse(midiasSalvas) : [];
   }
-};
-document.getElementById('logoutBtn').onclick = () => { usuarioLogado = null; location.reload(); };
 
-// INJECT
-document.getElementById('addPersonBtn')?.addEventListener('click', () => {
-  const nome = document.getElementById('fullName').value;
-  const email = document.getElementById('personEmail').value;
-  const telef = document.getElementById('personPhone').value;
-  const local = document.getElementById('personLocation').value;
-  const res = adicionarPessoa(nome, email, telef, local);
-  mostrarStatus(res.msg);
-  if (res.ok) {
-    document.getElementById('fullName').value = '';
-    document.getElementById('personEmail').value = '';
-    document.getElementById('personPhone').value = '';
-    document.getElementById('personLocation').value = '';
-    renderCards();
+  function salvarUsuarios() { localStorage.setItem('nexcooee_usuarios', JSON.stringify(usuarios)); }
+  function salvarDados() { localStorage.setItem('nexcooee_dados', JSON.stringify(dadosPessoas)); }
+  function salvarMidias() { localStorage.setItem('nexcooee_midias', JSON.stringify(midias)); }
+
+  // ========== AUTENTICAÇÃO ==========
+  function registrarUsuario(email, senha) {
+    if (usuarios.find(u => u.email === email)) throw new Error('E-mail já registrado.');
+    if (!email || !senha) throw new Error('Preencha e-mail e senha.');
+    if (senha.length < 4) throw new Error('Senha deve ter no mínimo 4 caracteres.');
+    const novo = { id: Date.now().toString(), email, senha, tipo: 'user' };
+    usuarios.push(novo);
+    salvarUsuarios();
   }
-});
 
-// Busca
-document.getElementById('searchInput')?.addEventListener('input', () => renderCards());
-document.getElementById('clearSearchBtn')?.addEventListener('click', () => {
-  document.getElementById('searchInput').value = '';
-  renderCards();
-});
+  function loginUsuario(email, senha) {
+    const user = usuarios.find(u => u.email === email && u.senha === senha);
+    if (!user) throw new Error('E-mail ou senha incorretos.');
+    return user;
+  }
 
-// Backup/Restore
-document.getElementById('backupBtn')?.addEventListener('click', fazerBackupCompleto);
-document.getElementById('restoreBtn')?.addEventListener('click', () => {
-  const inp = document.createElement('input');
-  inp.type = 'file'; inp.accept = '.json';
-  inp.onchange = (e) => { if (e.target.files[0]) restaurarBackupCompleto(e.target.files[0]); };
-  inp.click();
-});
+  async function promoverAdmin(id) {
+    const user = usuarios.find(u => u.id === id);
+    if (user && user.tipo !== 'admin') { user.tipo = 'admin'; salvarUsuarios(); return true; }
+    return false;
+  }
 
-// Moldes
-document.getElementById('addMoldBtn')?.addEventListener('click', () => {
-  const nome = document.getElementById('moldName').value;
-  const fileInput = document.getElementById('moldFile');
-  if (!fileInput.files || !fileInput.files[0]) { mostrarStatus('❌ Selecione um arquivo PDF!'); return; }
-  const file = fileInput.files[0];
-  if (file.type !== 'application/pdf') { mostrarStatus('❌ O arquivo deve ser PDF!'); return; }
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    const base64 = ev.target.result;
-    if (adicionarMolde(nome, base64)) {
-      mostrarStatus('✅ Molde adicionado!');
-      document.getElementById('moldName').value = '';
-      fileInput.value = '';
-      renderMoldsList();
-    } else { mostrarStatus('❌ Erro ao adicionar molde.'); }
+  async function rebaixarUser(id) {
+    const user = usuarios.find(u => u.id === id);
+    if (user && user.tipo === 'admin' && user.email !== 'admin@nexcooee.com') { user.tipo = 'user'; salvarUsuarios(); return true; }
+    return false;
+  }
+
+  async function excluirUsuario(id) {
+    const idx = usuarios.findIndex(u => u.id === id);
+    if (idx !== -1 && usuarios[idx].email !== 'admin@nexcooee.com') { usuarios.splice(idx, 1); salvarUsuarios(); return true; }
+    return false;
+  }
+
+  // ========== DADOS PESSOAS ==========
+  function adicionarPessoa(nome, email, telefone, local) {
+    if (usuarioLogado.tipo !== 'admin') throw new Error('Apenas administradores podem adicionar.');
+    if (!nome.trim()) throw new Error('Nome obrigatório.');
+    dadosPessoas.unshift({
+      id: Date.now(),
+      nome: nome.trim(),
+      email: email.trim(),
+      telefone: telefone.trim(),
+      local: local.trim() || 'Desconhecido',
+      criadoPor: usuarioLogado.email,
+      criadoEm: new Date().toLocaleString()
+    });
+    salvarDados();
+  }
+
+  function removerPessoa(id) {
+    if (usuarioLogado.tipo !== 'admin') throw new Error('Permissão negada.');
+    const idx = dadosPessoas.findIndex(p => p.id == id);
+    if (idx !== -1) { dadosPessoas.splice(idx, 1); salvarDados(); return true; }
+    return false;
+  }
+
+  // ========== MÍDIAS ==========
+  function adicionarMidia(nome, base64, tipoArquivo) {
+    if (usuarioLogado.tipo !== 'admin') throw new Error('Apenas administradores podem adicionar mídia.');
+    if (!nome.trim()) nome = `Arquivo ${midias.length + 1}`;
+    midias.unshift({
+      id: Date.now(),
+      nome: nome.trim(),
+      tipo: tipoArquivo,
+      data: new Date().toLocaleString(),
+      base64: base64
+    });
+    salvarMidias();
+  }
+
+  function removerMidia(id) {
+    if (usuarioLogado.tipo !== 'admin') throw new Error('Permissão negada.');
+    const idx = midias.findIndex(m => m.id == id);
+    if (idx !== -1) { midias.splice(idx, 1); salvarMidias(); return true; }
+    return false;
+  }
+
+  // ========== RENDERIZAÇÃO ==========
+  function renderCards() {
+    const grid = document.getElementById('peopleGrid');
+    if (!grid) return;
+    const term = document.getElementById('searchInput')?.value.toLowerCase() || '';
+    let filtrados = [...dadosPessoas];
+    if (term) {
+      filtrados = filtrados.filter(p =>
+        p.nome?.toLowerCase().includes(term) ||
+        p.email?.toLowerCase().includes(term) ||
+        p.local?.toLowerCase().includes(term) ||
+        p.telefone?.includes(term)
+      );
+    }
+    if (filtrados.length === 0) {
+      grid.innerHTML = '<div class="empty-msg"><i class="fas fa-user-slash"></i> Nenhum registro encontrado.</div>';
+      return;
+    }
+    grid.innerHTML = filtrados.map(p => `
+      <div class="data-card" data-id="${p.id}">
+        <div style="display:flex; justify-content:space-between;">
+          <span class="card-name">${escapeHtml(p.nome)}</span>
+          <span class="badge">#${p.id}</span>
+        </div>
+        <div class="info-row"><i class="fas fa-envelope"></i> ${escapeHtml(p.email) || '—'}</div>
+        <div class="info-row"><i class="fas fa-phone-alt"></i> ${escapeHtml(p.telefone) || '—'}</div>
+        <div class="info-row"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(p.local) || '—'}</div>
+        <div class="badge"><i class="fas fa-clock"></i> ${p.criadoEm}</div>
+        ${usuarioLogado.tipo === 'admin' ? `<div class="delete-icon" data-id="${p.id}" data-type="pessoa"><i class="fas fa-trash-alt"></i></div>` : ''}
+      </div>
+    `).join('');
+    attachDeleteEvents();
+    attachCardClickEvents();
+  }
+
+  function attachDeleteEvents() {
+    document.querySelectorAll('.delete-icon[data-type="pessoa"]').forEach(el => {
+      el.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const id = el.getAttribute('data-id');
+        if (confirm('Remover permanentemente?')) {
+          removerPessoa(id);
+          renderCards();
+          showStatus('✅ Registro removido.');
+        }
+      });
+    });
+  }
+
+  function attachCardClickEvents() {
+    document.querySelectorAll('.data-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.delete-icon')) return;
+        const id = card.getAttribute('data-id');
+        const p = dadosPessoas.find(d => d.id == id);
+        if (p) alert(`🔎 DETALHES\n\nNome: ${p.nome}\nEmail: ${p.email || '—'}\nTelefone: ${p.telefone || '—'}\nLocal: ${p.local || '—'}\nCriado por: ${p.criadoPor}\nEm: ${p.criadoEm}`);
+      });
+    });
+  }
+
+  function renderUsersList() {
+    const container = document.getElementById('usersList');
+    if (!container) return;
+    if (usuarios.length === 0) {
+      container.innerHTML = '<div class="empty-msg">Nenhum usuário cadastrado.</div>';
+      return;
+    }
+    container.innerHTML = usuarios.map(u => `
+      <div class="user-card" data-id="${u.id}">
+        <div><strong>${escapeHtml(u.email)}</strong> <span class="${u.tipo === 'admin' ? 'badge-admin' : 'badge-user'}">${u.tipo === 'admin' ? 'ADMIN' : 'USUÁRIO'}</span></div>
+        <div class="small-text">ID: ${u.id}</div>
+        <div style="margin-top: 0.5rem;">
+          ${u.tipo !== 'admin' ? `<button class="btn" data-action="promote" data-id="${u.id}">⭐ Promover a Admin</button>` : (u.email !== 'admin@nexcooee.com' ? `<button class="btn" data-action="demote" data-id="${u.id}">⬇️ Rebaixar</button>` : '')}
+          ${u.email !== 'admin@nexcooee.com' ? `<button class="btn btn-danger" data-action="deleteUser" data-id="${u.id}">🗑️ Excluir conta</button>` : ''}
+        </div>
+      </div>
+    `).join('');
+    document.querySelectorAll('[data-action="promote"]').forEach(btn => btn.addEventListener('click', async (e) => { e.stopPropagation(); await promoverAdmin(btn.getAttribute('data-id')); renderUsersList(); showStatus('Usuário promovido a admin!'); }));
+    document.querySelectorAll('[data-action="demote"]').forEach(btn => btn.addEventListener('click', async (e) => { e.stopPropagation(); await rebaixarUser(btn.getAttribute('data-id')); renderUsersList(); showStatus('Admin rebaixado para usuário.'); }));
+    document.querySelectorAll('[data-action="deleteUser"]').forEach(btn => btn.addEventListener('click', async (e) => { e.stopPropagation(); if (confirm('Excluir conta permanentemente?')) { await excluirUsuario(btn.getAttribute('data-id')); renderUsersList(); } }));
+  }
+
+  function renderMidias() {
+    const container = document.getElementById('mediaList');
+    if (!container) return;
+    if (midias.length === 0) {
+      container.innerHTML = '<div class="empty-msg">Nenhum arquivo ou imagem adicionada.</div>';
+      return;
+    }
+    container.innerHTML = midias.map(m => `
+      <div class="media-card" data-id="${m.id}">
+        <div><strong>${escapeHtml(m.nome)}</strong></div>
+        <div class="small-text">Tipo: ${m.tipo.toUpperCase()} | Adicionado: ${m.data}</div>
+        <div style="margin-top: 0.8rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button class="btn" data-action="viewMedia" data-id="${m.id}"><i class="fas fa-eye"></i> Visualizar</button>
+          <button class="btn" data-action="downloadMedia" data-id="${m.id}"><i class="fas fa-download"></i> Baixar</button>
+          ${usuarioLogado.tipo === 'admin' ? `<button class="btn btn-danger" data-action="deleteMedia" data-id="${m.id}"><i class="fas fa-trash"></i> Excluir</button>` : ''}
+        </div>
+      </div>
+    `).join('');
+    document.querySelectorAll('[data-action="viewMedia"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const m = midias.find(m => m.id == btn.getAttribute('data-id')); if (m && m.base64) { if (m.tipo === 'pdf') window.open(m.base64, '_blank'); else { const img = new Image(); img.src = m.base64; const w = window.open(''); w.document.write(`<img src="${m.base64}" style="max-width:100%">`); } } }));
+    document.querySelectorAll('[data-action="downloadMedia"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const m = midias.find(m => m.id == btn.getAttribute('data-id')); if (m && m.base64) { const a = document.createElement('a'); a.href = m.base64; a.download = m.nome + (m.tipo === 'pdf' ? '.pdf' : '.png'); a.click(); } }));
+    document.querySelectorAll('[data-action="deleteMedia"]').forEach(btn => btn.addEventListener('click', async (e) => { e.stopPropagation(); if (confirm('Excluir este arquivo?')) { removerMidia(btn.getAttribute('data-id')); renderMidias(); showStatus('Arquivo removido.'); } }));
+  }
+
+  function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+  function showStatus(msg) { const el = document.getElementById('addStatus'); if (el) { el.innerText = msg; setTimeout(() => el.innerText = '', 3000); } }
+
+  // ========== EVENTOS PRINCIPAIS ==========
+  document.getElementById('registerBtn').onclick = async () => {
+    const email = document.getElementById('loginEmail').value;
+    const senha = document.getElementById('loginPassword').value;
+    try {
+      await registrarUsuario(email, senha);
+      showStatus('✅ Conta criada! Faça login.');
+    } catch (err) { showStatus(`❌ ${err.message}`); }
   };
-  reader.readAsDataURL(file);
-});
+  document.getElementById('loginBtn').onclick = async () => {
+    const email = document.getElementById('loginEmail').value;
+    const senha = document.getElementById('loginPassword').value;
+    try {
+      const user = await loginUsuario(email, senha);
+      usuarioLogado = user;
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('mainPanel').classList.remove('hidden');
+      const isAdmin = usuarioLogado.tipo === 'admin';
+      document.getElementById('userTypeBadge').innerHTML = isAdmin ? '<i class="fas fa-crown"></i> ADMINISTRADOR' : '<i class="fas fa-user"></i> USUÁRIO COMUM';
+      document.getElementById('userTypeBadge').className = isAdmin ? 'badge-admin' : 'badge-user';
+      document.querySelectorAll('.admin-only').forEach(el => isAdmin ? el.classList.remove('hidden') : el.classList.add('hidden'));
+      renderCards();
+      renderUsersList();
+      renderMidias();
+      // Aba Usuários e Mídia ficam visíveis para todos (admin pode editar, user só visualiza)
+    } catch (err) { showStatus(`❌ ${err.message}`); }
+  };
+  document.getElementById('logoutBtn').onclick = () => { location.reload(); };
 
-// Background hacker
-function initRain() {
-  const bg = document.getElementById('matrixBg');
-  if (!bg) return;
-  bg.innerHTML = '';
-  const chars = '01アイウエオカキクケコサシスソタチツテトナニヌネノハヒフヘホマミムメモヤユヨ';
-  for (let i = 0; i < 60; i++) {
-    const rain = document.createElement('div');
-    rain.className = 'rain';
-    let txt = '';
-    for (let j = 0; j < 20; j++) txt += chars[Math.floor(Math.random() * chars.length)];
-    rain.textContent = txt;
-    rain.style.left = Math.random() * 100 + '%';
-    rain.style.fontSize = (Math.random() * 18 + 10) + 'px';
-    rain.style.animationDuration = (Math.random() * 5 + 2) + 's';
-    rain.style.animationDelay = Math.random() * 10 + 's';
-    bg.appendChild(rain);
+  document.getElementById('addPersonBtn')?.addEventListener('click', async () => {
+    try {
+      await adicionarPessoa(
+        document.getElementById('fullName').value,
+        document.getElementById('personEmail').value,
+        document.getElementById('personPhone').value,
+        document.getElementById('personLocation').value
+      );
+      renderCards();
+      showStatus('✅ Pessoa adicionada.');
+      document.getElementById('fullName').value = '';
+      document.getElementById('personEmail').value = '';
+      document.getElementById('personPhone').value = '';
+      document.getElementById('personLocation').value = '';
+    } catch (err) { showStatus(`❌ ${err.message}`); }
+  });
+
+  document.getElementById('searchInput').addEventListener('input', () => renderCards());
+  document.getElementById('clearSearchBtn').addEventListener('click', () => {
+    document.getElementById('searchInput').value = '';
+    renderCards();
+  });
+
+  document.getElementById('addMediaBtn')?.addEventListener('click', async () => {
+    const nome = document.getElementById('mediaName').value;
+    const file = document.getElementById('mediaFile').files[0];
+    if (!file) { showStatus('❌ Selecione um arquivo.'); return; }
+    if (!nome.trim()) { showStatus('❌ Informe um nome para o arquivo.'); return; }
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+      const base64 = ev.target.result;
+      let tipo = 'desconhecido';
+      if (file.type === 'application/pdf') tipo = 'pdf';
+      else if (file.type.startsWith('image/')) tipo = 'imagem';
+      try {
+        await adicionarMidia(nome, base64, tipo);
+        renderMidias();
+        showStatus('✅ Arquivo adicionado.');
+        document.getElementById('mediaName').value = '';
+        document.getElementById('mediaFile').value = '';
+      } catch (err) { showStatus(`❌ ${err.message}`); }
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Abas
+  function initTabs() {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tab = btn.getAttribute('data-tab');
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.remove('hidden');
+        if (tab === 'users') renderUsersList();
+        if (tab === 'media') renderMidias();
+        if (tab === 'dashboard') renderCards();
+      });
+    });
   }
-}
-initRain();
-setInterval(() => {
-  const bg = document.getElementById('matrixBg');
-  if (bg && bg.children.length) {
-    const chars = '01アイウエオカキクケコサシスソ';
-    for (let i = 0; i < 3; i++) {
-      const r = bg.children[Math.floor(Math.random() * bg.children.length)];
-      if (r) {
-        let nt = '';
-        for (let j = 0; j < r.textContent.length; j++) nt += chars[Math.floor(Math.random() * chars.length)];
-        r.textContent = nt;
+
+  // Fundo hacker rain
+  function initRain() {
+    const bg = document.getElementById('matrixBg');
+    if (!bg) return;
+    bg.innerHTML = '';
+    const chars = '01アイウエオカキクケコサシスソタチツテトナニヌネノハヒフヘホマミムメモヤユヨ';
+    for (let i = 0; i < 60; i++) {
+      const rain = document.createElement('div');
+      rain.className = 'rain';
+      let txt = '';
+      for (let j = 0; j < 20; j++) txt += chars[Math.floor(Math.random() * chars.length)];
+      rain.textContent = txt;
+      rain.style.left = Math.random() * 100 + '%';
+      rain.style.fontSize = (Math.random() * 18 + 10) + 'px';
+      rain.style.animationDuration = (Math.random() * 5 + 2) + 's';
+      rain.style.animationDelay = Math.random() * 10 + 's';
+      bg.appendChild(rain);
+    }
+  }
+  initRain();
+  setInterval(() => {
+    const bg = document.getElementById('matrixBg');
+    if (bg && bg.children.length) {
+      const chars = '01アイウエオカキクケコサシスソ';
+      for (let i = 0; i < 3; i++) {
+        const r = bg.children[Math.floor(Math.random() * bg.children.length)];
+        if (r) {
+          let nt = '';
+          for (let j = 0; j < r.textContent.length; j++) nt += chars[Math.floor(Math.random() * chars.length)];
+          r.textContent = nt;
+        }
       }
     }
-  }
-}, 1500);
+  }, 1500);
 
-inicializarDados();
-initTabs();
+  inicializarDados();
+  initTabs();
 </script>
 </body>
 </html>
