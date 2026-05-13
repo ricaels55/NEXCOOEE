@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>NexCooee | Sistema com Login Local</title>
+  <title>NexCooee | Admin + Molds PDF</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -40,12 +40,9 @@
       text-shadow: 0 0 5px #0f8, 0 0 8px #0f8a;
       white-space: pre;
       animation: fall linear infinite;
-      will-change: transform;
     }
     @keyframes fall {
       0% { transform: translateY(-30vh); opacity: 0.2; }
-      10% { opacity: 0.8; }
-      90% { opacity: 0.7; }
       100% { transform: translateY(110vh); opacity: 0; }
     }
     .app-container {
@@ -98,14 +95,7 @@
       0% { transform: translate(0); opacity: 0.5; }
       100% { transform: translate(3px, -1px); opacity: 1; }
     }
-    .sub {
-      font-size: 0.9rem;
-      letter-spacing: 2px;
-      border-left: 3px solid #1effbc;
-      padding-left: 1rem;
-      margin-top: 0.5rem;
-      color: #b4ffe0;
-    }
+    .sub { font-size: 0.9rem; letter-spacing: 2px; border-left: 3px solid #1effbc; padding-left: 1rem; margin-top: 0.5rem; color: #b4ffe0; }
     .glass-card {
       background: rgba(10, 20, 28, 0.75);
       backdrop-filter: blur(12px);
@@ -129,38 +119,62 @@
       background: linear-gradient(95deg, #0c2b24, #05100e);
       border: 1px solid #2affb6;
       border-radius: 2.5rem;
-      padding: 0.7rem 1.5rem;
+      padding: 0.6rem 1.2rem;
       font-weight: 600;
       color: #ccfff0;
       cursor: pointer;
-      display: inline-block;
-      margin: 0.3rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
     }
     .btn:hover { background: #0f392e; transform: scale(0.97); }
+    .btn-danger { border-color: #ff6e6e; color: #ffcccc; }
     .hidden { display: none; }
     .small-text { font-size: 0.7rem; opacity: 0.7; margin-top: 1rem; }
     .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
     .badge-admin { background: #1effbc20; color: #1effbc; padding: 0.2rem 0.8rem; border-radius: 1rem; font-size: 0.7rem; }
     .badge-user { background: #ffb62a20; color: #ffb62a; padding: 0.2rem 0.8rem; border-radius: 1rem; font-size: 0.7rem; }
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid #2c5a4a;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      font-family: monospace;
+      font-weight: 600;
+      color: #8affcf;
+      cursor: pointer;
+      border-radius: 2rem;
+      transition: 0.2s;
+    }
+    .tab-btn.active {
+      background: #1effbc20;
+      color: #1effbc;
+      border: 1px solid #1effbc;
+    }
     .data-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
       gap: 1.5rem;
       margin-top: 1rem;
     }
-    .data-card {
-      background: rgba(8, 18, 22, 0.75);
-      backdrop-filter: blur(8px);
-      border-radius: 1.6rem;
-      border: 1px solid rgba(0, 255, 170, 0.25);
-      padding: 1.3rem;
-      transition: 0.2s ease-in-out;
-      cursor: pointer;
+    .data-card, .user-card, .mold-card {
+      background: rgba(8, 18, 22, 0.8);
+      border-radius: 1.5rem;
+      border: 1px solid rgba(0, 255, 170, 0.3);
+      padding: 1rem;
       position: relative;
+      transition: 0.2s;
     }
-    .data-card:hover { border-color: #1effbc; transform: translateY(-3px); background: #0b1a1fe6; }
+    .data-card:hover, .user-card:hover, .mold-card:hover { border-color: #1effbc; transform: translateY(-2px); }
     .card-name {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 700;
       background: linear-gradient(120deg, #baf8e6, #74ffce);
       -webkit-background-clip: text;
@@ -175,7 +189,7 @@
       padding: 2px 10px;
       font-size: 0.7rem;
       width: fit-content;
-      margin-top: 12px;
+      margin-top: 8px;
       border-left: 2px solid #1effbc;
     }
     .delete-icon {
@@ -189,7 +203,6 @@
     .delete-icon:hover { opacity: 1; color: #ff3860; }
     .empty-msg { text-align: center; padding: 3rem; background: #0712156b; border-radius: 2rem; border: 1px dashed #1effbc; }
     footer { text-align: center; margin-top: 3rem; font-size: 0.7rem; opacity: 0.6; }
-    .backup-bar { display: flex; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
     .section-title {
       font-size: 1.2rem;
       font-weight: 600;
@@ -203,6 +216,7 @@
     @media (max-width: 640px) {
       .glitch-title { font-size: 2rem; }
       .app-container { padding: 1rem; }
+      .tabs { justify-content: center; }
     }
   </style>
 </head>
@@ -223,12 +237,12 @@
     <div id="loginMessage" class="small-text"></div>
   </div>
 
-  <!-- PAINEL PRINCIPAL -->
+  <!-- PAINEL PRINCIPAL (após login) -->
   <div id="mainPanel" class="hidden">
     <div class="flex-between">
       <div>
         <div class="glitch-title" data-text=">_NEXCOOEE">>_NEXCOOEE</div>
-        <div class="sub">// cooee club • data nexus</div>
+        <div class="sub">// cooee club • controle total</div>
       </div>
       <div>
         <span id="userTypeBadge" class="badge-user"></span>
@@ -236,49 +250,82 @@
       </div>
     </div>
 
-    <!-- BACKUP (só admin vê) -->
-    <div id="adminBackupBar" class="backup-bar admin-only">
-      <button id="backupBtn" class="btn"><i class="fas fa-download"></i> 💾 Backup</button>
-      <button id="restoreBtn" class="btn"><i class="fas fa-upload"></i> 📂 Restaurar</button>
+    <!-- Abas (visíveis apenas para admin) -->
+    <div id="adminTabs" class="tabs admin-only">
+      <button class="tab-btn active" data-tab="dashboard">📋 Dashboard</button>
+      <button class="tab-btn" data-tab="users">👥 Usuários</button>
+      <button class="tab-btn" data-tab="molds">📄 Molds PDF</button>
     </div>
 
-    <!-- PAINEL ADMIN (só aparece para admin) -->
-    <div id="adminPanel" class="glass-card admin-only" style="margin-top: 1rem;">
-      <div class="section-title"><i class="fas fa-user-secret"></i> <span>INJECT NEW TARGET</span></div>
-      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-        <input type="text" id="fullName" class="input-field" style="flex:1;" placeholder="Nome completo">
-        <input type="text" id="personEmail" class="input-field" style="flex:1;" placeholder="E-mail">
-        <input type="text" id="personPhone" class="input-field" style="flex:1;" placeholder="Telefone">
-        <input type="text" id="personLocation" class="input-field" style="flex:1;" placeholder="Cidade/País">
-        <button id="addPersonBtn" class="btn"><i class="fas fa-skull-crosswalk"></i> INJECT</button>
+    <!-- Aba Dashboard -->
+    <div id="tabDashboard" class="tab-content">
+      <!-- Backup (admin) -->
+      <div id="adminBackupBar" class="admin-only" style="margin-bottom: 1.5rem;">
+        <button id="backupBtn" class="btn"><i class="fas fa-download"></i> Backup completo</button>
+        <button id="restoreBtn" class="btn"><i class="fas fa-upload"></i> Restaurar</button>
       </div>
-      <div id="addStatus" style="font-size:0.8rem; margin-top:1rem; color:#8bcb9e;"></div>
+
+      <!-- INJECT (admin) -->
+      <div id="adminInjectPanel" class="glass-card admin-only" style="margin-bottom: 1.5rem;">
+        <div class="section-title"><i class="fas fa-user-secret"></i> <span>INJECT NEW TARGET</span></div>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <input type="text" id="fullName" class="input-field" style="flex:1;" placeholder="Nome completo">
+          <input type="text" id="personEmail" class="input-field" style="flex:1;" placeholder="E-mail">
+          <input type="text" id="personPhone" class="input-field" style="flex:1;" placeholder="Telefone">
+          <input type="text" id="personLocation" class="input-field" style="flex:1;" placeholder="Cidade/País">
+          <button id="addPersonBtn" class="btn"><i class="fas fa-skull-crosswalk"></i> INJECT</button>
+        </div>
+        <div id="addStatus" style="font-size:0.8rem; margin-top:1rem;"></div>
+      </div>
+
+      <!-- Busca -->
+      <div style="margin: 1rem 0; display: flex; gap: 1rem; flex-wrap: wrap;">
+        <input type="text" id="searchInput" class="input-field" style="flex:2;" placeholder="🔍 Buscar por nome, email ou local...">
+        <button id="clearSearchBtn" class="btn"><i class="fas fa-times"></i> Limpar</button>
+      </div>
+
+      <!-- Cards -->
+      <div id="peopleGrid" class="data-grid"></div>
     </div>
 
-    <!-- BUSCA (todos podem) -->
-    <div style="margin: 1.5rem 0 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-      <input type="text" id="searchInput" class="input-field" style="flex:2;" placeholder="🔍 Buscar por nome, email ou local...">
-      <button id="clearSearchBtn" class="btn"><i class="fas fa-times"></i> Limpar</button>
+    <!-- Aba Usuários (admin) -->
+    <div id="tabUsers" class="tab-content hidden">
+      <div class="glass-card">
+        <div class="section-title"><i class="fas fa-users"></i> <span>Contas cadastradas</span></div>
+        <div id="usersList" class="data-grid" style="grid-template-columns: 1fr;"></div>
+      </div>
     </div>
 
-    <!-- CARDS (todos podem ver) -->
-    <div id="peopleGrid" class="data-grid">
-      <div class="empty-msg">Nenhum registro encontrado.</div>
+    <!-- Aba Molds PDF (admin) -->
+    <div id="tabMolds" class="tab-content hidden">
+      <div class="glass-card">
+        <div class="section-title"><i class="fas fa-file-pdf"></i> <span>Gerenciar Molds (PDF)</span></div>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+          <input type="text" id="moldName" class="input-field" style="flex:1;" placeholder="Nome do molde (ex: Fones de ouvido)">
+          <label for="moldFile" class="btn" style="cursor: pointer;"><i class="fas fa-upload"></i> Selecionar PDF</label>
+          <input type="file" id="moldFile" accept="application/pdf" style="display: none;">
+          <button id="addMoldBtn" class="btn"><i class="fas fa-plus"></i> Adicionar Molde</button>
+        </div>
+        <div id="moldsList" class="data-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px,1fr));"></div>
+      </div>
     </div>
-    <footer><i class="fas fa-terminal"></i> [ NexCooee • Sistema com Login Local • Acesso restrito ]</footer>
+
+    <footer><i class="fas fa-terminal"></i> [ NexCooee • Admin com Molds PDF ]</footer>
   </div>
 </div>
 
 <script>
 // ============================================
-// SISTEMA COMPLETO SEM SUPABASE
+// SISTEMA COMPLETO COM USUÁRIOS E MOLDS PDF (LOCALSTORAGE)
 // ============================================
 
-let usuarios = [];
-let dadosPessoas = [];
+// Estruturas de dados
+let usuarios = [];        // { id, email, senha, tipo }
+let dadosPessoas = [];    // { id, nome, email, telefone, local, criadoPor, criadoEm }
+let molds = [];           // { id, nome, data, arquivoBase64 }
 let usuarioLogado = null;
 
-// ADMIN PADRÃO
+// ADMIN padrão (senha: admin123)
 const ADMIN_PADRAO = {
   id: 'admin_1',
   email: 'admin@nexcooee.com',
@@ -286,8 +333,8 @@ const ADMIN_PADRAO = {
   tipo: 'admin'
 };
 
-// Inicializar
-function inicializar() {
+// Inicialização
+function inicializarDados() {
   const usuariosSalvos = localStorage.getItem('nexcooee_usuarios');
   if (usuariosSalvos) {
     usuarios = JSON.parse(usuariosSalvos);
@@ -303,38 +350,71 @@ function inicializar() {
     dadosPessoas = [];
     localStorage.setItem('nexcooee_dados', JSON.stringify(dadosPessoas));
   }
+  
+  const moldsSalvos = localStorage.getItem('nexcooee_molds');
+  if (moldsSalvos) {
+    molds = JSON.parse(moldsSalvos);
+  } else {
+    molds = [];
+    localStorage.setItem('nexcooee_molds', JSON.stringify(molds));
+  }
 }
 
 function salvarUsuarios() { localStorage.setItem('nexcooee_usuarios', JSON.stringify(usuarios)); }
 function salvarDados() { localStorage.setItem('nexcooee_dados', JSON.stringify(dadosPessoas)); }
+function salvarMolds() { localStorage.setItem('nexcooee_molds', JSON.stringify(molds)); }
 
-// Registrar
+// ========== GERENCIAMENTO DE USUÁRIOS ==========
 function registrarUsuario(email, senha) {
-  if (usuarios.find(u => u.email === email)) {
-    return { ok: false, msg: '❌ E-mail já registrado!' };
-  }
+  if (usuarios.find(u => u.email === email)) return { ok: false, msg: '❌ E-mail já registrado!' };
   if (!email || !senha) return { ok: false, msg: '❌ Preencha e-mail e senha!' };
   if (senha.length < 4) return { ok: false, msg: '❌ Senha deve ter no mínimo 4 caracteres!' };
-  
-  usuarios.push({ id: Date.now().toString(), email, senha, tipo: 'user' });
+  const novo = { id: Date.now().toString(), email, senha, tipo: 'user' };
+  usuarios.push(novo);
   salvarUsuarios();
   return { ok: true, msg: '✅ Conta criada! Faça login.' };
 }
 
-// Login
 function loginUsuario(email, senha) {
   const user = usuarios.find(u => u.email === email && u.senha === senha);
   if (!user) return { ok: false, msg: '❌ E-mail ou senha incorretos!' };
   return { ok: true, user };
 }
 
-// Adicionar pessoa
-function adicionarPessoa(nome, email, telefone, local) {
-  if (!usuarioLogado || usuarioLogado.tipo !== 'admin') {
-    return { ok: false, msg: '❌ Apenas administradores podem adicionar!' };
+function promoverAdmin(id) {
+  const user = usuarios.find(u => u.id === id);
+  if (user && user.tipo !== 'admin') {
+    user.tipo = 'admin';
+    salvarUsuarios();
+    return true;
   }
+  return false;
+}
+
+function rebaixarUser(id) {
+  const user = usuarios.find(u => u.id === id);
+  if (user && user.tipo === 'admin' && user.email !== 'admin@nexcooee.com') {
+    user.tipo = 'user';
+    salvarUsuarios();
+    return true;
+  }
+  return false;
+}
+
+function excluirUsuario(id) {
+  const idx = usuarios.findIndex(u => u.id === id);
+  if (idx !== -1 && usuarios[idx].email !== 'admin@nexcooee.com') {
+    usuarios.splice(idx, 1);
+    salvarUsuarios();
+    return true;
+  }
+  return false;
+}
+
+// ========== DADOS PESSOAIS ==========
+function adicionarPessoa(nome, email, telefone, local) {
+  if (!usuarioLogado || usuarioLogado.tipo !== 'admin') return { ok: false, msg: '❌ Apenas admin pode adicionar.' };
   if (!nome.trim()) return { ok: false, msg: '⚠️ Nome obrigatório!' };
-  
   dadosPessoas.unshift({
     id: Date.now(),
     nome: nome.trim(),
@@ -348,119 +428,206 @@ function adicionarPessoa(nome, email, telefone, local) {
   return { ok: true, msg: `✅ ${nome.trim()} adicionado!` };
 }
 
-// Remover pessoa
 function removerPessoa(id) {
-  if (!usuarioLogado || usuarioLogado.tipo !== 'admin') return { ok: false };
-  const pessoa = dadosPessoas.find(p => p.id == id);
-  if (pessoa) {
-    dadosPessoas = dadosPessoas.filter(p => p.id != id);
-    salvarDados();
-    return { ok: true, msg: `🗑️ ${pessoa.nome} removido!` };
-  }
-  return { ok: false };
+  if (!usuarioLogado || usuarioLogado.tipo !== 'admin') return false;
+  const idx = dadosPessoas.findIndex(p => p.id == id);
+  if (idx !== -1) { dadosPessoas.splice(idx, 1); salvarDados(); return true; }
+  return false;
 }
 
-// Backup
-function fazerBackup() {
-  const backup = { usuarios, dadosPessoas, data: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `nexcooee_backup_${Date.now()}.json`;
-  a.click();
-  mostrarStatus('✅ Backup salvo!');
+// ========== MOLDS PDF ==========
+function adicionarMolde(nome, base64) {
+  if (!usuarioLogado || usuarioLogado.tipo !== 'admin') return false;
+  if (!nome.trim()) nome = `Molde ${molds.length+1}`;
+  molds.push({
+    id: Date.now(),
+    nome: nome.trim(),
+    data: new Date().toLocaleString(),
+    arquivoBase64: base64
+  });
+  salvarMolds();
+  return true;
 }
 
-function restaurarBackup(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const dados = JSON.parse(e.target.result);
-      if (dados.usuarios) { usuarios = dados.usuarios; salvarUsuarios(); }
-      if (dados.dadosPessoas) { dadosPessoas = dados.dadosPessoas; salvarDados(); }
-      mostrarStatus('✅ Backup restaurado!');
-      renderCards();
-    } catch { mostrarStatus('❌ Arquivo inválido!'); }
-  };
-  reader.readAsText(file);
+function excluirMolde(id) {
+  if (!usuarioLogado || usuarioLogado.tipo !== 'admin') return false;
+  const idx = molds.findIndex(m => m.id == id);
+  if (idx !== -1) { molds.splice(idx, 1); salvarMolds(); return true; }
+  return false;
 }
 
-function mostrarStatus(msg) {
-  const el = document.getElementById('addStatus');
-  if (el) { el.innerText = msg; setTimeout(() => el.innerText = '', 3000); }
-  const msgEl = document.getElementById('loginMessage');
-  if (msgEl && (msg.includes('Conta') || msg.includes('senha'))) {
-    msgEl.innerText = msg;
-    setTimeout(() => msgEl.innerText = '', 3000);
-  }
-}
-
+// ========== RENDERIZAÇÕES ==========
 function renderCards() {
   const grid = document.getElementById('peopleGrid');
   if (!grid) return;
-  
-  const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+  const term = document.getElementById('searchInput')?.value.toLowerCase() || '';
   let filtrados = [...dadosPessoas];
-  if (searchTerm) {
-    filtrados = filtrados.filter(p => 
-      p.nome?.toLowerCase().includes(searchTerm) ||
-      p.email?.toLowerCase().includes(searchTerm) ||
-      p.local?.toLowerCase().includes(searchTerm) ||
-      p.telefone?.includes(searchTerm)
+  if (term) {
+    filtrados = filtrados.filter(p =>
+      p.nome?.toLowerCase().includes(term) ||
+      p.email?.toLowerCase().includes(term) ||
+      p.local?.toLowerCase().includes(term) ||
+      p.telefone?.includes(term)
     );
   }
-  
-  if (filtrados.length === 0) {
+  if (!filtrados.length) {
     grid.innerHTML = '<div class="empty-msg"><i class="fas fa-user-slash"></i> Nenhum registro encontrado.</div>';
-    document.getElementById('recordCount')?.setAttribute('style', '');
     return;
   }
-  
   grid.innerHTML = filtrados.map(p => `
     <div class="data-card" data-id="${p.id}">
-      <div style="display:flex; justify-content:space-between; align-items:baseline;">
+      <div style="display:flex; justify-content:space-between;">
         <span class="card-name">${escapeHtml(p.nome)}</span>
         <span class="badge" style="font-size:0.65rem;">#${p.id}</span>
       </div>
       <div class="info-row"><i class="fas fa-envelope"></i> ${escapeHtml(p.email) || '—'}</div>
       <div class="info-row"><i class="fas fa-phone-alt"></i> ${escapeHtml(p.telefone) || '—'}</div>
       <div class="info-row"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(p.local) || '—'}</div>
-      <div class="badge"><i class="fas fa-clock"></i> ${p.criadoEm || '—'}</div>
-      ${usuarioLogado?.tipo === 'admin' ? `<div class="delete-icon" data-id="${p.id}"><i class="fas fa-trash-alt"></i></div>` : ''}
+      <div class="badge"><i class="fas fa-clock"></i> ${p.criadoEm}</div>
+      ${usuarioLogado?.tipo === 'admin' ? `<div class="delete-icon" data-id="${p.id}" data-type="pessoa"><i class="fas fa-trash-alt"></i></div>` : ''}
     </div>
   `).join('');
-  
-  document.querySelectorAll('.delete-icon').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+  attachDeleteEvents();
+  attachCardClickEvents();
+}
+
+function renderUsersList() {
+  const container = document.getElementById('usersList');
+  if (!container) return;
+  if (!usuarios.length) { container.innerHTML = '<div class="empty-msg">Nenhum usuário cadastrado.</div>'; return; }
+  container.innerHTML = usuarios.map(u => `
+    <div class="user-card" data-id="${u.id}">
+      <div><strong>${escapeHtml(u.email)}</strong> <span class="${u.tipo === 'admin' ? 'badge-admin' : 'badge-user'}">${u.tipo === 'admin' ? 'ADMIN' : 'USUÁRIO'}</span></div>
+      <div class="small-text">ID: ${u.id}</div>
+      <div style="margin-top: 0.5rem;">
+        ${u.tipo !== 'admin' ? `<button class="btn" data-action="promote" data-id="${u.id}">⭐ Promover a Admin</button>` : (u.email !== 'admin@nexcooee.com' ? `<button class="btn" data-action="demote" data-id="${u.id}">⬇️ Rebaixar</button>` : '')}
+        ${u.email !== 'admin@nexcooee.com' ? `<button class="btn btn-danger" data-action="deleteUser" data-id="${u.id}">🗑️ Excluir conta</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+  document.querySelectorAll('[data-action="promote"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); promoverAdmin(btn.getAttribute('data-id')); renderUsersList(); mostrarStatus('Usuário promovido a admin!'); }));
+  document.querySelectorAll('[data-action="demote"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); rebaixarUser(btn.getAttribute('data-id')); renderUsersList(); mostrarStatus('Admin rebaixado para usuário comum!'); }));
+  document.querySelectorAll('[data-action="deleteUser"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); if (confirm('Excluir esta conta permanentemente?')) excluirUsuario(btn.getAttribute('data-id')); renderUsersList(); renderCards(); }));
+}
+
+function renderMoldsList() {
+  const container = document.getElementById('moldsList');
+  if (!container) return;
+  if (!molds.length) { container.innerHTML = '<div class="empty-msg">Nenhum molde PDF adicionado ainda.</div>'; return; }
+  container.innerHTML = molds.map(m => `
+    <div class="mold-card" data-id="${m.id}">
+      <div><strong>${escapeHtml(m.nome)}</strong></div>
+      <div class="small-text">Adicionado em: ${m.data}</div>
+      <div style="margin-top: 0.8rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <button class="btn" data-action="viewPdf" data-id="${m.id}"><i class="fas fa-eye"></i> Visualizar</button>
+        <button class="btn" data-action="downloadPdf" data-id="${m.id}"><i class="fas fa-download"></i> Baixar</button>
+        <button class="btn btn-danger" data-action="deleteMold" data-id="${m.id}"><i class="fas fa-trash"></i> Excluir</button>
+      </div>
+    </div>
+  `).join('');
+  document.querySelectorAll('[data-action="viewPdf"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const id = btn.getAttribute('data-id'); const mold = molds.find(m => m.id == id); if (mold && mold.arquivoBase64) window.open(mold.arquivoBase64, '_blank'); }));
+  document.querySelectorAll('[data-action="downloadPdf"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const id = btn.getAttribute('data-id'); const mold = molds.find(m => m.id == id); if (mold && mold.arquivoBase64) { const a = document.createElement('a'); a.href = mold.arquivoBase64; a.download = `${mold.nome}.pdf`; a.click(); } }));
+  document.querySelectorAll('[data-action="deleteMold"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); if (confirm('Excluir este molde?')) excluirMolde(btn.getAttribute('data-id')); renderMoldsList(); }));
+}
+
+function attachDeleteEvents() {
+  document.querySelectorAll('.delete-icon[data-type="pessoa"]').forEach(icon => {
+    icon.addEventListener('click', (e) => {
       e.stopPropagation();
-      const id = btn.getAttribute('data-id');
-      if (confirm('Remover permanentemente?')) {
-        const result = removerPessoa(id);
-        if (result.ok) mostrarStatus(result.msg);
-        renderCards();
-      }
-    });
-  });
-  
-  document.querySelectorAll('.data-card').forEach(card => {
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.delete-icon')) return;
-      const p = dadosPessoas.find(d => d.id == card.getAttribute('data-id'));
-      if (p) alert(`🔎 DETALHES DO PERFIL\n\n👤 Nome: ${p.nome}\n📧 E-mail: ${p.email || '—'}\n📞 Telefone: ${p.telefone || '—'}\n📍 Local: ${p.local || '—'}\n🕒 Criado: ${p.criadoEm}\n👑 Por: ${p.criadoPor}`);
+      const id = icon.getAttribute('data-id');
+      if (confirm('Remover permanentemente?')) { removerPessoa(id); renderCards(); mostrarStatus('Registro removido.'); }
     });
   });
 }
 
-function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+function attachCardClickEvents() {
+  document.querySelectorAll('.data-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.delete-icon')) return;
+      const id = card.getAttribute('data-id');
+      const p = dadosPessoas.find(d => d.id == id);
+      if (p) alert(`🔎 DETALHES\n\nNome: ${p.nome}\nEmail: ${p.email || '—'}\nTelefone: ${p.telefone || '—'}\nLocal: ${p.local || '—'}\nCriado por: ${p.criadoPor}\nEm: ${p.criadoEm}`);
+    });
+  });
+}
 
-// EVENTOS
+// ========== UTILITÁRIOS ==========
+function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+function mostrarStatus(msg) {
+  const el = document.getElementById('addStatus');
+  if (el) { el.innerText = msg; setTimeout(() => el.innerText = '', 3000); }
+  const loginMsg = document.getElementById('loginMessage');
+  if (loginMsg && (msg.includes('Conta') || msg.includes('senha'))) { loginMsg.innerText = msg; setTimeout(() => loginMsg.innerText = '', 3000); }
+}
+
+// ========== BACKUP COMPLETO ==========
+function fazerBackupCompleto() {
+  const backup = { usuarios, dadosPessoas, molds, data: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `nexcooee_full_backup_${Date.now()}.json`;
+  a.click();
+  mostrarStatus('✅ Backup completo salvo!');
+}
+
+function restaurarBackupCompleto(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const dados = JSON.parse(e.target.result);
+      if (dados.usuarios) { usuarios = dados.usuarios; salvarUsuarios(); }
+      if (dados.dadosPessoas) { dadosPessoas = dados.dadosPessoas; salvarDados(); }
+      if (dados.molds) { molds = dados.molds; salvarMolds(); }
+      mostrarStatus('✅ Backup restaurado!');
+      renderCards(); renderUsersList(); renderMoldsList();
+    } catch { mostrarStatus('❌ Arquivo inválido!'); }
+  };
+  reader.readAsText(file);
+}
+
+// ========== EVENTOS GERAIS ==========
+function aplicarAdminUI() {
+  const isAdmin = usuarioLogado?.tipo === 'admin';
+  document.querySelectorAll('.admin-only').forEach(el => {
+    if (isAdmin) el.classList.remove('hidden');
+    else el.classList.add('hidden');
+  });
+  if (isAdmin) {
+    document.getElementById('adminTabs').classList.remove('hidden');
+    // Mostrar aba ativa
+    const activeTab = document.querySelector('.tab-btn.active')?.getAttribute('data-tab') || 'dashboard';
+    mostrarAba(activeTab);
+  } else {
+    document.getElementById('adminTabs')?.classList.add('hidden');
+    mostrarAba('dashboard');
+  }
+}
+
+function mostrarAba(abaId) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+  document.getElementById(`tab${abaId.charAt(0).toUpperCase() + abaId.slice(1)}`).classList.remove('hidden');
+  if (abaId === 'users') renderUsersList();
+  if (abaId === 'molds') renderMoldsList();
+}
+
+function initTabs() {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      mostrarAba(btn.getAttribute('data-tab'));
+    });
+  });
+}
+
+// Eventos de login/registro
 document.getElementById('registerBtn').onclick = () => {
   const email = document.getElementById('loginEmail').value;
   const senha = document.getElementById('loginPassword').value;
   const res = registrarUsuario(email, senha);
   mostrarStatus(res.msg);
 };
-
 document.getElementById('loginBtn').onclick = () => {
   const email = document.getElementById('loginEmail').value;
   const senha = document.getElementById('loginPassword').value;
@@ -469,30 +636,29 @@ document.getElementById('loginBtn').onclick = () => {
     usuarioLogado = res.user;
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('mainPanel').classList.remove('hidden');
-    
     const badge = document.getElementById('userTypeBadge');
     if (usuarioLogado.tipo === 'admin') {
       badge.innerHTML = '<i class="fas fa-crown"></i> ADMINISTRADOR';
       badge.className = 'badge-admin';
-      document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('admin-only'));
     } else {
       badge.innerHTML = '<i class="fas fa-user"></i> USUÁRIO COMUM (apenas leitura)';
       badge.className = 'badge-user';
     }
+    aplicarAdminUI();
     renderCards();
   } else {
     mostrarStatus(res.msg);
   }
 };
-
 document.getElementById('logoutBtn').onclick = () => { usuarioLogado = null; location.reload(); };
 
+// INJECT
 document.getElementById('addPersonBtn')?.addEventListener('click', () => {
   const nome = document.getElementById('fullName').value;
   const email = document.getElementById('personEmail').value;
-  const telefone = document.getElementById('personPhone').value;
+  const telef = document.getElementById('personPhone').value;
   const local = document.getElementById('personLocation').value;
-  const res = adicionarPessoa(nome, email, telefone, local);
+  const res = adicionarPessoa(nome, email, telef, local);
   mostrarStatus(res.msg);
   if (res.ok) {
     document.getElementById('fullName').value = '';
@@ -503,21 +669,43 @@ document.getElementById('addPersonBtn')?.addEventListener('click', () => {
   }
 });
 
+// Busca
 document.getElementById('searchInput')?.addEventListener('input', () => renderCards());
 document.getElementById('clearSearchBtn')?.addEventListener('click', () => {
   document.getElementById('searchInput').value = '';
   renderCards();
 });
 
-document.getElementById('backupBtn')?.addEventListener('click', fazerBackup);
+// Backup/Restore
+document.getElementById('backupBtn')?.addEventListener('click', fazerBackupCompleto);
 document.getElementById('restoreBtn')?.addEventListener('click', () => {
   const inp = document.createElement('input');
   inp.type = 'file'; inp.accept = '.json';
-  inp.onchange = (e) => { if (e.target.files[0]) restaurarBackup(e.target.files[0]); };
+  inp.onchange = (e) => { if (e.target.files[0]) restaurarBackupCompleto(e.target.files[0]); };
   inp.click();
 });
 
-// FUNDO HACKER RAIN
+// Moldes
+document.getElementById('addMoldBtn')?.addEventListener('click', () => {
+  const nome = document.getElementById('moldName').value;
+  const fileInput = document.getElementById('moldFile');
+  if (!fileInput.files || !fileInput.files[0]) { mostrarStatus('❌ Selecione um arquivo PDF!'); return; }
+  const file = fileInput.files[0];
+  if (file.type !== 'application/pdf') { mostrarStatus('❌ O arquivo deve ser PDF!'); return; }
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const base64 = ev.target.result;
+    if (adicionarMolde(nome, base64)) {
+      mostrarStatus('✅ Molde adicionado!');
+      document.getElementById('moldName').value = '';
+      fileInput.value = '';
+      renderMoldsList();
+    } else { mostrarStatus('❌ Erro ao adicionar molde.'); }
+  };
+  reader.readAsDataURL(file);
+});
+
+// Background hacker
 function initRain() {
   const bg = document.getElementById('matrixBg');
   if (!bg) return;
@@ -552,7 +740,8 @@ setInterval(() => {
   }
 }, 1500);
 
-inicializar();
+inicializarDados();
+initTabs();
 </script>
 </body>
 </html>
