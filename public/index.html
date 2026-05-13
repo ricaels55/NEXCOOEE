@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>NexCooee | Login Persistente + Mídia</title>
+  <title>NexCooee | IndexedDB para arquivos</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -153,7 +153,7 @@
     <div class="flex-between">
       <div>
         <div class="glitch-title" data-text=">_NEXCOOEE">>_NEXCOOEE</div>
-        <div class="sub">// cooee club • login persistente</div>
+        <div class="sub">// cooee club • indexdb para arquivos</div>
       </div>
       <div>
         <span id="userTypeBadge" class="badge-user"></span>
@@ -161,14 +161,13 @@
       </div>
     </div>
 
-    <!-- Abas -->
-    <div id="adminTabs" class="tabs">
+    <div class="tabs">
       <button class="tab-btn active" data-tab="dashboard">📋 Dashboard</button>
       <button class="tab-btn" data-tab="users">👥 Usuários</button>
       <button class="tab-btn" data-tab="media">🖼️ Mídia (PDF/IMG)</button>
     </div>
 
-    <!-- Aba Dashboard -->
+    <!-- Dashboard -->
     <div id="tabDashboard" class="tab-content">
       <div id="adminInjectPanel" class="glass-card admin-only" style="margin-bottom: 1.5rem;">
         <div class="section-title"><i class="fas fa-user-secret"></i> <span>INJECT NEW TARGET</span></div>
@@ -181,16 +180,14 @@
         </div>
         <div id="addStatus" style="font-size:0.8rem; margin-top:1rem;"></div>
       </div>
-
       <div style="margin: 1rem 0; display: flex; gap: 1rem; flex-wrap: wrap;">
         <input type="text" id="searchInput" class="input-field" style="flex:2;" placeholder="🔍 Buscar por nome, email ou local...">
         <button id="clearSearchBtn" class="btn"><i class="fas fa-times"></i> Limpar</button>
       </div>
-
       <div id="peopleGrid" class="data-grid"></div>
     </div>
 
-    <!-- Aba Usuários -->
+    <!-- Usuários -->
     <div id="tabUsers" class="tab-content hidden">
       <div class="glass-card">
         <div class="section-title"><i class="fas fa-users"></i> <span>Contas cadastradas</span></div>
@@ -198,10 +195,10 @@
       </div>
     </div>
 
-    <!-- Aba Mídia -->
+    <!-- Mídia com IndexedDB -->
     <div id="tabMedia" class="tab-content hidden">
       <div class="glass-card">
-        <div class="section-title"><i class="fas fa-file-alt"></i> <span>Arquivos e Imagens (PDF, PNG, JPG, GIF)</span></div>
+        <div class="section-title"><i class="fas fa-file-alt"></i> <span>Arquivos e Imagens (IndexedDB - suporta arquivos grandes)</span></div>
         <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
           <input type="text" id="mediaName" class="input-field" style="flex:1;" placeholder="Nome do arquivo">
           <label for="mediaFile" class="btn" style="cursor: pointer;"><i class="fas fa-upload"></i> Selecionar arquivo</label>
@@ -212,15 +209,14 @@
       </div>
     </div>
 
-    <footer><i class="fas fa-terminal"></i> [ NexCooee • Login salvo automaticamente ]</footer>
+    <footer><i class="fas fa-terminal"></i> [ NexCooee • IndexedDB para arquivos ]</footer>
   </div>
 </div>
 
 <script>
-  // ========== DADOS GLOBAIS ==========
-  let usuarios = [];        // { id, email, senha, tipo }
+  // ========== SIMPLES LOCALSTORAGE PARA USUÁRIOS E DADOS LEVES ==========
+  let usuarios = [];
   let dadosPessoas = [];
-  let midias = [];
   let usuarioLogado = null;
 
   const ADMIN_PADRAO = {
@@ -240,15 +236,11 @@
     }
     const storedPessoas = localStorage.getItem('nexcooee_dados');
     dadosPessoas = storedPessoas ? JSON.parse(storedPessoas) : [];
-    const storedMidias = localStorage.getItem('nexcooee_midias');
-    midias = storedMidias ? JSON.parse(storedMidias) : [];
   }
-
   function salvarUsuarios() { localStorage.setItem('nexcooee_usuarios', JSON.stringify(usuarios)); }
   function salvarDados() { localStorage.setItem('nexcooee_dados', JSON.stringify(dadosPessoas)); }
-  function salvarMidias() { localStorage.setItem('nexcooee_midias', JSON.stringify(midias)); }
 
-  // ========== AUTENTICAÇÃO COM SESSÃO PERSISTENTE ==========
+  // ========== AUTENTICAÇÃO ==========
   function registrarUsuario(email, senha) {
     if (usuarios.find(u => u.email === email)) throw new Error('E-mail já registrado.');
     if (!email || !senha) throw new Error('Preencha e-mail e senha.');
@@ -256,30 +248,24 @@
     const novo = { id: Date.now().toString(), email, senha, tipo: 'user' };
     usuarios.push(novo);
     salvarUsuarios();
-    return novo; // retorna o usuário criado para login automático
+    return novo;
   }
-
   function loginUsuario(email, senha) {
     const user = usuarios.find(u => u.email === email && u.senha === senha);
     if (!user) throw new Error('E-mail ou senha incorretos.');
     return user;
   }
-
-  // Salvar sessão no localStorage (persiste mesmo fechando navegador)
   function salvarSessao(user) {
     localStorage.setItem('nexcooee_sessao', JSON.stringify({ id: user.id, email: user.email, tipo: user.tipo }));
   }
-
   function carregarSessao() {
     const sessao = localStorage.getItem('nexcooee_sessao');
     if (sessao) {
       const userData = JSON.parse(sessao);
-      const user = usuarios.find(u => u.id === userData.id);
-      if (user) return user;
+      return usuarios.find(u => u.id === userData.id) || null;
     }
     return null;
   }
-
   function encerrarSessao() {
     localStorage.removeItem('nexcooee_sessao');
     usuarioLogado = null;
@@ -301,7 +287,6 @@
     });
     salvarDados();
   }
-
   function removerPessoa(id) {
     if (usuarioLogado.tipo !== 'admin') throw new Error('Permissão negada.');
     const idx = dadosPessoas.findIndex(p => p.id == id);
@@ -309,28 +294,7 @@
     return false;
   }
 
-  // ========== MÍDIAS ==========
-  function adicionarMidia(nome, base64, tipoArquivo) {
-    if (usuarioLogado.tipo !== 'admin') throw new Error('Apenas administradores podem adicionar mídia.');
-    if (!nome.trim()) nome = `Arquivo ${midias.length + 1}`;
-    midias.unshift({
-      id: Date.now(),
-      nome: nome.trim(),
-      tipo: tipoArquivo,
-      data: new Date().toLocaleString(),
-      base64: base64
-    });
-    salvarMidias();
-  }
-
-  function removerMidia(id) {
-    if (usuarioLogado.tipo !== 'admin') throw new Error('Permissão negada.');
-    const idx = midias.findIndex(m => m.id == id);
-    if (idx !== -1) { midias.splice(idx, 1); salvarMidias(); return true; }
-    return false;
-  }
-
-  // ========== GERENCIAMENTO DE USUÁRIOS (ADMIN) ==========
+  // ========== GERENCIAR USUÁRIOS ==========
   async function promoverAdmin(id) {
     const user = usuarios.find(u => u.id === id);
     if (user && user.tipo !== 'admin') { user.tipo = 'admin'; salvarUsuarios(); return true; }
@@ -347,7 +311,101 @@
     return false;
   }
 
+  // ========== INDEXEDDB PARA ARQUIVOS DE MÍDIA ==========
+  let db = null;
+  let midiasArray = []; // cache local para renderização rápida
+
+  function abrirIndexedDB() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open('NexCooeeDB', 1);
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => { db = request.result; resolve(db); };
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains('midias')) {
+          const store = db.createObjectStore('midias', { keyPath: 'id', autoIncrement: true });
+          store.createIndex('nome', 'nome', { unique: false });
+          store.createIndex('data', 'data', { unique: false });
+        }
+      };
+    });
+  }
+
+  async function carregarMidias() {
+    if (!db) await abrirIndexedDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(['midias'], 'readonly');
+      const store = transaction.objectStore('midias');
+      const request = store.getAll();
+      request.onsuccess = () => {
+        midiasArray = request.result || [];
+        resolve(midiasArray);
+      };
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async function adicionarMidiaIndexed(nome, file, tipo) {
+    if (usuarioLogado.tipo !== 'admin') throw new Error('Apenas administradores podem adicionar mídia.');
+    if (!nome.trim()) nome = `Arquivo ${Date.now()}`;
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onload = async (ev) => {
+        const base64 = ev.target.result;
+        const newMidia = {
+          id: Date.now(),
+          nome: nome.trim(),
+          tipo: tipo,
+          data: new Date().toLocaleString(),
+          base64: base64
+        };
+        if (!db) await abrirIndexedDB();
+        const transaction = db.transaction(['midias'], 'readwrite');
+        const store = transaction.objectStore('midias');
+        const request = store.add(newMidia);
+        request.onsuccess = () => {
+          carregarMidias().then(() => renderMidias());
+          resolve();
+        };
+        request.onerror = () => reject(request.error);
+      };
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function removerMidiaIndexed(id) {
+    if (usuarioLogado.tipo !== 'admin') throw new Error('Permissão negada.');
+    if (!db) await abrirIndexedDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(['midias'], 'readwrite');
+      const store = transaction.objectStore('midias');
+      const request = store.delete(id);
+      request.onsuccess = () => {
+        carregarMidias().then(() => renderMidias());
+        resolve();
+      };
+      request.onerror = () => reject(request.error);
+    });
+  }
+
   // ========== RENDERIZAÇÃO ==========
+  function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+  function showStatus(msg, isError = false) {
+    const el = document.getElementById('addStatus');
+    if (el) {
+      el.innerText = msg;
+      el.style.color = isError ? '#ffa098' : '#8bcb9e';
+      setTimeout(() => el.innerText = '', 4000);
+    }
+    const loginMsg = document.getElementById('loginMessage');
+    if (loginMsg && (msg.includes('Conta') || msg.includes('senha'))) {
+      loginMsg.innerText = msg;
+      loginMsg.style.color = isError ? '#ffa098' : '#a3ffcf';
+      setTimeout(() => loginMsg.innerText = '', 4000);
+    }
+  }
+
   function renderCards() {
     const grid = document.getElementById('peopleGrid');
     if (!grid) return;
@@ -388,9 +446,11 @@
         e.stopPropagation();
         const id = el.getAttribute('data-id');
         if (confirm('Remover permanentemente?')) {
-          removerPessoa(id);
-          renderCards();
-          showStatus('✅ Registro removido.');
+          try {
+            removerPessoa(id);
+            renderCards();
+            showStatus('✅ Registro removido.');
+          } catch (err) { showStatus(`❌ ${err.message}`, true); }
         }
       });
     });
@@ -432,14 +492,14 @@
   function renderMidias() {
     const container = document.getElementById('mediaList');
     if (!container) return;
-    if (midias.length === 0) {
+    if (!midiasArray.length) {
       container.innerHTML = '<div class="empty-msg">Nenhum arquivo ou imagem adicionada.</div>';
       return;
     }
-    container.innerHTML = midias.map(m => `
+    container.innerHTML = midiasArray.map(m => `
       <div class="media-card" data-id="${m.id}">
         <div><strong>${escapeHtml(m.nome)}</strong></div>
-        <div class="small-text">Tipo: ${m.tipo.toUpperCase()} | Adicionado: ${m.data}</div>
+        <div class="small-text">Tipo: ${(m.tipo === 'pdf' ? 'PDF' : 'Imagem').toUpperCase()} | Adicionado: ${m.data}</div>
         <div style="margin-top: 0.8rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
           <button class="btn" data-action="viewMedia" data-id="${m.id}"><i class="fas fa-eye"></i> Visualizar</button>
           <button class="btn" data-action="downloadMedia" data-id="${m.id}"><i class="fas fa-download"></i> Baixar</button>
@@ -447,16 +507,13 @@
         </div>
       </div>
     `).join('');
-    document.querySelectorAll('[data-action="viewMedia"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const m = midias.find(m => m.id == btn.getAttribute('data-id')); if (m && m.base64) { if (m.tipo === 'pdf') window.open(m.base64, '_blank'); else { const w = window.open(''); w.document.write(`<img src="${m.base64}" style="max-width:100%">`); } } }));
-    document.querySelectorAll('[data-action="downloadMedia"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const m = midias.find(m => m.id == btn.getAttribute('data-id')); if (m && m.base64) { const a = document.createElement('a'); a.href = m.base64; a.download = m.nome + (m.tipo === 'pdf' ? '.pdf' : '.png'); a.click(); } }));
-    document.querySelectorAll('[data-action="deleteMedia"]').forEach(btn => btn.addEventListener('click', async (e) => { e.stopPropagation(); if (confirm('Excluir este arquivo?')) { removerMidia(btn.getAttribute('data-id')); renderMidias(); showStatus('Arquivo removido.'); } }));
+    document.querySelectorAll('[data-action="viewMedia"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const m = midiasArray.find(m => m.id == btn.getAttribute('data-id')); if (m && m.base64) { if (m.tipo === 'pdf') window.open(m.base64, '_blank'); else { const w = window.open(''); w.document.write(`<img src="${m.base64}" style="max-width:100%">`); } } }));
+    document.querySelectorAll('[data-action="downloadMedia"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const m = midiasArray.find(m => m.id == btn.getAttribute('data-id')); if (m && m.base64) { const a = document.createElement('a'); a.href = m.base64; a.download = m.nome + (m.tipo === 'pdf' ? '.pdf' : '.png'); a.click(); } }));
+    document.querySelectorAll('[data-action="deleteMedia"]').forEach(btn => btn.addEventListener('click', async (e) => { e.stopPropagation(); if (confirm('Excluir este arquivo?')) { try { await removerMidiaIndexed(btn.getAttribute('data-id')); showStatus('Arquivo removido.'); } catch (err) { showStatus(`❌ ${err.message}`, true); } } }));
   }
 
-  function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
-  function showStatus(msg) { const el = document.getElementById('addStatus'); if (el) { el.innerText = msg; setTimeout(() => el.innerText = '', 3000); } }
-
-  // ========== INICIALIZAÇÃO DA INTERFACE APÓS LOGIN ==========
-  function inicializarInterface() {
+  // ========== INICIALIZAR INTERFACE APÓS LOGIN ==========
+  async function inicializarInterface() {
     const isAdmin = usuarioLogado.tipo === 'admin';
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('mainPanel').classList.remove('hidden');
@@ -465,6 +522,7 @@
     document.querySelectorAll('.admin-only').forEach(el => isAdmin ? el.classList.remove('hidden') : el.classList.add('hidden'));
     renderCards();
     renderUsersList();
+    await carregarMidias();
     renderMidias();
   }
 
@@ -473,14 +531,11 @@
     const email = document.getElementById('loginEmail').value;
     const senha = document.getElementById('loginPassword').value;
     try {
-      const novoUsuario = await registrarUsuario(email, senha);
-      // Login automático após registro
-      usuarioLogado = novoUsuario;
+      const novo = await registrarUsuario(email, senha);
+      usuarioLogado = novo;
       salvarSessao(usuarioLogado);
-      inicializarInterface();
-    } catch (err) {
-      showStatus(`❌ ${err.message}`);
-    }
+      await inicializarInterface();
+    } catch (err) { showStatus(`❌ ${err.message}`, true); }
   };
 
   document.getElementById('loginBtn').onclick = async () => {
@@ -490,15 +545,11 @@
       const user = await loginUsuario(email, senha);
       usuarioLogado = user;
       salvarSessao(usuarioLogado);
-      inicializarInterface();
-    } catch (err) {
-      showStatus(`❌ ${err.message}`);
-    }
+      await inicializarInterface();
+    } catch (err) { showStatus(`❌ ${err.message}`, true); }
   };
 
-  document.getElementById('logoutBtn').onclick = () => {
-    encerrarSessao();
-  };
+  document.getElementById('logoutBtn').onclick = () => { encerrarSessao(); };
 
   document.getElementById('addPersonBtn')?.addEventListener('click', async () => {
     try {
@@ -514,7 +565,7 @@
       document.getElementById('personEmail').value = '';
       document.getElementById('personPhone').value = '';
       document.getElementById('personLocation').value = '';
-    } catch (err) { showStatus(`❌ ${err.message}`); }
+    } catch (err) { showStatus(`❌ ${err.message}`, true); }
   });
 
   document.getElementById('searchInput').addEventListener('input', () => renderCards());
@@ -526,26 +577,19 @@
   document.getElementById('addMediaBtn')?.addEventListener('click', async () => {
     const nome = document.getElementById('mediaName').value;
     const file = document.getElementById('mediaFile').files[0];
-    if (!file) { showStatus('❌ Selecione um arquivo.'); return; }
-    if (!nome.trim()) { showStatus('❌ Informe um nome para o arquivo.'); return; }
-    const reader = new FileReader();
-    reader.onload = async (ev) => {
-      const base64 = ev.target.result;
-      let tipo = 'desconhecido';
-      if (file.type === 'application/pdf') tipo = 'pdf';
-      else if (file.type.startsWith('image/')) tipo = 'imagem';
-      try {
-        await adicionarMidia(nome, base64, tipo);
-        renderMidias();
-        showStatus('✅ Arquivo adicionado.');
-        document.getElementById('mediaName').value = '';
-        document.getElementById('mediaFile').value = '';
-      } catch (err) { showStatus(`❌ ${err.message}`); }
-    };
-    reader.readAsDataURL(file);
+    if (!file) { showStatus('❌ Selecione um arquivo.', true); return; }
+    if (!nome.trim()) { showStatus('❌ Informe um nome para o arquivo.', true); return; }
+    let tipo = 'desconhecido';
+    if (file.type === 'application/pdf') tipo = 'pdf';
+    else if (file.type.startsWith('image/')) tipo = 'imagem';
+    try {
+      await adicionarMidiaIndexed(nome, file, tipo);
+      showStatus('✅ Arquivo adicionado com sucesso!');
+      document.getElementById('mediaName').value = '';
+      document.getElementById('mediaFile').value = '';
+    } catch (err) { showStatus(`❌ ${err.message}`, true); }
   });
 
-  // Abas
   function initTabs() {
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -561,7 +605,7 @@
     });
   }
 
-  // Fundo hacker rain
+  // Fundo hacker rain (mesmo)
   function initRain() {
     const bg = document.getElementById('matrixBg');
     if (!bg) return;
@@ -596,14 +640,13 @@
     }
   }, 1500);
 
-  // ========== INICIALIZAÇÃO PRINCIPAL ==========
+  // Inicialização principal
   inicializarDados();
   initTabs();
-  // Verifica se há sessão salva
   const sessao = carregarSessao();
   if (sessao) {
     usuarioLogado = sessao;
-    inicializarInterface();
+    inicializarInterface().catch(console.error);
   }
 </script>
 </body>
