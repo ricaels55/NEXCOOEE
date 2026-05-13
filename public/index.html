@@ -66,8 +66,10 @@
     <div style="margin: 1rem 0;"><i class="fas fa-shield-haltered" style="font-size: 3rem; color: #1effbc;"></i></div>
     <input type="email" id="loginEmail" class="input-field" placeholder="E-mail">
     <input type="password" id="loginPassword" class="input-field" placeholder="Senha">
-    <button id="registerBtn" class="btn"><i class="fas fa-user-plus"></i> Registrar</button>
-    <button id="loginBtn" class="btn"><i class="fas fa-key"></i> Entrar</button>
+    <div>
+      <button id="registerBtn" class="btn"><i class="fas fa-user-plus"></i> Registrar</button>
+      <button id="loginBtn" class="btn"><i class="fas fa-key"></i> Entrar</button>
+    </div>
     <div id="loginMessage" class="small-text"></div>
   </div>
 
@@ -92,166 +94,182 @@
 </div>
 
 <script>
-// CONEXÃO ÚNICA COM SUPABASE
-const SUPABASE_URL = "https://d-vxot6yg8ov-9txf7u9ma-ccsop5-e.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_egE-WfT-Aq8QpWfdVbQvpg_XwqnFy4B";
+(function() {
+  // CONFIGURAÇÃO DIRETA
+  const SUPABASE_URL = "https://d-vxot6yg8ov-9txf7u9ma-ccsop5-e.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_egE-WfT-Aq8QpWfdVbQvpg_XwqnFy4B";
+  
+  // Criar cliente Supabase
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  
+  let currentUser = null;
+  let peopleDatabase = [];
 
-// Criar UMA única instância
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  // Elementos
+  const loginScreen = document.getElementById('loginScreen');
+  const mainPanel = document.getElementById('mainPanel');
+  const loginEmail = document.getElementById('loginEmail');
+  const loginPassword = document.getElementById('loginPassword');
+  const loginMessage = document.getElementById('loginMessage');
+  const registerBtn = document.getElementById('registerBtn');
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const addPersonBtn = document.getElementById('addPersonBtn');
+  const fullName = document.getElementById('fullName');
+  const personEmail = document.getElementById('personEmail');
+  const personPhone = document.getElementById('personPhone');
+  const personLocation = document.getElementById('personLocation');
+  const peopleGrid = document.getElementById('peopleGrid');
 
-let currentUser = null;
-let peopleDatabase = [];
-
-// Funções
-async function registrarLog(acao) {
-  if (currentUser) {
-    await supabase.from('logs').insert([{
-      usuario_id: currentUser.id,
-      email: currentUser.email,
-      acao: acao
-    }]);
+  // Funções de dados locais
+  function salvarPessoasLocal() {
+    localStorage.setItem('nexcooee_pessoas_final', JSON.stringify(peopleDatabase));
   }
-}
 
-// Registrar usuário
-document.getElementById('registerBtn').onclick = async () => {
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
-  const msg = document.getElementById('loginMessage');
-  
-  if (!email || !password) {
-    msg.innerHTML = '❌ Preencha email e senha!';
-    return;
+  function carregarPessoasLocal() {
+    const stored = localStorage.getItem('nexcooee_pessoas_final');
+    peopleDatabase = stored ? JSON.parse(stored) : [];
+    renderizarPessoas();
   }
-  
-  msg.innerHTML = '🔄 Criando conta...';
-  
-  const { data, error } = await supabase.auth.signUp({ email, password });
-  
-  if (error) {
-    msg.innerHTML = '❌ ' + error.message;
-    return;
+
+  function renderizarPessoas() {
+    if (!peopleGrid) return;
+    if (!peopleDatabase.length) {
+      peopleGrid.innerHTML = '<div class="small-text" style="text-align:center;padding:2rem;">Nenhum registro encontrado.</div>';
+      return;
+    }
+    peopleGrid.innerHTML = peopleDatabase.map(p => `
+      <div style="background:rgba(8,18,22,0.8);border-radius:1rem;border:1px solid rgba(0,255,170,0.3);padding:1rem;margin-bottom:0.5rem;">
+        <strong>${escapeHtml(p.nome)}</strong><br>
+        <span class="small-text">📧 ${escapeHtml(p.email)} | 📞 ${escapeHtml(p.telefone)} | 📍 ${escapeHtml(p.local)}</span><br>
+        <span class="small-text">🕒 ${p.data}</span><br>
+        <button class="btn" style="padding:0.2rem 0.8rem; margin-top:0.5rem;" onclick="deletarPessoa('${p.id}')">🗑️ Remover</button>
+      </div>
+    `).join('');
   }
-  
-  if (data.user) {
-    // Criar perfil do usuário
-    await supabase.from('perfis').insert([{
-      id: data.user.id,
-      email: email,
-      cargo: 'user'
-    }]);
-    msg.innerHTML = '✅ Conta criada! Agora faça login.';
+
+  function escapeHtml(str) {
+    return str ? str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    }) : '';
   }
-};
 
-// Login
-document.getElementById('loginBtn').onclick = async () => {
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
-  const msg = document.getElementById('loginMessage');
-  
-  if (!email || !password) {
-    msg.innerHTML = '❌ Preencha email e senha!';
-    return;
+  window.deletarPessoa = function(id) {
+    peopleDatabase = peopleDatabase.filter(p => p.id !== id);
+    salvarPessoasLocal();
+    renderizarPessoas();
+  };
+
+  function adicionarPessoa(nome, email, telefone, local) {
+    if (!nome || !nome.trim()) { alert('⚠️ Nome obrigatório'); return; }
+    peopleDatabase.unshift({
+      id: Date.now().toString(),
+      nome: nome.trim(),
+      email: email.trim() || '',
+      telefone: telefone.trim() || '',
+      local: local.trim() || 'Desconhecido',
+      data: new Date().toLocaleString()
+    });
+    salvarPessoasLocal();
+    renderizarPessoas();
   }
-  
-  msg.innerHTML = '🔄 Entrando...';
-  
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  
-  if (error) {
-    msg.innerHTML = '❌ ' + error.message;
-    return;
-  }
-  
-  currentUser = data.user;
-  await registrarLog('Login');
-  
-  document.getElementById('loginScreen').classList.add('hidden');
-  document.getElementById('mainPanel').classList.remove('hidden');
-  
-  carregarPessoasLocal();
-  msg.innerHTML = '';
-};
 
-// Logout
-document.getElementById('logoutBtn').onclick = async () => {
-  await registrarLog('Logout');
-  await supabase.auth.signOut();
-  location.reload();
-};
+  // Registrar
+  registerBtn.onclick = async () => {
+    const email = loginEmail.value.trim();
+    const password = loginPassword.value;
+    
+    if (!email || !password) {
+      loginMessage.innerHTML = '❌ Preencha email e senha!';
+      return;
+    }
+    
+    loginMessage.innerHTML = '🔄 Criando conta...';
+    
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      
+      if (error) {
+        loginMessage.innerHTML = '❌ ' + error.message;
+        return;
+      }
+      
+      if (data.user) {
+        await supabase.from('perfis').insert([{
+          id: data.user.id,
+          email: email,
+          cargo: 'user'
+        }]);
+        loginMessage.innerHTML = '✅ Conta criada! Agora faça login.';
+      }
+    } catch(err) {
+      loginMessage.innerHTML = '❌ Erro: ' + err.message;
+    }
+  };
 
-// Dados pessoais (local)
-function carregarPessoasLocal() {
-  const stored = localStorage.getItem('nexcooee_pessoas');
-  peopleDatabase = stored ? JSON.parse(stored) : [];
-  renderizarPessoas();
-}
+  // Login
+  loginBtn.onclick = async () => {
+    const email = loginEmail.value.trim();
+    const password = loginPassword.value;
+    
+    if (!email || !password) {
+      loginMessage.innerHTML = '❌ Preencha email e senha!';
+      return;
+    }
+    
+    loginMessage.innerHTML = '🔄 Entrando...';
+    
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      
+      if (error) {
+        loginMessage.innerHTML = '❌ ' + error.message;
+        return;
+      }
+      
+      currentUser = data.user;
+      loginScreen.classList.add('hidden');
+      mainPanel.classList.remove('hidden');
+      carregarPessoasLocal();
+      loginMessage.innerHTML = '';
+    } catch(err) {
+      loginMessage.innerHTML = '❌ Erro: ' + err.message;
+    }
+  };
 
-function salvarPessoasLocal() {
-  localStorage.setItem('nexcooee_pessoas', JSON.stringify(peopleDatabase));
-}
+  // Logout
+  logoutBtn.onclick = async () => {
+    await supabase.auth.signOut();
+    location.reload();
+  };
 
-function adicionarPessoa(nome, email, telefone, local) {
-  if (!nome.trim()) { alert('Nome obrigatório'); return; }
-  peopleDatabase.unshift({
-    id: Date.now().toString(),
-    nome: nome.trim(),
-    email: email.trim(),
-    telefone: telefone.trim(),
-    local: local.trim() || 'Desconhecido',
-    data: new Date().toLocaleString()
+  // Adicionar pessoa
+  addPersonBtn.onclick = () => {
+    adicionarPessoa(
+      fullName.value,
+      personEmail.value,
+      personPhone.value,
+      personLocation.value
+    );
+    fullName.value = '';
+    personEmail.value = '';
+    personPhone.value = '';
+    personLocation.value = '';
+  };
+
+  // Verificar sessão existente
+  supabase.auth.getSession().then(({ data }) => {
+    if (data.session) {
+      currentUser = data.session.user;
+      loginScreen.classList.add('hidden');
+      mainPanel.classList.remove('hidden');
+      carregarPessoasLocal();
+    }
   });
-  salvarPessoasLocal();
-  renderizarPessoas();
-}
-
-function deletarPessoa(id) {
-  peopleDatabase = peopleDatabase.filter(p => p.id !== id);
-  salvarPessoasLocal();
-  renderizarPessoas();
-}
-
-function renderizarPessoas() {
-  const grid = document.getElementById('peopleGrid');
-  if (!grid) return;
-  if (!peopleDatabase.length) {
-    grid.innerHTML = '<div class="small-text" style="text-align:center;padding:2rem;">Nenhum registro encontrado.</div>';
-    return;
-  }
-  grid.innerHTML = peopleDatabase.map(p => `
-    <div style="background:rgba(8,18,22,0.8);border-radius:1rem;border:1px solid rgba(0,255,170,0.3);padding:1rem;margin-bottom:0.5rem;">
-      <strong>${p.nome}</strong><br>
-      <span class="small-text">📧 ${p.email} | 📞 ${p.telefone} | 📍 ${p.local}</span><br>
-      <button class="btn" style="padding:0.2rem 0.8rem; margin-top:0.5rem;" onclick="deletarPessoa('${p.id}')">🗑️ Remover</button>
-    </div>
-  `).join('');
-}
-
-document.getElementById('addPersonBtn').onclick = () => {
-  adicionarPessoa(
-    document.getElementById('fullName').value,
-    document.getElementById('personEmail').value,
-    document.getElementById('personPhone').value,
-    document.getElementById('personLocation').value
-  );
-  document.getElementById('fullName').value = '';
-  document.getElementById('personEmail').value = '';
-  document.getElementById('personPhone').value = '';
-  document.getElementById('personLocation').value = '';
-};
-
-window.deletarPessoa = deletarPessoa;
-
-// Verificar sessão existente
-supabase.auth.getSession().then(({ data }) => {
-  if (data.session) {
-    currentUser = data.session.user;
-    document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('mainPanel').classList.remove('hidden');
-    carregarPessoasLocal();
-  }
-});
+})();
 </script>
 </body>
 </html>
