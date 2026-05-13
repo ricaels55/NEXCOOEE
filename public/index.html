@@ -3,17 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>NexCooee | Data Discovery Interface</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>NexCooee | Perfil com Foto</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      user-select: none;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
     body {
       min-height: 100vh;
       background: radial-gradient(circle at 20% 30%, #0a0f1e, #03060c);
@@ -22,7 +16,6 @@
       overflow-x: hidden;
       position: relative;
     }
-
     .hacker-bg {
       position: fixed;
       top: 0;
@@ -34,7 +27,6 @@
       opacity: 0.45;
       overflow: hidden;
     }
-
     .rain {
       position: absolute;
       top: -20%;
@@ -50,14 +42,12 @@
       animation: fall linear infinite;
       will-change: transform;
     }
-
     @keyframes fall {
       0% { transform: translateY(-30vh); opacity: 0.2; }
       10% { opacity: 0.8; }
       90% { opacity: 0.7; }
       100% { transform: translateY(110vh); opacity: 0; }
     }
-
     .app-container {
       position: relative;
       z-index: 10;
@@ -66,7 +56,6 @@
       padding: 2rem 1.5rem 3rem;
       backdrop-filter: blur(2px);
     }
-
     .glitch-title {
       font-size: 3rem;
       font-weight: 800;
@@ -109,7 +98,6 @@
       0% { transform: translate(0); opacity: 0.5; }
       100% { transform: translate(3px, -1px); opacity: 1; }
     }
-
     .sub {
       font-size: 0.9rem;
       letter-spacing: 2px;
@@ -118,7 +106,6 @@
       margin-top: 0.5rem;
       color: #b4ffe0;
     }
-
     .backup-bar {
       display: flex;
       gap: 12px;
@@ -146,7 +133,6 @@
       box-shadow: 0 0 8px #2effb3;
       transform: scale(0.97);
     }
-
     .card-panel {
       background: rgba(10, 20, 28, 0.65);
       backdrop-filter: blur(12px);
@@ -154,9 +140,7 @@
       border-radius: 2rem;
       padding: 1.8rem;
       box-shadow: 0 20px 35px -12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
-      transition: all 0.2s ease;
     }
-
     .input-group {
       display: flex;
       gap: 1rem;
@@ -194,10 +178,6 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      letter-spacing: 0.5px;
-    }
-    .hack-btn i {
-      font-size: 1rem;
     }
     .hack-btn:hover {
       background: #0f392e;
@@ -216,7 +196,6 @@
       border-bottom: 1px dashed #2eaa8a;
       padding-bottom: 8px;
     }
-
     .data-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
@@ -331,6 +310,98 @@
       margin-top: 8px;
       color: #8bcb9e;
     }
+
+    /* MODAL DE PERFIL */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: rgba(10, 20, 28, 0.95);
+      border: 1px solid #1effbc;
+      border-radius: 2rem;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #ff6e7f;
+    }
+    .modal-close:hover { color: #ff3860; }
+    .profile-photo {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .profile-photo img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #1effbc;
+      background: #0b141a;
+    }
+    .photo-placeholder {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #0b141a;
+      border: 3px solid #1effbc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      font-size: 3rem;
+      color: #1effbc;
+    }
+    .photo-input {
+      margin-top: 0.5rem;
+      font-size: 0.7rem;
+    }
+    .modal-field {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    .modal-field label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.8rem;
+      color: #8affcf;
+    }
+    .modal-field input, .modal-field textarea {
+      width: 100%;
+      background: #0b141ab3;
+      border: 1px solid #2c5a4a;
+      border-radius: 1rem;
+      padding: 0.6rem 1rem;
+      font-family: monospace;
+      color: #d0f0ff;
+      outline: none;
+    }
+    .modal-field input:focus {
+      border-color: #1effbc;
+    }
+    .save-profile-btn {
+      width: 100%;
+      margin-top: 1rem;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
@@ -348,13 +419,11 @@
     </div>
   </div>
 
-  <!-- BARRA DE BACKUP -->
   <div class="backup-bar">
     <button id="backupBtn" class="backup-btn"><i class="fas fa-download"></i> 💾 Backup</button>
     <button id="restoreBtn" class="backup-btn"><i class="fas fa-upload"></i> 📂 Restaurar</button>
   </div>
 
-  <!-- ADD PERSON -->
   <div class="card-panel">
     <div class="section-title">
       <i class="fas fa-user-secret"></i> <span>INJECT NEW TARGET</span>
@@ -370,7 +439,6 @@
     <div style="font-size: 0.7rem; margin-top: 8px; opacity: 0.6;"><i class="fas fa-shield-alt"></i> dados armazenados localmente (memória privada)</div>
   </div>
 
-  <!-- SEARCH & FILTER -->
   <div style="margin: 1.8rem 0 1rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
     <div style="flex: 2; min-width: 180px;">
       <div class="input-group" style="margin-bottom: 0;">
@@ -381,13 +449,55 @@
     <div style="font-family: monospace; font-size: 0.8rem;"><i class="fas fa-fingerprint"></i> clique no card para visualizar detalhes</div>
   </div>
 
-  <!-- CARDS GRID -->
   <div id="peopleGrid" class="data-grid">
     <div class="empty-msg"><i class="fas fa-ghost"></i> Nenhum registro encontrado. Adicione dados acima.</div>
   </div>
-  <footer>
-    <i class="fas fa-terminal"></i> [ NEXCOOEE SECURE SHELL v2.3 ] • movimento de fundo inspirado em matriz • dados pessoais armazenados localmente
-  </footer>
+  <footer><i class="fas fa-terminal"></i> [ NEXCOOEE SECURE SHELL v2.3 ] • movimento de fundo inspirado em matriz • dados pessoais armazenados localmente</footer>
+</div>
+
+<!-- MODAL DE PERFIL -->
+<div id="profileModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <h3 style="margin-bottom: 1rem;"><i class="fas fa-id-card"></i> Perfil Completo</h3>
+    <div class="profile-photo">
+      <div id="profilePhotoContainer">
+        <div class="photo-placeholder" id="photoPlaceholder">
+          <i class="fas fa-user-ninja"></i>
+        </div>
+        <img id="profileImg" style="display: none; width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #1effbc;">
+      </div>
+      <div class="photo-input">
+        <label for="photoUpload" class="backup-btn" style="display: inline-block; padding: 0.3rem 0.8rem; font-size: 0.7rem;">📸 Adicionar Foto</label>
+        <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+      </div>
+    </div>
+    <div class="modal-field">
+      <label>Nome completo</label>
+      <input type="text" id="modalName" placeholder="Nome">
+    </div>
+    <div class="modal-field">
+      <label>E-mail</label>
+      <input type="email" id="modalEmail" placeholder="E-mail">
+    </div>
+    <div class="modal-field">
+      <label>Telefone</label>
+      <input type="text" id="modalPhone" placeholder="Telefone">
+    </div>
+    <div class="modal-field">
+      <label>Localização</label>
+      <input type="text" id="modalLocation" placeholder="Cidade/País">
+    </div>
+    <div class="modal-field">
+      <label>Data de registro</label>
+      <input type="text" id="modalCreatedAt" readonly style="opacity: 0.7;">
+    </div>
+    <div class="modal-field">
+      <label>ID do registro</label>
+      <input type="text" id="modalId" readonly style="opacity: 0.7; font-size: 0.7rem;">
+    </div>
+    <button id="saveProfileBtn" class="hack-btn save-profile-btn"><i class="fas fa-save"></i> Salvar alterações</button>
+  </div>
 </div>
 
 <script>
@@ -422,16 +532,17 @@
   }
   window.addEventListener('resize', () => { initHackerRain(); });
 
-  // DATA LAYER - SEM DADOS DE EXEMPLO
+  // DATA LAYER
   let peopleDatabase = [];
+  let currentPersonId = null;
 
   function persistData() {
-    localStorage.setItem('nexcooee_data', JSON.stringify(peopleDatabase));
+    localStorage.setItem('nexcooee_data_v2', JSON.stringify(peopleDatabase));
     updateRecordCount();
   }
 
   function loadFromStorage() {
-    const stored = localStorage.getItem('nexcooee_data');
+    const stored = localStorage.getItem('nexcooee_data_v2');
     if (stored) {
       try {
         peopleDatabase = JSON.parse(stored);
@@ -460,7 +571,10 @@
       email: email.trim(),
       phone: phone.trim(),
       location: location.trim() || 'Desconhecido',
-      createdAt: Date.now()
+      createdAt: Date.now(),
+      photo: null,
+      bio: '',
+      tags: []
     };
     peopleDatabase.unshift(newPerson);
     persistData();
@@ -476,6 +590,15 @@
       persistData();
       renderPeopleList();
       showStatus('addStatus', `🗑️ Registro de ${person.name} foi eliminado.`, 'info');
+    }
+  }
+
+  function updatePerson(id, updates) {
+    const index = peopleDatabase.findIndex(p => p.id === id);
+    if (index !== -1) {
+      peopleDatabase[index] = { ...peopleDatabase[index], ...updates };
+      persistData();
+      renderPeopleList();
     }
   }
 
@@ -540,13 +663,78 @@
       card.addEventListener('click', (e) => {
         if (e.target.closest('.delete-icon')) return;
         const id = card.getAttribute('data-id');
-        const person = peopleDatabase.find(p => p.id === id);
-        if (person) {
-          alert(`🔎 DETALHES DO PERFIL\n\n🆔 ${person.name}\n📧 E-mail: ${person.email || 'não informado'}\n📞 Telefone: ${person.phone || 'não informado'}\n📍 Localização: ${person.location}\n🕒 Criado em: ${new Date(person.createdAt).toLocaleString()}\n🔑 Hash ID: ${person.id}`);
-        }
+        openProfileModal(id);
       });
     });
   }
+
+  // MODAL FUNCTIONS
+  function openProfileModal(personId) {
+    const person = peopleDatabase.find(p => p.id === personId);
+    if (!person) return;
+    currentPersonId = personId;
+    
+    document.getElementById('modalName').value = person.name || '';
+    document.getElementById('modalEmail').value = person.email || '';
+    document.getElementById('modalPhone').value = person.phone || '';
+    document.getElementById('modalLocation').value = person.location || '';
+    document.getElementById('modalCreatedAt').value = new Date(person.createdAt).toLocaleString();
+    document.getElementById('modalId').value = person.id;
+    
+    const profileImg = document.getElementById('profileImg');
+    const photoPlaceholder = document.getElementById('photoPlaceholder');
+    
+    if (person.photo) {
+      profileImg.src = person.photo;
+      profileImg.style.display = 'block';
+      photoPlaceholder.style.display = 'none';
+    } else {
+      profileImg.style.display = 'none';
+      photoPlaceholder.style.display = 'flex';
+    }
+    
+    document.getElementById('profileModal').style.display = 'flex';
+  }
+  
+  function closeModal() {
+    document.getElementById('profileModal').style.display = 'none';
+    currentPersonId = null;
+  }
+  
+  function saveProfileChanges() {
+    if (!currentPersonId) return;
+    const updates = {
+      name: document.getElementById('modalName').value,
+      email: document.getElementById('modalEmail').value,
+      phone: document.getElementById('modalPhone').value,
+      location: document.getElementById('modalLocation').value
+    };
+    updatePerson(currentPersonId, updates);
+    closeModal();
+    showStatus('addStatus', '✅ Perfil atualizado com sucesso!', 'success');
+  }
+  
+  // Photo upload
+  document.getElementById('photoUpload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const imgData = ev.target.result;
+        updatePerson(currentPersonId, { photo: imgData });
+        const profileImg = document.getElementById('profileImg');
+        const photoPlaceholder = document.getElementById('photoPlaceholder');
+        profileImg.src = imgData;
+        profileImg.style.display = 'block';
+        photoPlaceholder.style.display = 'none';
+        showStatus('addStatus', '📸 Foto adicionada!', 'success');
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+  
+  document.getElementById('saveProfileBtn').addEventListener('click', saveProfileChanges);
+  window.closeModal = closeModal;
 
   function showStatus(elementId, message, type = 'info') {
     const el = document.getElementById(elementId);
@@ -630,6 +818,11 @@
       if (e.target.files[0]) restaurarBackup(e.target.files[0]);
       restoreFileInput.value = '';
     });
+    
+    document.addEventListener('click', (e) => {
+      const modal = document.getElementById('profileModal');
+      if (e.target === modal) closeModal();
+    });
   }
 
   window.addEventListener('load', () => {
@@ -642,16 +835,4 @@
         for(let i = 0; i < 3; i++) {
           const randomDrop = bg.children[Math.floor(Math.random() * bg.children.length)];
           if(randomDrop) {
-            const chars = '01アイウエオカキクケコサシスソタチツトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&*+@';
-            let newContent = '';
-            const len = randomDrop.textContent.length;
-            for(let x=0; x < len; x++) newContent += chars[Math.floor(Math.random() * chars.length)];
-            randomDrop.textContent = newContent;
-          }
-        }
-      }
-    }, 1200);
-  });
-</script>
-</body>
-</html>
+            const chars = '01アイウエオカキクケコサシスソタチツトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ012345678
