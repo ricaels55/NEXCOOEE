@@ -835,4 +835,16 @@
         for(let i = 0; i < 3; i++) {
           const randomDrop = bg.children[Math.floor(Math.random() * bg.children.length)];
           if(randomDrop) {
-            const chars = '01アイウエオカキクケコサシスソタチツトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ012345678
+            const chars = '01アイウエオカキクケコサシスソタチツトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&*+@';
+            let newContent = '';
+            const len = randomDrop.textContent.length;
+            for(let x=0; x < len; x++) newContent += chars[Math.floor(Math.random() * chars.length)];
+            randomDrop.textContent = newContent;
+          }
+        }
+      }
+    }, 1200);
+  });
+</script>
+</body>
+</html>
