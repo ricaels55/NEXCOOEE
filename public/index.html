@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>NexCooee | Sistema com Imagens e Usuários</title>
+  <title>NexCooee | Login Persistente + Mídia</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -153,7 +153,7 @@
     <div class="flex-between">
       <div>
         <div class="glitch-title" data-text=">_NEXCOOEE">>_NEXCOOEE</div>
-        <div class="sub">// cooee club • dados locais + imagens</div>
+        <div class="sub">// cooee club • login persistente</div>
       </div>
       <div>
         <span id="userTypeBadge" class="badge-user"></span>
@@ -161,7 +161,7 @@
       </div>
     </div>
 
-    <!-- Abas (admin vê todas; usuário comum só vê Dashboard e Mídia) -->
+    <!-- Abas -->
     <div id="adminTabs" class="tabs">
       <button class="tab-btn active" data-tab="dashboard">📋 Dashboard</button>
       <button class="tab-btn" data-tab="users">👥 Usuários</button>
@@ -190,7 +190,7 @@
       <div id="peopleGrid" class="data-grid"></div>
     </div>
 
-    <!-- Aba Usuários (todos veem, mas só admin pode promover/excluir) -->
+    <!-- Aba Usuários -->
     <div id="tabUsers" class="tab-content hidden">
       <div class="glass-card">
         <div class="section-title"><i class="fas fa-users"></i> <span>Contas cadastradas</span></div>
@@ -198,12 +198,12 @@
       </div>
     </div>
 
-    <!-- Aba Mídia (substitui os "molds" - aceita PDF, PNG, JPG, GIF) -->
+    <!-- Aba Mídia -->
     <div id="tabMedia" class="tab-content hidden">
       <div class="glass-card">
         <div class="section-title"><i class="fas fa-file-alt"></i> <span>Arquivos e Imagens (PDF, PNG, JPG, GIF)</span></div>
         <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
-          <input type="text" id="mediaName" class="input-field" style="flex:1;" placeholder="Nome do arquivo (ex: Fone de ouvido)">
+          <input type="text" id="mediaName" class="input-field" style="flex:1;" placeholder="Nome do arquivo">
           <label for="mediaFile" class="btn" style="cursor: pointer;"><i class="fas fa-upload"></i> Selecionar arquivo</label>
           <input type="file" id="mediaFile" accept="image/png, image/jpeg, image/jpg, image/gif, application/pdf" style="display: none;">
           <button id="addMediaBtn" class="btn"><i class="fas fa-plus"></i> Adicionar</button>
@@ -212,18 +212,17 @@
       </div>
     </div>
 
-    <footer><i class="fas fa-terminal"></i> [ NexCooee • Dados locais • Backup disponível ]</footer>
+    <footer><i class="fas fa-terminal"></i> [ NexCooee • Login salvo automaticamente ]</footer>
   </div>
 </div>
 
 <script>
   // ========== DADOS GLOBAIS ==========
   let usuarios = [];        // { id, email, senha, tipo }
-  let dadosPessoas = [];    // { id, nome, email, telefone, local, criadoPor, criadoEm }
-  let midias = [];          // { id, nome, tipo, data, base64 }
+  let dadosPessoas = [];
+  let midias = [];
   let usuarioLogado = null;
 
-  // ADMIN padrão
   const ADMIN_PADRAO = {
     id: 'admin_1',
     email: 'admin@nexcooee.com',
@@ -232,24 +231,24 @@
   };
 
   function inicializarDados() {
-    const usuariosSalvos = localStorage.getItem('nexcooee_usuarios');
-    if (usuariosSalvos) {
-      usuarios = JSON.parse(usuariosSalvos);
+    const storedUsers = localStorage.getItem('nexcooee_usuarios');
+    if (storedUsers) {
+      usuarios = JSON.parse(storedUsers);
     } else {
       usuarios = [ADMIN_PADRAO];
       localStorage.setItem('nexcooee_usuarios', JSON.stringify(usuarios));
     }
-    const dadosSalvos = localStorage.getItem('nexcooee_dados');
-    dadosPessoas = dadosSalvos ? JSON.parse(dadosSalvos) : [];
-    const midiasSalvas = localStorage.getItem('nexcooee_midias');
-    midias = midiasSalvas ? JSON.parse(midiasSalvas) : [];
+    const storedPessoas = localStorage.getItem('nexcooee_dados');
+    dadosPessoas = storedPessoas ? JSON.parse(storedPessoas) : [];
+    const storedMidias = localStorage.getItem('nexcooee_midias');
+    midias = storedMidias ? JSON.parse(storedMidias) : [];
   }
 
   function salvarUsuarios() { localStorage.setItem('nexcooee_usuarios', JSON.stringify(usuarios)); }
   function salvarDados() { localStorage.setItem('nexcooee_dados', JSON.stringify(dadosPessoas)); }
   function salvarMidias() { localStorage.setItem('nexcooee_midias', JSON.stringify(midias)); }
 
-  // ========== AUTENTICAÇÃO ==========
+  // ========== AUTENTICAÇÃO COM SESSÃO PERSISTENTE ==========
   function registrarUsuario(email, senha) {
     if (usuarios.find(u => u.email === email)) throw new Error('E-mail já registrado.');
     if (!email || !senha) throw new Error('Preencha e-mail e senha.');
@@ -257,6 +256,7 @@
     const novo = { id: Date.now().toString(), email, senha, tipo: 'user' };
     usuarios.push(novo);
     salvarUsuarios();
+    return novo; // retorna o usuário criado para login automático
   }
 
   function loginUsuario(email, senha) {
@@ -265,25 +265,28 @@
     return user;
   }
 
-  async function promoverAdmin(id) {
-    const user = usuarios.find(u => u.id === id);
-    if (user && user.tipo !== 'admin') { user.tipo = 'admin'; salvarUsuarios(); return true; }
-    return false;
+  // Salvar sessão no localStorage (persiste mesmo fechando navegador)
+  function salvarSessao(user) {
+    localStorage.setItem('nexcooee_sessao', JSON.stringify({ id: user.id, email: user.email, tipo: user.tipo }));
   }
 
-  async function rebaixarUser(id) {
-    const user = usuarios.find(u => u.id === id);
-    if (user && user.tipo === 'admin' && user.email !== 'admin@nexcooee.com') { user.tipo = 'user'; salvarUsuarios(); return true; }
-    return false;
+  function carregarSessao() {
+    const sessao = localStorage.getItem('nexcooee_sessao');
+    if (sessao) {
+      const userData = JSON.parse(sessao);
+      const user = usuarios.find(u => u.id === userData.id);
+      if (user) return user;
+    }
+    return null;
   }
 
-  async function excluirUsuario(id) {
-    const idx = usuarios.findIndex(u => u.id === id);
-    if (idx !== -1 && usuarios[idx].email !== 'admin@nexcooee.com') { usuarios.splice(idx, 1); salvarUsuarios(); return true; }
-    return false;
+  function encerrarSessao() {
+    localStorage.removeItem('nexcooee_sessao');
+    usuarioLogado = null;
+    location.reload();
   }
 
-  // ========== DADOS PESSOAS ==========
+  // ========== CRUD PESSOAS ==========
   function adicionarPessoa(nome, email, telefone, local) {
     if (usuarioLogado.tipo !== 'admin') throw new Error('Apenas administradores podem adicionar.');
     if (!nome.trim()) throw new Error('Nome obrigatório.');
@@ -324,6 +327,23 @@
     if (usuarioLogado.tipo !== 'admin') throw new Error('Permissão negada.');
     const idx = midias.findIndex(m => m.id == id);
     if (idx !== -1) { midias.splice(idx, 1); salvarMidias(); return true; }
+    return false;
+  }
+
+  // ========== GERENCIAMENTO DE USUÁRIOS (ADMIN) ==========
+  async function promoverAdmin(id) {
+    const user = usuarios.find(u => u.id === id);
+    if (user && user.tipo !== 'admin') { user.tipo = 'admin'; salvarUsuarios(); return true; }
+    return false;
+  }
+  async function rebaixarUser(id) {
+    const user = usuarios.find(u => u.id === id);
+    if (user && user.tipo === 'admin' && user.email !== 'admin@nexcooee.com') { user.tipo = 'user'; salvarUsuarios(); return true; }
+    return false;
+  }
+  async function excluirUsuario(id) {
+    const idx = usuarios.findIndex(u => u.id === id);
+    if (idx !== -1 && usuarios[idx].email !== 'admin@nexcooee.com') { usuarios.splice(idx, 1); salvarUsuarios(); return true; }
     return false;
   }
 
@@ -427,7 +447,7 @@
         </div>
       </div>
     `).join('');
-    document.querySelectorAll('[data-action="viewMedia"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const m = midias.find(m => m.id == btn.getAttribute('data-id')); if (m && m.base64) { if (m.tipo === 'pdf') window.open(m.base64, '_blank'); else { const img = new Image(); img.src = m.base64; const w = window.open(''); w.document.write(`<img src="${m.base64}" style="max-width:100%">`); } } }));
+    document.querySelectorAll('[data-action="viewMedia"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const m = midias.find(m => m.id == btn.getAttribute('data-id')); if (m && m.base64) { if (m.tipo === 'pdf') window.open(m.base64, '_blank'); else { const w = window.open(''); w.document.write(`<img src="${m.base64}" style="max-width:100%">`); } } }));
     document.querySelectorAll('[data-action="downloadMedia"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const m = midias.find(m => m.id == btn.getAttribute('data-id')); if (m && m.base64) { const a = document.createElement('a'); a.href = m.base64; a.download = m.nome + (m.tipo === 'pdf' ? '.pdf' : '.png'); a.click(); } }));
     document.querySelectorAll('[data-action="deleteMedia"]').forEach(btn => btn.addEventListener('click', async (e) => { e.stopPropagation(); if (confirm('Excluir este arquivo?')) { removerMidia(btn.getAttribute('data-id')); renderMidias(); showStatus('Arquivo removido.'); } }));
   }
@@ -435,34 +455,50 @@
   function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
   function showStatus(msg) { const el = document.getElementById('addStatus'); if (el) { el.innerText = msg; setTimeout(() => el.innerText = '', 3000); } }
 
-  // ========== EVENTOS PRINCIPAIS ==========
+  // ========== INICIALIZAÇÃO DA INTERFACE APÓS LOGIN ==========
+  function inicializarInterface() {
+    const isAdmin = usuarioLogado.tipo === 'admin';
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('mainPanel').classList.remove('hidden');
+    document.getElementById('userTypeBadge').innerHTML = isAdmin ? '<i class="fas fa-crown"></i> ADMINISTRADOR' : '<i class="fas fa-user"></i> USUÁRIO COMUM';
+    document.getElementById('userTypeBadge').className = isAdmin ? 'badge-admin' : 'badge-user';
+    document.querySelectorAll('.admin-only').forEach(el => isAdmin ? el.classList.remove('hidden') : el.classList.add('hidden'));
+    renderCards();
+    renderUsersList();
+    renderMidias();
+  }
+
+  // ========== EVENTOS ==========
   document.getElementById('registerBtn').onclick = async () => {
     const email = document.getElementById('loginEmail').value;
     const senha = document.getElementById('loginPassword').value;
     try {
-      await registrarUsuario(email, senha);
-      showStatus('✅ Conta criada! Faça login.');
-    } catch (err) { showStatus(`❌ ${err.message}`); }
+      const novoUsuario = await registrarUsuario(email, senha);
+      // Login automático após registro
+      usuarioLogado = novoUsuario;
+      salvarSessao(usuarioLogado);
+      inicializarInterface();
+    } catch (err) {
+      showStatus(`❌ ${err.message}`);
+    }
   };
+
   document.getElementById('loginBtn').onclick = async () => {
     const email = document.getElementById('loginEmail').value;
     const senha = document.getElementById('loginPassword').value;
     try {
       const user = await loginUsuario(email, senha);
       usuarioLogado = user;
-      document.getElementById('loginScreen').classList.add('hidden');
-      document.getElementById('mainPanel').classList.remove('hidden');
-      const isAdmin = usuarioLogado.tipo === 'admin';
-      document.getElementById('userTypeBadge').innerHTML = isAdmin ? '<i class="fas fa-crown"></i> ADMINISTRADOR' : '<i class="fas fa-user"></i> USUÁRIO COMUM';
-      document.getElementById('userTypeBadge').className = isAdmin ? 'badge-admin' : 'badge-user';
-      document.querySelectorAll('.admin-only').forEach(el => isAdmin ? el.classList.remove('hidden') : el.classList.add('hidden'));
-      renderCards();
-      renderUsersList();
-      renderMidias();
-      // Aba Usuários e Mídia ficam visíveis para todos (admin pode editar, user só visualiza)
-    } catch (err) { showStatus(`❌ ${err.message}`); }
+      salvarSessao(usuarioLogado);
+      inicializarInterface();
+    } catch (err) {
+      showStatus(`❌ ${err.message}`);
+    }
   };
-  document.getElementById('logoutBtn').onclick = () => { location.reload(); };
+
+  document.getElementById('logoutBtn').onclick = () => {
+    encerrarSessao();
+  };
 
   document.getElementById('addPersonBtn')?.addEventListener('click', async () => {
     try {
@@ -560,8 +596,15 @@
     }
   }, 1500);
 
+  // ========== INICIALIZAÇÃO PRINCIPAL ==========
   inicializarDados();
   initTabs();
+  // Verifica se há sessão salva
+  const sessao = carregarSessao();
+  if (sessao) {
+    usuarioLogado = sessao;
+    inicializarInterface();
+  }
 </script>
 </body>
 </html>
