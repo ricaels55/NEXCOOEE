@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>NexCooee | Sistema com Login</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <title>NexCooee | Sistema com Login Local</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
     body {
       min-height: 100vh;
       background: radial-gradient(circle at 20% 30%, #0a0f1e, #03060c);
       font-family: 'Inter', monospace;
       color: #ccf5ff;
       overflow-x: hidden;
+      position: relative;
     }
     .hacker-bg {
       position: fixed;
@@ -24,7 +24,7 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.35;
+      opacity: 0.45;
       overflow: hidden;
     }
     .rain {
@@ -33,14 +33,19 @@
       left: 0;
       width: 100%;
       height: 120%;
-      font-family: monospace;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 16px;
+      font-weight: 500;
       color: #0f8;
+      text-shadow: 0 0 5px #0f8, 0 0 8px #0f8a;
       white-space: pre;
       animation: fall linear infinite;
+      will-change: transform;
     }
     @keyframes fall {
       0% { transform: translateY(-30vh); opacity: 0.2; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.7; }
       100% { transform: translateY(110vh); opacity: 0; }
     }
     .app-container {
@@ -49,6 +54,57 @@
       max-width: 1400px;
       margin: 0 auto;
       padding: 2rem 1.5rem 3rem;
+      backdrop-filter: blur(2px);
+    }
+    .glitch-title {
+      font-size: 3rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #a5f0d6, #1effbc, #0fcf9a);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+      text-shadow: 0 0 8px rgba(0,255,170,0.3);
+      position: relative;
+      display: inline-block;
+    }
+    .glitch-title::before,
+    .glitch-title::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #a5f0d6, #1effbc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .glitch-title::before {
+      animation: glitch-1 0.4s infinite alternate;
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    }
+    .glitch-title::after {
+      animation: glitch-2 0.3s infinite alternate;
+      clip-path: polygon(0 80%, 100% 20%, 100% 100%, 0 100%);
+    }
+    @keyframes glitch-1 {
+      0% { transform: translate(0); opacity: 0.7; }
+      100% { transform: translate(-2px, 1px); opacity: 1; }
+    }
+    @keyframes glitch-2 {
+      0% { transform: translate(0); opacity: 0.5; }
+      100% { transform: translate(3px, -1px); opacity: 1; }
+    }
+    .sub {
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      border-left: 3px solid #1effbc;
+      padding-left: 1rem;
+      margin-top: 0.5rem;
+      color: #b4ffe0;
     }
     .glass-card {
       background: rgba(10, 20, 28, 0.75);
@@ -57,20 +113,13 @@
       border-radius: 2rem;
       padding: 1.8rem;
     }
-    .glitch-title {
-      font-size: 2.5rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #a5f0d6, #1effbc);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
     .input-field {
       background: #0b141ab3;
       border: 1px solid #2c5a4a;
       border-radius: 2rem;
       padding: 0.8rem 1.5rem;
-      font-family: monospace;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
       color: #d0f0ff;
       outline: none;
       width: 100%;
@@ -88,37 +137,73 @@
       margin: 0.3rem;
     }
     .btn:hover { background: #0f392e; transform: scale(0.97); }
-    .btn-danger { border-color: #ff6e6e; color: #ffcccc; }
     .hidden { display: none; }
     .small-text { font-size: 0.7rem; opacity: 0.7; margin-top: 1rem; }
-    .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
     .badge-admin { background: #1effbc20; color: #1effbc; padding: 0.2rem 0.8rem; border-radius: 1rem; font-size: 0.7rem; }
     .badge-user { background: #ffb62a20; color: #ffb62a; padding: 0.2rem 0.8rem; border-radius: 1rem; font-size: 0.7rem; }
     .data-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 1.5rem;
       margin-top: 1rem;
     }
     .data-card {
-      background: rgba(8, 18, 22, 0.8);
-      border-radius: 1.5rem;
-      border: 1px solid rgba(0, 255, 170, 0.3);
-      padding: 1rem;
+      background: rgba(8, 18, 22, 0.75);
+      backdrop-filter: blur(8px);
+      border-radius: 1.6rem;
+      border: 1px solid rgba(0, 255, 170, 0.25);
+      padding: 1.3rem;
+      transition: 0.2s ease-in-out;
       cursor: pointer;
       position: relative;
     }
-    .data-card:hover { border-color: #1effbc; }
+    .data-card:hover { border-color: #1effbc; transform: translateY(-3px); background: #0b1a1fe6; }
+    .card-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(120deg, #baf8e6, #74ffce);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .info-row { display: flex; gap: 8px; margin: 8px 0; font-size: 0.85rem; align-items: center; font-family: monospace; }
+    .info-row i { width: 24px; color: #2affbc; }
+    .badge {
+      background: #102b24;
+      border-radius: 28px;
+      padding: 2px 10px;
+      font-size: 0.7rem;
+      width: fit-content;
+      margin-top: 12px;
+      border-left: 2px solid #1effbc;
+    }
     .delete-icon {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
+      bottom: 12px;
+      right: 16px;
       color: #ff6e7f;
+      opacity: 0.6;
       cursor: pointer;
     }
-    .admin-only { display: none; }
-    .empty-msg { text-align: center; padding: 2rem; background: #0712156b; border-radius: 1.5rem; }
-    footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; opacity: 0.6; }
+    .delete-icon:hover { opacity: 1; color: #ff3860; }
+    .empty-msg { text-align: center; padding: 3rem; background: #0712156b; border-radius: 2rem; border: 1px dashed #1effbc; }
+    footer { text-align: center; margin-top: 3rem; font-size: 0.7rem; opacity: 0.6; }
+    .backup-bar { display: flex; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px dashed #2eaa8a;
+      padding-bottom: 8px;
+    }
+    @media (max-width: 640px) {
+      .glitch-title { font-size: 2rem; }
+      .app-container { padding: 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -127,7 +212,7 @@
 <div class="app-container">
   <!-- TELA DE LOGIN -->
   <div id="loginScreen" class="glass-card" style="max-width: 450px; margin: 10vh auto; text-align: center;">
-    <div class="glitch-title">>_NEXCOOEE</div>
+    <div class="glitch-title" data-text=">_NEXCOOEE">>_NEXCOOEE</div>
     <div style="margin: 1rem 0;"><i class="fas fa-shield-haltered" style="font-size: 3rem; color: #1effbc;"></i></div>
     <input type="email" id="loginEmail" class="input-field" placeholder="E-mail" autocomplete="off">
     <input type="password" id="loginPassword" class="input-field" placeholder="Senha" autocomplete="off">
@@ -142,8 +227,8 @@
   <div id="mainPanel" class="hidden">
     <div class="flex-between">
       <div>
-        <div class="glitch-title">>_NEXCOOEE</div>
-        <div class="small-text">// cooee club • data nexus</div>
+        <div class="glitch-title" data-text=">_NEXCOOEE">>_NEXCOOEE</div>
+        <div class="sub">// cooee club • data nexus</div>
       </div>
       <div>
         <span id="userTypeBadge" class="badge-user"></span>
@@ -151,8 +236,14 @@
       </div>
     </div>
 
+    <!-- BACKUP (só admin vê) -->
+    <div id="adminBackupBar" class="backup-bar admin-only">
+      <button id="backupBtn" class="btn"><i class="fas fa-download"></i> 💾 Backup</button>
+      <button id="restoreBtn" class="btn"><i class="fas fa-upload"></i> 📂 Restaurar</button>
+    </div>
+
     <!-- PAINEL ADMIN (só aparece para admin) -->
-    <div id="adminPanel" class="glass-card admin-only" style="margin-top: 1.5rem;">
+    <div id="adminPanel" class="glass-card admin-only" style="margin-top: 1rem;">
       <div class="section-title"><i class="fas fa-user-secret"></i> <span>INJECT NEW TARGET</span></div>
       <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
         <input type="text" id="fullName" class="input-field" style="flex:1;" placeholder="Nome completo">
@@ -161,7 +252,7 @@
         <input type="text" id="personLocation" class="input-field" style="flex:1;" placeholder="Cidade/País">
         <button id="addPersonBtn" class="btn"><i class="fas fa-skull-crosswalk"></i> INJECT</button>
       </div>
-      <div class="status-message" id="addStatus" style="font-size:0.8rem; margin-top:1rem;"></div>
+      <div id="addStatus" style="font-size:0.8rem; margin-top:1rem; color:#8bcb9e;"></div>
     </div>
 
     <!-- BUSCA (todos podem) -->
@@ -172,219 +263,296 @@
 
     <!-- CARDS (todos podem ver) -->
     <div id="peopleGrid" class="data-grid">
-      <div class="empty-msg">Carregando...</div>
+      <div class="empty-msg">Nenhum registro encontrado.</div>
     </div>
-    <footer><i class="fas fa-terminal"></i> [ NexCooee • Sistema com Login • Acesso restrito ]</footer>
+    <footer><i class="fas fa-terminal"></i> [ NexCooee • Sistema com Login Local • Acesso restrito ]</footer>
   </div>
 </div>
 
 <script>
-// CONFIGURAÇÃO DO SUPABASE
-// !!! SUBSTITUA PELA SUA URL E CHAVE CORRETAS !!!
-const SUPABASE_URL = "https://SEU_PROJETO.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_SUA_CHAVE";
+// ============================================
+// SISTEMA COMPLETO SEM SUPABASE
+// ============================================
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let usuarios = [];
+let dadosPessoas = [];
+let usuarioLogado = null;
 
-let currentUser = null;
-let currentUserType = null;
-let allData = [];
+// ADMIN PADRÃO
+const ADMIN_PADRAO = {
+  id: 'admin_1',
+  email: 'admin@nexcooee.com',
+  senha: 'admin123',
+  tipo: 'admin'
+};
 
-// FUNDO HACKER
-function initRain() {
-  const bg = document.getElementById('matrixBg');
-  if (!bg) return;
-  bg.innerHTML = '';
-  const chars = '01アイウエオカキクケコ';
-  for (let i = 0; i < 50; i++) {
-    const rain = document.createElement('div');
-    rain.className = 'rain';
-    let txt = '';
-    for (let j = 0; j < 20; j++) txt += chars[Math.floor(Math.random() * chars.length)];
-    rain.textContent = txt;
-    rain.style.left = Math.random() * 100 + '%';
-    rain.style.animationDuration = (Math.random() * 4 + 2) + 's';
-    rain.style.animationDelay = Math.random() * 10 + 's';
-    bg.appendChild(rain);
+// Inicializar
+function inicializar() {
+  const usuariosSalvos = localStorage.getItem('nexcooee_usuarios');
+  if (usuariosSalvos) {
+    usuarios = JSON.parse(usuariosSalvos);
+  } else {
+    usuarios = [ADMIN_PADRAO];
+    localStorage.setItem('nexcooee_usuarios', JSON.stringify(usuarios));
+  }
+  
+  const dadosSalvos = localStorage.getItem('nexcooee_dados');
+  if (dadosSalvos) {
+    dadosPessoas = JSON.parse(dadosSalvos);
+  } else {
+    dadosPessoas = [];
+    localStorage.setItem('nexcooee_dados', JSON.stringify(dadosPessoas));
   }
 }
-initRain();
 
-// CARREGAR DADOS DO SUPABASE
-async function carregarDados() {
-  const { data, error } = await supabase.from('dados').select('*').order('criado_em', { ascending: false });
-  if (error) {
-    console.error('Erro ao carregar dados:', error);
-    return [];
+function salvarUsuarios() { localStorage.setItem('nexcooee_usuarios', JSON.stringify(usuarios)); }
+function salvarDados() { localStorage.setItem('nexcooee_dados', JSON.stringify(dadosPessoas)); }
+
+// Registrar
+function registrarUsuario(email, senha) {
+  if (usuarios.find(u => u.email === email)) {
+    return { ok: false, msg: '❌ E-mail já registrado!' };
   }
-  return data || [];
+  if (!email || !senha) return { ok: false, msg: '❌ Preencha e-mail e senha!' };
+  if (senha.length < 4) return { ok: false, msg: '❌ Senha deve ter no mínimo 4 caracteres!' };
+  
+  usuarios.push({ id: Date.now().toString(), email, senha, tipo: 'user' });
+  salvarUsuarios();
+  return { ok: true, msg: '✅ Conta criada! Faça login.' };
 }
 
-function renderCards(dados) {
+// Login
+function loginUsuario(email, senha) {
+  const user = usuarios.find(u => u.email === email && u.senha === senha);
+  if (!user) return { ok: false, msg: '❌ E-mail ou senha incorretos!' };
+  return { ok: true, user };
+}
+
+// Adicionar pessoa
+function adicionarPessoa(nome, email, telefone, local) {
+  if (!usuarioLogado || usuarioLogado.tipo !== 'admin') {
+    return { ok: false, msg: '❌ Apenas administradores podem adicionar!' };
+  }
+  if (!nome.trim()) return { ok: false, msg: '⚠️ Nome obrigatório!' };
+  
+  dadosPessoas.unshift({
+    id: Date.now(),
+    nome: nome.trim(),
+    email: email.trim(),
+    telefone: telefone.trim(),
+    local: local.trim() || 'Desconhecido',
+    criadoPor: usuarioLogado.email,
+    criadoEm: new Date().toLocaleString()
+  });
+  salvarDados();
+  return { ok: true, msg: `✅ ${nome.trim()} adicionado!` };
+}
+
+// Remover pessoa
+function removerPessoa(id) {
+  if (!usuarioLogado || usuarioLogado.tipo !== 'admin') return { ok: false };
+  const pessoa = dadosPessoas.find(p => p.id == id);
+  if (pessoa) {
+    dadosPessoas = dadosPessoas.filter(p => p.id != id);
+    salvarDados();
+    return { ok: true, msg: `🗑️ ${pessoa.nome} removido!` };
+  }
+  return { ok: false };
+}
+
+// Backup
+function fazerBackup() {
+  const backup = { usuarios, dadosPessoas, data: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `nexcooee_backup_${Date.now()}.json`;
+  a.click();
+  mostrarStatus('✅ Backup salvo!');
+}
+
+function restaurarBackup(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const dados = JSON.parse(e.target.result);
+      if (dados.usuarios) { usuarios = dados.usuarios; salvarUsuarios(); }
+      if (dados.dadosPessoas) { dadosPessoas = dados.dadosPessoas; salvarDados(); }
+      mostrarStatus('✅ Backup restaurado!');
+      renderCards();
+    } catch { mostrarStatus('❌ Arquivo inválido!'); }
+  };
+  reader.readAsText(file);
+}
+
+function mostrarStatus(msg) {
+  const el = document.getElementById('addStatus');
+  if (el) { el.innerText = msg; setTimeout(() => el.innerText = '', 3000); }
+  const msgEl = document.getElementById('loginMessage');
+  if (msgEl && (msg.includes('Conta') || msg.includes('senha'))) {
+    msgEl.innerText = msg;
+    setTimeout(() => msgEl.innerText = '', 3000);
+  }
+}
+
+function renderCards() {
   const grid = document.getElementById('peopleGrid');
   if (!grid) return;
-  if (!dados || dados.length === 0) {
-    grid.innerHTML = '<div class="empty-msg"><i class="fas fa-user-slash"></i> Nenhum registro encontrado.</div>';
-    document.getElementById('recordCount').innerText = '0';
-    return;
-  }
-  document.getElementById('recordCount').innerText = dados.length;
+  
   const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
-  let filtered = dados;
+  let filtrados = [...dadosPessoas];
   if (searchTerm) {
-    filtered = dados.filter(p => 
+    filtrados = filtrados.filter(p => 
       p.nome?.toLowerCase().includes(searchTerm) ||
       p.email?.toLowerCase().includes(searchTerm) ||
       p.local?.toLowerCase().includes(searchTerm) ||
       p.telefone?.includes(searchTerm)
     );
   }
-  if (filtered.length === 0) {
-    grid.innerHTML = '<div class="empty-msg"><i class="fas fa-search"></i> Nenhum resultado para sua busca.</div>';
+  
+  if (filtrados.length === 0) {
+    grid.innerHTML = '<div class="empty-msg"><i class="fas fa-user-slash"></i> Nenhum registro encontrado.</div>';
+    document.getElementById('recordCount')?.setAttribute('style', '');
     return;
   }
-  grid.innerHTML = filtered.map(p => `
+  
+  grid.innerHTML = filtrados.map(p => `
     <div class="data-card" data-id="${p.id}">
-      <div style="display:flex; justify-content:space-between;">
-        <strong>${escapeHtml(p.nome)}</strong>
-        <span style="font-size:0.65rem; opacity:0.6;">id:${p.id.toString().slice(-6)}</span>
+      <div style="display:flex; justify-content:space-between; align-items:baseline;">
+        <span class="card-name">${escapeHtml(p.nome)}</span>
+        <span class="badge" style="font-size:0.65rem;">#${p.id}</span>
       </div>
-      <div class="small-text">📧 ${escapeHtml(p.email) || '—'}</div>
-      <div class="small-text">📞 ${escapeHtml(p.telefone) || '—'}</div>
-      <div class="small-text">📍 ${escapeHtml(p.local) || '—'}</div>
-      <div class="small-text">🕒 ${new Date(p.criado_em).toLocaleString()}</div>
-      ${currentUserType === 'admin' ? `<div class="delete-icon" data-id="${p.id}"><i class="fas fa-trash-alt"></i></div>` : ''}
+      <div class="info-row"><i class="fas fa-envelope"></i> ${escapeHtml(p.email) || '—'}</div>
+      <div class="info-row"><i class="fas fa-phone-alt"></i> ${escapeHtml(p.telefone) || '—'}</div>
+      <div class="info-row"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(p.local) || '—'}</div>
+      <div class="badge"><i class="fas fa-clock"></i> ${p.criadoEm || '—'}</div>
+      ${usuarioLogado?.tipo === 'admin' ? `<div class="delete-icon" data-id="${p.id}"><i class="fas fa-trash-alt"></i></div>` : ''}
     </div>
   `).join('');
-  if (currentUserType === 'admin') {
-    document.querySelectorAll('.delete-icon').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        const id = btn.getAttribute('data-id');
-        if (confirm('Remover permanentemente?')) {
-          await supabase.from('dados').delete().eq('id', id);
-          carregarDados().then(data => { allData = data; renderCards(allData); });
-          showStatus('addStatus', '✅ Registro removido!');
-        }
-      });
+  
+  document.querySelectorAll('.delete-icon').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute('data-id');
+      if (confirm('Remover permanentemente?')) {
+        const result = removerPessoa(id);
+        if (result.ok) mostrarStatus(result.msg);
+        renderCards();
+      }
     });
-  }
+  });
+  
   document.querySelectorAll('.data-card').forEach(card => {
     card.addEventListener('click', (e) => {
       if (e.target.closest('.delete-icon')) return;
-      const id = card.getAttribute('data-id');
-      const pessoa = allData.find(p => p.id == id);
-      if (pessoa) {
-        alert(`🔎 DETALHES\n\nNome: ${pessoa.nome}\nEmail: ${pessoa.email || '—'}\nTelefone: ${pessoa.telefone || '—'}\nLocal: ${pessoa.local || '—'}\nID: ${pessoa.id}`);
-      }
+      const p = dadosPessoas.find(d => d.id == card.getAttribute('data-id'));
+      if (p) alert(`🔎 DETALHES DO PERFIL\n\n👤 Nome: ${p.nome}\n📧 E-mail: ${p.email || '—'}\n📞 Telefone: ${p.telefone || '—'}\n📍 Local: ${p.local || '—'}\n🕒 Criado: ${p.criadoEm}\n👑 Por: ${p.criadoPor}`);
     });
   });
 }
 
-function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
 
-function showStatus(elId, msg) { const el = document.getElementById(elId); if (el) { el.innerText = msg; setTimeout(() => el.innerText = '', 3000); } }
-
-// LOGIN
-document.getElementById('loginBtn').onclick = async () => {
+// EVENTOS
+document.getElementById('registerBtn').onclick = () => {
   const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
-  const msg = document.getElementById('loginMessage');
-  if (!email || !password) { msg.innerHTML = '❌ Preencha email e senha!'; return; }
-  msg.innerHTML = '🔄 Entrando...';
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) { msg.innerHTML = '❌ ' + error.message; return; }
-  const { data: userData } = await supabase.from('usuarios').select('tipo').eq('id', data.user.id).single();
-  currentUser = data.user;
-  currentUserType = userData?.tipo || 'user';
-  document.getElementById('loginScreen').classList.add('hidden');
-  document.getElementById('mainPanel').classList.remove('hidden');
-  const badge = document.getElementById('userTypeBadge');
-  if (currentUserType === 'admin') {
-    badge.innerHTML = '<i class="fas fa-crown"></i> ADMIN';
-    badge.className = 'badge-admin';
-    document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('admin-only'));
-  } else {
-    badge.innerHTML = '<i class="fas fa-user"></i> USUÁRIO';
-    badge.className = 'badge-user';
-  }
-  allData = await carregarDados();
-  renderCards(allData);
-  msg.innerHTML = '';
+  const senha = document.getElementById('loginPassword').value;
+  const res = registrarUsuario(email, senha);
+  mostrarStatus(res.msg);
 };
 
-// REGISTRO
-document.getElementById('registerBtn').onclick = async () => {
+document.getElementById('loginBtn').onclick = () => {
   const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
-  const msg = document.getElementById('loginMessage');
-  if (!email || !password) { msg.innerHTML = '❌ Preencha email e senha!'; return; }
-  msg.innerHTML = '🔄 Criando conta...';
-  const { data, error } = await supabase.auth.signUp({ email, password });
-  if (error) { msg.innerHTML = '❌ ' + error.message; return; }
-  await supabase.from('usuarios').insert([{ id: data.user.id, email: email, tipo: 'user' }]);
-  msg.innerHTML = '✅ Conta criada! Agora faça login.';
-};
-
-// LOGOUT
-document.getElementById('logoutBtn').onclick = async () => {
-  await supabase.auth.signOut();
-  location.reload();
-};
-
-// ADMIN: ADICIONAR PESSOA
-document.getElementById('addPersonBtn')?.addEventListener('click', async () => {
-  const nome = document.getElementById('fullName')?.value;
-  const email = document.getElementById('personEmail')?.value;
-  const telefone = document.getElementById('personPhone')?.value;
-  const local = document.getElementById('personLocation')?.value;
-  if (!nome.trim()) { showStatus('addStatus', '⚠️ Nome obrigatório!'); return; }
-  const { error } = await supabase.from('dados').insert([{
-    nome: nome.trim(),
-    email: email.trim(),
-    telefone: telefone.trim(),
-    local: local.trim(),
-    criado_por: currentUser?.id
-  }]);
-  if (error) { showStatus('addStatus', '❌ Erro ao adicionar!'); return; }
-  showStatus('addStatus', '✅ Pessoa adicionada!');
-  document.getElementById('fullName').value = '';
-  document.getElementById('personEmail').value = '';
-  document.getElementById('personPhone').value = '';
-  document.getElementById('personLocation').value = '';
-  allData = await carregarDados();
-  renderCards(allData);
-});
-
-// BUSCA
-document.getElementById('searchInput')?.addEventListener('input', () => { renderCards(allData); });
-document.getElementById('clearSearchBtn')?.addEventListener('click', () => {
-  document.getElementById('searchInput').value = '';
-  renderCards(allData);
-});
-
-// VERIFICAR SESSÃO EXISTENTE
-supabase.auth.getSession().then(async ({ data }) => {
-  if (data.session) {
-    currentUser = data.session.user;
-    const { data: userData } = await supabase.from('usuarios').select('tipo').eq('id', currentUser.id).single();
-    currentUserType = userData?.tipo || 'user';
+  const senha = document.getElementById('loginPassword').value;
+  const res = loginUsuario(email, senha);
+  if (res.ok) {
+    usuarioLogado = res.user;
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('mainPanel').classList.remove('hidden');
+    
     const badge = document.getElementById('userTypeBadge');
-    if (currentUserType === 'admin') {
-      badge.innerHTML = '<i class="fas fa-crown"></i> ADMIN';
+    if (usuarioLogado.tipo === 'admin') {
+      badge.innerHTML = '<i class="fas fa-crown"></i> ADMINISTRADOR';
       badge.className = 'badge-admin';
       document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('admin-only'));
     } else {
-      badge.innerHTML = '<i class="fas fa-user"></i> USUÁRIO';
+      badge.innerHTML = '<i class="fas fa-user"></i> USUÁRIO COMUM (apenas leitura)';
       badge.className = 'badge-user';
     }
-    allData = await carregarDados();
-    renderCards(allData);
-    document.getElementById('recordCount')?.addEventListener('change', () => {});
+    renderCards();
+  } else {
+    mostrarStatus(res.msg);
+  }
+};
+
+document.getElementById('logoutBtn').onclick = () => { usuarioLogado = null; location.reload(); };
+
+document.getElementById('addPersonBtn')?.addEventListener('click', () => {
+  const nome = document.getElementById('fullName').value;
+  const email = document.getElementById('personEmail').value;
+  const telefone = document.getElementById('personPhone').value;
+  const local = document.getElementById('personLocation').value;
+  const res = adicionarPessoa(nome, email, telefone, local);
+  mostrarStatus(res.msg);
+  if (res.ok) {
+    document.getElementById('fullName').value = '';
+    document.getElementById('personEmail').value = '';
+    document.getElementById('personPhone').value = '';
+    document.getElementById('personLocation').value = '';
+    renderCards();
   }
 });
+
+document.getElementById('searchInput')?.addEventListener('input', () => renderCards());
+document.getElementById('clearSearchBtn')?.addEventListener('click', () => {
+  document.getElementById('searchInput').value = '';
+  renderCards();
+});
+
+document.getElementById('backupBtn')?.addEventListener('click', fazerBackup);
+document.getElementById('restoreBtn')?.addEventListener('click', () => {
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = '.json';
+  inp.onchange = (e) => { if (e.target.files[0]) restaurarBackup(e.target.files[0]); };
+  inp.click();
+});
+
+// FUNDO HACKER RAIN
+function initRain() {
+  const bg = document.getElementById('matrixBg');
+  if (!bg) return;
+  bg.innerHTML = '';
+  const chars = '01アイウエオカキクケコサシスソタチツテトナニヌネノハヒフヘホマミムメモヤユヨ';
+  for (let i = 0; i < 60; i++) {
+    const rain = document.createElement('div');
+    rain.className = 'rain';
+    let txt = '';
+    for (let j = 0; j < 20; j++) txt += chars[Math.floor(Math.random() * chars.length)];
+    rain.textContent = txt;
+    rain.style.left = Math.random() * 100 + '%';
+    rain.style.fontSize = (Math.random() * 18 + 10) + 'px';
+    rain.style.animationDuration = (Math.random() * 5 + 2) + 's';
+    rain.style.animationDelay = Math.random() * 10 + 's';
+    bg.appendChild(rain);
+  }
+}
+initRain();
+setInterval(() => {
+  const bg = document.getElementById('matrixBg');
+  if (bg && bg.children.length) {
+    const chars = '01アイウエオカキクケコサシスソ';
+    for (let i = 0; i < 3; i++) {
+      const r = bg.children[Math.floor(Math.random() * bg.children.length)];
+      if (r) {
+        let nt = '';
+        for (let j = 0; j < r.textContent.length; j++) nt += chars[Math.floor(Math.random() * chars.length)];
+        r.textContent = nt;
+      }
+    }
+  }
+}, 1500);
+
+inicializar();
 </script>
 </body>
 </html>
